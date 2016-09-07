@@ -1,0 +1,33 @@
+<ion-menu [content]="content">
+
+  <ion-toolbar>
+    <div class="sidemenu-header">
+      <img src="img/banner.png" height="155px"/>
+    </div>
+  </ion-toolbar>
+
+  <ion-content> 
+    <ion-list>
+      <ion-item *ngFor="let p of pages">
+          <a class="menutitle" ion-button icon-left (click)="openPage(p)">
+            <ion-icon name="{{p.icon}}"></ion-icon>
+            <span class="menutext"> {{p.title}} </span>
+          </a>
+      <ion-icon class="micon-right" *ngIf="p.child && !p.showchild" name="ios-arrow-dropdown-outline" (click)="toggleMenuItem(p)"></ion-icon>
+      <ion-icon class="micon-right" *ngIf="p.child && p.showchild" name="ios-arrow-dropup-outline" (click)="toggleMenuItem(p)"></ion-icon>
+          <div *ngIf="p.child && p.showchild">
+            <p></p>
+            <ion-item *ngFor="let childpage of p.child" (click)="openPage(childpage)">
+            <a class="menutitle" ion-button icon-left (click)="openPage(childpage)">
+               <ion-icon name="{{childpage.icon}}"></ion-icon>
+              <span class="menutext">  {{childpage.title}} </span>
+            </a>
+            </ion-item>
+          </div> 
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
