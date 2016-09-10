@@ -20,7 +20,7 @@
             <ion-item *ngFor="let childpage of p.child" (click)="openPage(childpage)">
             <a class="menutitle" ion-button icon-left (click)="openPage(childpage)">
                <ion-icon name="{{childpage.icon}}"></ion-icon>
-              <span class="menutext">  {{childpage.title}} </span>
+              <span class="menutext">{{childpage.title}} </span>
             </a>
             </ion-item>
           </div> 
