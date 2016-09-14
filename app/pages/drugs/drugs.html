@@ -1,15 +1,72 @@
 <ion-header>
-  <ion-navbar>
+    <ion-navbar primary>
+
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Drugs Inventory</ion-title>
-  </ion-navbar>
+    <ion-title center>Drug Inventory</ion-title>
+  
+    </ion-navbar>
+    <ion-toolbar dark>
+<ion-segment [(ngModel)]="segment" (ionChange)="updatedrugsearch()">
+    
+      <ion-segment-button value="invt">
+        Drug Search
+      </ion-segment-button>
+      <ion-segment-button value="favorites">
+        Favorites
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-buttons end>
+      <button (click)="presentFilter()">  
+        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
+      </button>
+    </ion-buttons>
+
+      <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="updatedrugsearch()" placeholder="Search Drug">
+      </ion-searchbar>
+    
+    </ion-toolbar>
 </ion-header>
 
+<ion-content class="drugshome">
 
-<ion-content padding class="getting-started">
+  <div *ngIf="drugsearchcount == 0">
+    <ion-item>
+      No drug(s) found in the store inventory with a drug name : <strong> {{queryText}} </strong> . Please check your search
+      criteria and try with a different drug name.
+    </ion-item>
+  </div>
 
-  <h3>Drugs</h3>
+  <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-list no-lines>
+
+    <ion-item-sliding *ngFor="let drug of vwdrugs" [hidden]="drug.hide">
+
+      <ion-item (click)="gotoNextPage()">
+              <ion-avatar item-left>
+                <img src= "img/{{drug.drugtype}}.png" />
+              </ion-avatar>
+              <h2><strong> {{drug.drugname}}</strong></h2>
+              <h4>Drug Type:<strong>{{drug.drugtype}}</strong></h4>
+              <p>{{drug.drugid}}</p>
+      </ion-item>
+
+
+      <ion-item-options>
+        <button favorite (click)="addFavorite(slidingItem, drug)">
+            Favorite
+          </button>
+        <button danger (click)="removeFavorite(slidingItem, drug, 'Remove Favorite')" *ngIf="segment === 'favorites'">
+            Remove
+          </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
 
 </ion-content>

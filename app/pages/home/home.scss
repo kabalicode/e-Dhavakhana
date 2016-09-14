@@ -9,18 +9,18 @@
 .sidemenu-header{
     height:155px;max-height:155px
 }
-.item{
+.menuitem{
     //background-color: #CDE0AF;
     background-color: darkslategray;
     font-size: 1.4rem;
     margin: auto;
 }
 
-.item:hover{
+.menuitem:hover{
         background-color: lightseagreen;
 }
 
-ion-list .item .item-inner {
+ion-list .menuitem .item-inner {
     border-bottom: 0px solid #dedede; 
 }
 
