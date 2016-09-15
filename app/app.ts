@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
-import {ionicBootstrap, Platform, MenuController, Nav} from 'ionic-angular';
-import {StatusBar} from 'ionic-native';
+import {ionicBootstrap, Platform, MenuController, Nav, AlertController} from 'ionic-angular';
+import {StatusBar, SQLite} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 import {DrugsPage} from './pages/drugs/drugs';
 
@@ -17,6 +17,7 @@ class MyApp {
 
   constructor(
     public platform: Platform,
+    public alertCtrl: AlertController,
     public menu: MenuController
   ) {
     this.initializeApp();
@@ -46,6 +47,24 @@ class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
+
+
+      let db = new SQLite();
+      db.openDatabase({
+          name: "data.db",
+          location: "default"
+      }).then(() => {
+          db.executeSql("CREATE TABLE IF NOT EXISTS DRUG_FAVORITES (id INTEGER, name TEXT, type TEXT )", {}).then((data) => {
+              console.log("Table Created");
+              //this.alertCtrl.create( {title: "TABLE CREATED:", message:data}).present();
+          }, (error) => {
+              console.log("Error occurred during table creation:" + error);
+              //this.alertCtrl.create( {title: "Unable to execute sql", message:error}).present();
+          })
+      }, (error) => {
+          console.error("Unable to open database", error);
+      });
+
     });
   }
 

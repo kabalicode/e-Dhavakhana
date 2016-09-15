@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-angular';
 import { UserData } from '../../providers/data/user-data';
 import {DrugsService} from '../../providers/data/drugs/drugsservice';
+import {SQLite, Toast} from "ionic-native";
 
 @Component({
   templateUrl: 'build/pages/drugs/drugs.html',
@@ -16,6 +17,8 @@ export class DrugsPage {
     queryText = '';
     searching: any = false;
     segment:any;
+    public database: SQLite;
+    public favlist: Array<Object>;
  
     constructor(private nav: NavController, 
                 private modalCtrl: ModalController,
@@ -24,45 +27,58 @@ export class DrugsPage {
                 public alertCtrl: AlertController) {
               //set the default to Drugs Inventory tab segment
               this.segment = "invt";
+
+              this.database = new SQLite();
+              this.database.openDatabase({name: "data.db", location: "default"}).then(() => {
+                  this.refresh();
+              }, (error) => {
+                  console.log("ERROR opening database while retrieving drugs fav list : ", error);
+              });
     }
  
+    showToast(message, position) {
+        Toast.show(message, "short", position).subscribe(
+            toast => {
+                console.log(toast);
+            }
+        );
+    }
+
+    public addFavorite(item) {
+      if(this.favlist){
+            var found = JSON.stringify(this.favlist).indexOf(item.drugid);
+            if(found>-1){
+                //this.alertCtrl.create( {title: "Error", message:"Drug already added to Favourites",buttons:[{text:'OK'}]}).present();
+                this.showToast("Error: Drug already added to Favourites","bottom");
+                return;
+            }
+        }
+        this.database.executeSql("INSERT INTO DRUG_FAVORITES (id, name, type) VALUES (?,?,?)", [item.drugid, item.drugname, item.drugtype]).then((data) => {
+            console.log("INSERTED fav drug into fav table: " + JSON.stringify(data));
+            this.showToast("Favorite added successfully","bottom");
+        }, (error) => {
+            console.log("ERROR: during inserting drug into fav table" + JSON.stringify(error.err));
+        });
+        this.refresh();
+    }
+ 
+    public refresh() {
+        this.database.executeSql("SELECT * FROM DRUG_FAVORITES", []).then((data) => {
+            this.favlist = [];
+            if(data.rows.length > 0) {
+                for(var i = 0; i < data.rows.length; i++) {
+                    this.favlist.push({id: data.rows.item(i).id, name: data.rows.item(i).name,type: data.rows.item(i).type });
+                }
+            }
+        }, (error) => {
+            console.log("ERROR: during retrieving favorites from local table " + JSON.stringify(error));
+        });
+    }
+
     ionViewLoaded(){
  
     }
  
-    adddrugimages(){
-        if (typeof this.modeldrugs !== 'undefined' && this.modeldrugs !== null)
-            {    
-                this.modeldrugs.forEach(function(adg) 
-                {
-                    //console.log('inside for loop');
-                    
-                    
-                    var strdrugtype = adg.drugtype;
-                    strdrugtype = strdrugtype.toUpperCase();
-                    
-                    switch (strdrugtype) {
-                        case "TABLET":
-                            adg.drugimage = "img/tablet.png";
-                            break;
-                        case "CREAM":
-                            adg.drugimage = "img/ointment.png";
-                            break;
-                        case "SYRUP":
-                            adg.drugimage = "img/syrup.png";
-                            break;
-                        case "DROPS":
-                            adg.drugimage = "img/drops.png";
-                            break;
-                        case "SUSPENSION":
-                            adg.drugimage = "img/suspension.png";
-                            break;
-                    }
-
-                });                             
-            }
-        } 
-
     updatedrugsearch(){
         this.vwdrugs = null;
         var filtervalue = [];
@@ -116,57 +132,39 @@ export class DrugsPage {
         }
   
 
-    addFavorite(slidingItem: ItemSliding, drugdata) {
-        console.log(drugdata.drugname);
-
-    if (this.user.hasFavorite(drugdata.drugid)) {
-      // woops, they already favorited it! What shall we do!?
-      // prompt them to remove it
-      this.removeFavorite(slidingItem, drugdata, 'Favorite already added');
-    } else {
-      // remember this session as a user favorite
-      this.user.addFavorite(drugdata.drugid);
-    console.log("ok")
-      // create an alert instance
-      let alert = this.alertCtrl.create({
-        title: 'Favorite Drug Added',
-        buttons: [{
-          text: 'OK',
-          handler: () => {
-            // close the sliding item
-            console.log("close");
-           // slidingItem.close()
-          }
-        }]
-      });
-      // now present the alert on top of all other content
-      alert.present();
-    }
-
-  }
-
-   removeFavorite(slidingItem: ItemSliding, sessionData, title) {
+   removeFavorite(slidingItem: ItemSliding, item) {
     let alert = this.alertCtrl.create({
-      title: title,
-      message: 'Would you like to remove this session from your favorites?',
+      title: 'Warning',
+      message: 'Would you like to remove this drug from your favorites?',
       buttons: [
         {
           text: 'Cancel',
-          handler: () => {
-            // they clicked the cancel button, do not remove the session
-            // close the sliding item and hide the option buttons
-            slidingItem.close();
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
           }
         },
         {
           text: 'Remove',
           handler: () => {
-            // they want to remove this session from their favorites
-            this.user.removeFavorite(sessionData.name);
-           
-
+            let navTransition = alert.dismiss();  
+            // they want to remove this drug from their favorites
+            this.database.executeSql("DELETE FROM DRUG_FAVORITES WHERE ID = ?", [item.id]).then((data) => {
+                console.log("Deleted fav drug from fav table: " + JSON.stringify(data));
+                this.showToast("Favorite removed!!!","bottom");
+                navTransition.then(() => {
+                   this.nav.pop();
+                 });
+            }, (error) => {
+                console.log("ERROR: during deleting drug from fav table" + JSON.stringify(error.err));
+                navTransition.then(() => {
+                   this.nav.pop();
+                 });
+            });
+            this.refresh();
             // close the sliding item and hide the option buttons
             slidingItem.close();
+            return false;
           }
         }
       ]

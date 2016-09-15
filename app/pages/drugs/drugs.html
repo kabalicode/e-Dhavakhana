@@ -31,6 +31,7 @@
 </ion-header>
 
 <ion-content class="drugshome">
+  <div *ngIf="segment=='invt'">
 
   <div *ngIf="drugsearchcount == 0">
     <ion-item>
@@ -58,10 +59,39 @@
 
 
       <ion-item-options>
-        <button favorite (click)="addFavorite(slidingItem, drug)">
+        <button favorite (click)="addFavorite(drug)">
             Favorite
           </button>
-        <button danger (click)="removeFavorite(slidingItem, drug, 'Remove Favorite')" *ngIf="segment === 'favorites'">
+       </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+  </div>
+
+  <div *ngIf="segment == 'favorites'">
+
+    <div *ngIf="!favlist || favlist.length == 0">
+      <ion-item>
+        No Favorites found
+      </ion-item>
+    </div>
+
+  <ion-list *ngIf="favlist" no-lines>
+
+    <ion-item-sliding *ngFor="let fav of favlist">
+
+      <ion-item (click)="gotoNextPage()">
+              <ion-avatar item-left>
+                <img src= "img/{{fav.type}}.png" />
+              </ion-avatar>
+              <h2><strong> {{fav.name}}</strong></h2>
+              <h4>Drug Type:<strong>{{fav.type}}</strong></h4>
+              <p>{{fav.id}}</p>
+      </ion-item>
+
+
+      <ion-item-options>
+        <button danger (click)="removeFavorite(slidingItem, fav)">
             Remove
           </button>
       </ion-item-options>
@@ -69,4 +99,5 @@
 
   </ion-list>
 
+  </div>
 </ion-content>
