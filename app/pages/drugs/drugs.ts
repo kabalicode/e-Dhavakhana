@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-angular';
 import { UserData } from '../../providers/data/user-data';
 import {DrugsService} from '../../providers/data/drugs/drugsservice';
+import { DrugdetailsPage } from '../drugdetails/drugdetails';
 import {Toast} from "ionic-native";
 
 @Component({
@@ -171,5 +172,13 @@ export class DrugsPage {
     // now present the alert on top of all other content
     alert.present();
   }
+
+  gotoDrugDetails(drugid)
+    {
+        // go to the drug details page
+        // and pass in the drug data
+        this.nav.push(DrugdetailsPage, drugid);
+        
+    } 
  
 }

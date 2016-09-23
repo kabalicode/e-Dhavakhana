@@ -48,7 +48,7 @@
 
     <ion-item-sliding *ngFor="let drug of vwdrugs" [hidden]="drug.hide">
 
-      <ion-item (click)="gotoNextPage()">
+      <ion-item (click)="gotoDrugDetails(drug.drugid)">
               <ion-avatar item-left>
                 <img src= "img/{{drug.drugtype}}.png" />
               </ion-avatar>
@@ -80,7 +80,7 @@
 
     <ion-item-sliding *ngFor="let fav of favlist">
 
-      <ion-item (click)="gotoNextPage()">
+      <ion-item (click)="gotoDrugDetails(fav.id)">
               <ion-avatar item-left>
                 <img src= "img/{{fav.type}}.png" />
               </ion-avatar>
