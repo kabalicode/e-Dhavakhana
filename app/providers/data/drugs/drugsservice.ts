@@ -1,16 +1,46 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
+import {Storage, SqlStorage} from 'ionic-angular';
 import 'rxjs/add/operator/map';
  
 @Injectable()
 export class DrugsService {
  
   data: any;
+  storage: Storage;
+  favlist: any;
  
   constructor(private http: Http) {
     this.data = null;
+    this.favlist = [];
+    this.storage = new Storage(SqlStorage);
+    this.storage.query("CREATE TABLE IF NOT EXISTS DRUG_FAVORITES (id INTEGER, name TEXT, type TEXT )");
+    console.log("Table DRUG_FAVORITES Created");
   }
- 
+
+  getFavDrugs(){
+        return this.storage.query("SELECT * FROM DRUG_FAVORITES");
+  }
+
+  addFavDrug(item:any){
+        this.storage.query("INSERT INTO DRUG_FAVORITES (id, name, type) VALUES (?,?,?)", [item.drugid, item.drugname, item.drugtype]).then((data) => {
+            console.log("INSERTED fav drug into fav table: " + JSON.stringify(data));
+        }, (error) => {
+            console.log("ERROR: during inserting drug into fav table" + JSON.stringify(error.err));
+        });
+        return 1;
+  }
+
+  removeFavDrug(item:any){
+    this.storage.query("DELETE FROM DRUG_FAVORITES WHERE ID = ?", [item.id]).then((data) => {
+          console.log("Deleted fav drug from fav table: " + JSON.stringify(data));
+      }, (error) => {
+          console.log("ERROR: during deleting drug from fav table" + JSON.stringify(error.err));
+          return -1;
+      });
+      return 1;
+  }
+
   getDrugs(searchParam: string){
 // console.log("Drugs here..")
     if (this.data) {

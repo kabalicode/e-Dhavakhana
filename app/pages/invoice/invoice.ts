@@ -1,19 +1,19 @@
 import {Component} from "@angular/core";
-import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-angular';
+import {NavController, AlertController,ModalController,ItemSliding,LoadingController} from 'ionic-angular';
 import { UserData } from '../../providers/data/user-data';
-import {DrugsService} from '../../providers/data/drugs/drugsservice';
-import {Toast} from "ionic-native";
+import {InvoiceService} from '../../providers/data/invoice/invoiceservice';
+import {SQLite, Toast} from "ionic-native";
 
 @Component({
-  templateUrl: 'build/pages/drugs/drugs.html',
-  providers: [UserData, DrugsService]
+  templateUrl: 'build/pages/invoice/invoice.html',
+  providers: [UserData, InvoiceService]
 })
-export class DrugsPage {
+export class InvoicePage {
  
-    vwdrugs: any;
-    modeldrugs:any;
-    bdrugapiinvoked= false;
-    drugsearchcount = -1;
+    vwsuppliers: any;
+    modelsupplier:any;
+    binvoiceapiinvoked= false;
+    suppliersearchcount = -1;
     queryText = '';
     searching: any = false;
     segment:any;
@@ -21,19 +21,19 @@ export class DrugsPage {
  
     constructor(private nav: NavController, 
                 private modalCtrl: ModalController,
-                private drugsService:DrugsService,
+                private invoiceService:InvoiceService,
                 private user: UserData,
-                public alertCtrl: AlertController) {
+                public alertCtrl: AlertController, public loadingCtrl:LoadingController) {
               //set the default to Drugs Inventory tab segment
               this.segment = "invt";
 
               //retrieve the drug favorites if any
-              this.drugsService.getFavDrugs().then((data) => {
+              this.invoiceService.getFavSuppliers().then((data) => {
                     this.favlist = [];
                     console.log("number of fav:" + data.res.rows.length);
                     if(data.res.rows.length > 0) {
                         for(var i = 0; i < data.res.rows.length; i++) {
-                            this.favlist.push({id: data.res.rows.item(i).id, name: data.res.rows.item(i).name,type: data.res.rows.item(i).type });
+                            this.favlist.push({id: data.res.rows.item(i).id, name: data.res.rows.item(i).name,streetname: data.res.rows.item(i).streetname, city: data.res.rows.item(i).city });
                         }
                     }
               });
@@ -48,16 +48,15 @@ export class DrugsPage {
     }
 
     public addFavorite(item) {
-
       if(this.favlist){
-            var found = JSON.stringify(this.favlist).indexOf(item.drugid);
+            var found = JSON.stringify(this.favlist).indexOf(item.supplierid);
             if(found>-1){
-                this.showToast("Error: Drug already added to Favourites","bottom"); 
+                this.showToast("Error: Supplier already added to Favourites","bottom"); 
                 return;
             }
         }
 
-      let result = this.drugsService.addFavDrug(item);
+      let result = this.invoiceService.addFavSupplier(item);
       this.refresh();
       if( result == 1){
         this.showToast("Favorite added successfully","bottom");
@@ -65,12 +64,12 @@ export class DrugsPage {
     }
  
     public refresh() {
-        this.drugsService.getFavDrugs().then((data) => {
+        this.invoiceService.getFavSuppliers().then((data) => {
             this.favlist = [];
                     console.log("number of fav:" + data.res.rows.length);
                     if(data.res.rows.length > 0) {
                         for(var i = 0; i < data.res.rows.length; i++) {
-                            this.favlist.push({id: data.res.rows.item(i).id, name: data.res.rows.item(i).name,type: data.res.rows.item(i).type });
+                            this.favlist.push({id: data.res.rows.item(i).id, name: data.res.rows.item(i).name,streetname: data.res.rows.item(i).streetname, city: data.res.rows.item(i).city });
                         }
             }
         });
@@ -80,40 +79,52 @@ export class DrugsPage {
  
     }
  
-    updatedrugsearch(){
-        this.vwdrugs = null;
+    updatesuppliersearch(){
+        this.vwsuppliers = null;
         var filtervalue = [];
 		
         
         var fltvar = this.queryText;
         fltvar = fltvar.toUpperCase();
  
-
+        console.log("query text:" + this.queryText);
         // We will only perform the search if we have 3 or more characters
-        if ((fltvar.trim().length == 3) || (fltvar.trim().length >3 && this.bdrugapiinvoked==false)) {
+        if ((fltvar.trim().length == 3) || (fltvar.trim().length >3 && this.binvoiceapiinvoked==false)) {
+                
+                let loading = this.loadingCtrl.create({
+                spinner: 'hide',
+                content: 'Loading Please Wait...'
+                });
+
+                loading.present();
+                
                 this.searching=true;
-                this.drugsService.getDrugs(fltvar).then((data) => {
+                this.invoiceService.getSuppliers(fltvar).then((data) => {
                 //console.log(data);
                 //this.vwdrugs = data;
-                this.modeldrugs = data;
+                this.modelsupplier = data;
                 //this.adddrugimages();
-                this.vwdrugs = this.modeldrugs;
-                this.bdrugapiinvoked = true;
-                this.drugsService.data=null;
-                this.drugsearchcount = this.vwdrugs.length;
+                this.vwsuppliers = this.modelsupplier;
+                console.log("suppliers result:" + JSON.stringify(this.vwsuppliers));
+                this.binvoiceapiinvoked = true;
+                this.invoiceService.data=null;
+                console.log("suppliers result length:" + this.vwsuppliers.length);
+                this.suppliersearchcount = this.vwsuppliers.length;
                 this.searching=false;
+
+                loading.dismiss();
                 //console.log("drugcount inside if:" + this.drugsearchcount);
             });
 
         }else if (fltvar.trim().length == 0){
-                this.bdrugapiinvoked = false;
-                this.drugsearchcount = -1;
-                this.drugsService.data=null;
-                this.vwdrugs = null;
-                this.modeldrugs = null;
+                this.binvoiceapiinvoked = false;
+                this.suppliersearchcount = -1;
+                this.invoiceService.data=null;
+                this.vwsuppliers = null;
+                this.modelsupplier = null;
                 this.searching=false;
         }else {
-            var serachData=this.modeldrugs;
+            var serachData=this.modelsupplier;
             this.searching=false;
             if (typeof serachData !== 'undefined' && serachData !== null)
               {
@@ -125,8 +136,8 @@ export class DrugsPage {
                         filtervalue.push(serachData[i]);
                     
                 }
-                this.vwdrugs = filtervalue;
-                this.drugsearchcount = filtervalue.length;
+                this.vwsuppliers = filtervalue;
+                this.suppliersearchcount = filtervalue.length;
               }
 
           }        
@@ -136,7 +147,7 @@ export class DrugsPage {
    removeFavorite(slidingItem: ItemSliding, item) {
     let alert = this.alertCtrl.create({
       title: 'Warning',
-      message: 'Would you like to remove this drug from your favorites?',
+      message: 'Would you like to remove this supplier from your favorites?',
       buttons: [
         {
           text: 'Cancel',
@@ -150,7 +161,7 @@ export class DrugsPage {
           handler: () => {
             let navTransition = alert.dismiss();  
 
-            let result = this.drugsService.removeFavDrug(item);
+            let result = this.invoiceService.removeFavSupplier(item);
             this.refresh();
 
             if(result == 1){
@@ -170,6 +181,6 @@ export class DrugsPage {
     });
     // now present the alert on top of all other content
     alert.present();
-  }
+   }
  
 }
