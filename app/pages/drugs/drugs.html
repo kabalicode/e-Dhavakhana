@@ -48,14 +48,14 @@
 
     <ion-item-sliding *ngFor="let drug of vwdrugs" [hidden]="drug.hide">
 
-      <ion-item (click)="gotoDrugDetails(drug.drugid)">
+      <button ion-item (click)="gotoDrugDetails(drug.drugid)">
               <ion-avatar item-left>
                 <img src= "img/{{drug.drugtype}}.png" />
               </ion-avatar>
               <h2><strong> {{drug.drugname}}</strong></h2>
               <h4>Drug Type:<strong>{{drug.drugtype}}</strong></h4>
               <p>{{drug.drugid}}</p>
-      </ion-item>
+      </button>
 
 
       <ion-item-options>
