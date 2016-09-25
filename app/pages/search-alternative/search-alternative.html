@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>Search Alternative Drug</ion-title>
+  
+    </ion-navbar>
+    <ion-toolbar dark>
+
+      <ion-segment>
+    
+      <ion-segment-button value="invt">
+        Market Scan
+      </ion-segment-button>
+    </ion-segment>
+
+      <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="updatedrugsearch()" placeholder="Please enter the drug name for which you would like to find an alternative drug option(s).">
+      </ion-searchbar>
+    
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="drugshome">
+
+
+  <div *ngIf="searchcount == 0">
+    <ion-item>
+      No drug(s) found in the store inventory with a drug name : <strong> {{queryText}} </strong> . Please check your search
+      criteria and try with a different drug name.
+    </ion-item>
+  </div>
+
+  <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-list no-lines>
+
+    <ion-item-sliding *ngFor="let drug of vwsearchresults" [hidden]="drug.hide">
+
+      <button ion-item (click)="gotoDrugDetails(drug.drugid)">
+              <h2><strong> {{drug.DrugName}}</strong></h2>
+      </button>
+
+    </ion-item-sliding>
+
+  </ion-list>
+
+
+
+</ion-content>

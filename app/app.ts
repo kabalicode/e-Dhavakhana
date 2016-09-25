@@ -4,6 +4,7 @@ import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 import {DrugsPage} from './pages/drugs/drugs';
 import {InvoicePage} from './pages/invoice/invoice';
+import {SearchAlternativePage} from './pages/search-alternative/search-alternative';
 
 @Component({
   templateUrl: 'build/app.html'
@@ -37,7 +38,9 @@ class MyApp {
       { title: 'Master Data', icon:'build', component: DrugsPage, showchild:false , child: null  },
       { title: 'Analytics', icon:'stats', component: DrugsPage, showchild:false , child: null },
       { title: 'Notifications', icon:'chatboxes', component: DrugsPage, showchild:false , child: null },
-      { title: 'Tools', icon:'hammer', component: DrugsPage, showchild:false , child: null  },
+      { title: 'Tools', icon:'hammer', showchild:false , component: HomePage,
+        child:[
+          { title: 'Alternative Drug', icon:'search', component: SearchAlternativePage}]},
       { title: 'Book of business', icon:'logo-usd', component: DrugsPage, showchild:false , child: null  },
       { title: 'MyAccount', icon:'person', component: DrugsPage, showchild:false , child: null },
     ];
