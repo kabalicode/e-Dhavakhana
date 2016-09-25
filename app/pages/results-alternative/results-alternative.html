@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title center>Alternative Drug Options for : {{drugname}}</ion-title>
+  
+    </ion-navbar>
+    <ion-toolbar dark>
+
+      <ion-segment>
+    
+      <ion-segment-button value="invt">
+       *** RESULTS BELOW ARE PURELY BASED ON INTERNET DATA, RETAILER ARE ADVISED TO CHECK BEFRORE PRESCRIBING TO CUSTOMERS ***
+      </ion-segment-button>
+    </ion-segment>
+    
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="drugshome">
+
+
+  <div *ngIf="lresultcount == 0">
+    <ion-item>
+      No alternative drug(s) found in internet for the drug name : <strong> {{drugname}} </strong> . Please do you own research to find alternatives.
+    </ion-item>
+  </div>
+
+  <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-list no-lines>
+
+    <ion-item-sliding *ngFor="let drug of vwalternativedrugdetails" [hidden]="drug.hide">
+
+      <button ion-item>
+              <ion-avatar item-left>
+                <img src= "img/{{drug.DrugType}}.png" />
+              </ion-avatar>
+              <h2><strong> {{drug.DrugName}}</strong></h2>
+              <p>{{drug.MFGName}}</p>
+      </button>
+
+    </ion-item-sliding>
+
+  </ion-list>
+
+
+
+</ion-content>

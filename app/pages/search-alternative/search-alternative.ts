@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController,AlertController,ModalController,ItemSliding } from 'ionic-angular';
 import {UtilitiesService} from '../../providers/data/utilities/utilitiesservice';
+import { ResultsAlternativePage } from '../results-alternative/results-alternative';
 
 /*
   Generated class for the SearchAlternativePage page.
@@ -82,7 +83,14 @@ updatedrugsearch(){
               }
 
           }        
-        }
+      }
 
+  gotoAlternativeDrugDetails(drugname)
+    {
+        // go to the drug details page
+        // and pass in the drug data
+        this.navCtrl.push(ResultsAlternativePage, drugname);
+        
+    } 
 
 }
