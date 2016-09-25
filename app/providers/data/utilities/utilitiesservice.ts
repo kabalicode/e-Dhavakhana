@@ -28,8 +28,8 @@ export class UtilitiesService {
 
     // Stub data during unit testing
     console.log("utilities service here")
-  /*
-   this.data = [
+
+  this.data = [
   {
     "DrugName": "Broncorex (100 ml)" 
   },
@@ -56,14 +56,14 @@ export class UtilitiesService {
   }
 ];
     return Promise.resolve(this.data); 
-*/
+
 
      
  // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
 
 
-
+/*
  return new Promise(resolve => {
     var url = "";
     //url = `https://63hc0yw0n6.execute-api.us-west-2.amazonaws.com/Inventory/drugs?drugname=${searchParam}`;
@@ -82,6 +82,8 @@ export class UtilitiesService {
           resolve(this.data);
         });
     });    //  API CALL END 
+*/
+
 }
 
 getAlternativeDrugs(searchParam: string){
@@ -93,7 +95,7 @@ getAlternativeDrugs(searchParam: string){
 
     // Stub data during unit testing
     console.log("utilities service here")
-/*
+
    this.data = [
   {
     "DrugName": "Terkof B (100 ml)",
@@ -197,13 +199,12 @@ getAlternativeDrugs(searchParam: string){
   }
 ];
     return Promise.resolve(this.data); 
-*/
      
  // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
 
 
-
+/*
  return new Promise(resolve => {
     var url = "";
   
@@ -224,7 +225,7 @@ getAlternativeDrugs(searchParam: string){
     });    //  API CALL END 
   
   }
-
+*/
 
 }
 
