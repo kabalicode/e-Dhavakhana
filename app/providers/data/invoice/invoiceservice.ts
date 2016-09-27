@@ -63,7 +63,7 @@ export class InvoiceService {
   getSupplierInvoices(supplierId: string) {
 
 
-    var invoicedata = [{"supplierid":"SUP1467344348974","invoiceno":1466533427424,"suppliername":"BHAVANI MEDICALS","invoicedate":"22/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1466533315601,"suppliername":"BHAVANI MEDICALS","invoicedate":"21/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467521532053,"suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467520691012,"suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"}];
+    var invoicedata = [{"supplierid":"SUP1467344348974","invoiceno":1466533427424, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"22/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1466533315601, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"21/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467521532053, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467520691012, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"}];
   
     return Promise.resolve(invoicedata); 
 
