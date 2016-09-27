@@ -17,12 +17,12 @@
       <ion-icon class="micon-right" *ngIf="p.child && p.showchild" name="ios-arrow-dropup-outline" (click)="toggleMenuItem(p)"></ion-icon>
           <div *ngIf="p.child && p.showchild">
             <p></p>
-            <ion-item class="menuitem" *ngFor="let childpage of p.child" (click)="openPage(childpage)">
+            <button ion-item class="menuitem" *ngFor="let childpage of p.child" (click)="openPage(childpage)">
             <a class="menutitle" ion-button icon-left (click)="openPage(childpage)">
                <ion-icon name="{{childpage.icon}}"></ion-icon>
               <span class="menutext"> &nbsp;&nbsp;{{childpage.title}} </span>
             </a>
-            </ion-item>
+            </button>
           </div> 
       </ion-item>
     </ion-list>

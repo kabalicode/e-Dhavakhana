@@ -29,7 +29,7 @@ class MyApp {
       { title: 'Dashboard', icon:'add', component: HomePage , showchild:false ,child: null},
       { title: 'Sales', icon:'pricetags', component: DrugsPage, showchild:false , child: null  },
       { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child: null },
-      { title: 'Drug Inventory', icon:'home', showchild:false , component: DrugsPage,
+      { title: 'Inventory', icon:'home', showchild:false , component: DrugsPage,
         child:[
           { title: 'Add New Drug', icon:'add', component: DrugsPage},
           { title: 'Edit Drug', icon: 'create', component: DrugsPage},
@@ -40,8 +40,8 @@ class MyApp {
       { title: 'Notifications', icon:'chatboxes', component: DrugsPage, showchild:false , child: null },
       { title: 'Tools', icon:'hammer', showchild:false , component: HomePage,
         child:[
-          { title: 'Alternative Drug', icon:'search', component: SearchAlternativePage}]},
-      { title: 'Book of business', icon:'logo-usd', component: DrugsPage, showchild:false , child: null  },
+          { title: 'Substitutes', icon:'search', component: SearchAlternativePage}]},
+      { title: 'Books', icon:'logo-usd', component: DrugsPage, showchild:false , child: null  },
       { title: 'MyAccount', icon:'person', component: DrugsPage, showchild:false , child: null },
     ];
   }
