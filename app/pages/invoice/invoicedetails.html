@@ -9,7 +9,7 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title center>Invoice Details for {{vwsuppliername}} </ion-title>
+    <ion-title center>Search Invoice</ion-title>
 
     <ion-buttons end>
       <button (click)="togglefilter()">  
@@ -18,6 +18,17 @@
     </ion-buttons>
 
   </ion-navbar>
+    
+    <ion-toolbar dark>
+
+      <ion-segment>
+    
+      <ion-segment-button>
+        {{vwsuppliername}} INVOICES
+      </ion-segment-button>
+    </ion-segment>
+    
+    </ion-toolbar>
 
 
 </ion-header>
@@ -60,7 +71,7 @@
 
   <ion-card *ngFor="let invoice of invoicedata">
 
-    <ion-item (click)="openInvoiceDetailsModal(invoice.invoiceno)">
+    <button ion-item (click)="openInvoiceDetailsModal(invoice.invoiceno)">
       <!--<ion-avatar item-left>
                 <img src= "img/{{drug.drugtype}}.png" />
               </ion-avatar>-->
@@ -71,7 +82,7 @@
         <ion-icon ios="ios-pricetags" md="md-pricetags"></ion-icon>Total Value:
         <strong> {{invoice.total_invoice_value}} INR</strong>
       </p>
-    </ion-item>
+    </button>
 
   </ion-card>
 
