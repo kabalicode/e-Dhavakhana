@@ -24,14 +24,17 @@
       </button>
     </ion-buttons>
 
-      <ion-searchbar primary [(ngModel)]="queryText" [debounce]="500" (ionInput)="updatesuppliersearch()" placeholder="Search Supplier">
-      </ion-searchbar>
     
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="invoicehome">
+
+
   <div *ngIf="segment=='invt'">
+
+  <ion-searchbar primary [(ngModel)]="queryText" [debounce]="500" (ionInput)="updatesuppliersearch()" placeholder="Search Supplier">
+  </ion-searchbar>
 
   <div *ngIf="suppliersearchcount == 0">
     <ion-item>
@@ -44,11 +47,11 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <ion-list no-lines>
+  <ion-card *ngFor="let supplier of vwsuppliers">
 
-    <ion-item-sliding *ngFor="let supplier of vwsuppliers" [hidden]="supplier.hide">
+    <ion-item-sliding>
 
-      <ion-item (click)="gotoNextPage()">
+      <ion-item (click)="getSupplierInvoices(supplier.supplierid, supplier.suppliername)">
               <!--<ion-avatar item-left>
                 <img src= "img/{{drug.drugtype}}.png" />
               </ion-avatar>-->
@@ -64,7 +67,8 @@
        </ion-item-options>
     </ion-item-sliding>
 
-  </ion-list>
+  </ion-card>
+
   </div>
 
   <div *ngIf="segment == 'favorites'">
@@ -75,11 +79,13 @@
       </ion-item>
     </div>
 
-  <ion-list *ngIf="favlist" no-lines>
+  <div *ngIf="favlist">
 
-    <ion-item-sliding *ngFor="let fav of favlist">
+  <ion-card *ngFor="let fav of favlist">  
 
-      <ion-item (click)="gotoNextPage()">
+    <ion-item-sliding>
+
+      <ion-item (click)="getSupplierInvoices(fav.id, fav.name)">
               <!--<ion-avatar item-left>
                 <img src= "img/{{fav.type}}.png" />
               </ion-avatar>-->
@@ -95,7 +101,8 @@
       </ion-item-options>
     </ion-item-sliding>
 
-  </ion-list>
+  </ion-card>
+  </div>
 
   </div>
 </ion-content>

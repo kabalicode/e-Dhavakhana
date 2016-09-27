@@ -16,22 +16,10 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title center>Drug Details </ion-title>
+    <ion-title center>Current  Inventory Levels of  :  {{vwdrug.drugname}} </ion-title>
   
     </ion-navbar>
-    <ion-toolbar dark>
-        <ion-segment>
-        
-          <ion-segment-button value="inventory">
-            Current  Inventory Levels of  :  {{vwdrug.drugname}}
-          </ion-segment-button>
-        </ion-segment>
-    
-    </ion-toolbar>
 </ion-header>
-
-
-
 
 <ion-content padding>
 
@@ -110,71 +98,4 @@
 
   </ion-card-content>
  </ion-card>
-<!---
- <ion-card>
-<ion-card-header class="bar">
-   <strong>Sample Test</strong>
-  </ion-card-header>
-
-  <ion-card-content>
-     <ion-list >
-        <ion-item-sliding *ngFor="let batch of vwdrug.batches" [hidden]="batch.hide">
-           <ion-item>
-             <ion-row>
-                <div class="row">
-                    <ion-col width-20><div class="col"><strong>Batch# : &nbsp; {{batch.batchno}}</strong></div></ion-col>
-                    <ion-col width-20><div class="col"><p><i>Expiry Date : &nbsp;{{batch.expirydate}}</i></p></div></ion-col>
-                    <ion-col width-20><div class="col"><p><i>Supplier Name: &nbsp; {{batch.suppliername}}</i></p></div></ion-col>
-                    <ion-col width-20><div class="col"><p><i>MRP: &nbsp;{{batch.mrp}}</i></p></div></ion-col>
-                    <ion-col width-20><div class="col"><p><i>Invoiceno: &nbsp;{{batch.invoiceno}}</i></p></div></ion-col>
-                </div>
-             </ion-row>  
-          </ion-item>
-        </ion-item-sliding>
-     </ion-list>
-  </ion-card-content>
- </ion-card>
---->
-<!--
-
- <p><i>Expiry Date : &nbsp;<strong>{{batch.expirydate}}</i></p><br>
-                <p><i>Supplier Name: &nbsp; {{batch.suppliername}}</i></p><br>
-                <p><i>Available Qty: &nbsp;{{batch.availablebatchqty}}</i></p><br>
-                <p><i>MRP: &nbsp;{{batch.mrp}}</i></p><br>
-                <p><i>Invoiceno: &nbsp;{{batch.invoiceno}}</i></p>
-
-
- <ion-item-sliding *ngFor="let batch of vwdrug.batches" [hidden]="batch.hide">
-
-      <ion-item>
-            <ion-avatar item-left>
-                <img src= "img/{{batch.drugtype}}.png" />
-              </ion-avatar>
-              <h2><strong> {{batch.drugname}}</strong></h2>
-              <h4>Drug Type:<strong>{{batch.drugtype}}</strong></h4>
-              <p>{{batch.batchno}}</p>
-      </ion-item>
-
-  </ion-item-sliding>
----->
-
-
-
-<!--
-<ion-card>
-<ion-card-header class="bar">
-   <strong> Stock Position</strong>
-  </ion-card-header>
-
-
-  <ion-card-content>
-    <ion-item-group *ngFor="let group of groupedContacts">
- 
-      <ion-item-divider light>{{group.letter}}</ion-item-divider>
-      <ion-item *ngFor="let contact of group.contacts">{{contact}}</ion-item>
- 
-    </ion-item-group>
-  </ion-card-content>
- </ion-card>
---->
 </ion-content>

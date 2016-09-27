@@ -1,0 +1,66 @@
+<ion-header>
+  <!--
+  <ion-navbar>
+    <ion-title>Drug Details</ion-title>
+  </ion-navbar> --->
+
+  <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>Invoice Details for {{vwsuppliername}} </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="invoicedetailshome">
+  <ion-list>
+    <ion-list-header>
+      <ion-icon ios="ios-calendar" md="md-calendar" item-left></ion-icon>
+      Invoice Period (Months)
+      <ion-badge item-right danger>{{period}}</ion-badge>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-range min="0" max="36" [(ngModel)]="period">
+        <ion-label range-left>0</ion-label>
+        <ion-label range-right>36</ion-label>
+      </ion-range>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-list-header>
+        Select Invoice Period
+      </ion-list-header>
+      <ion-icon ios="ios-calendar" md="md-calendar" item-left></ion-icon>
+      <ion-label>From Date</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="fromDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="ios-calendar" md="md-calendar" item-left></ion-icon>
+      <ion-label>To Date</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="toDate"></ion-datetime>
+    </ion-item>
+  </ion-list>
+
+  <ion-card *ngFor="let invoice of invoicedata">
+
+    <ion-item (click)="openInvoiceDetailsModal(invoice.invoiceno)">
+      <!--<ion-avatar item-left>
+                <img src= "img/{{drug.drugtype}}.png" />
+              </ion-avatar>-->
+      <h2><strong> Invoice # {{invoice.invoiceno}}</strong></h2>
+      <p>
+        <ion-icon ios="ios-calendar" md="md-calendar"></ion-icon>
+        Invoice Date:<strong>{{invoice.invoicedate}}</strong>,
+        <ion-icon ios="ios-pricetags" md="md-pricetags"></ion-icon>Total Value:
+        <strong> {{invoice.total_invoice_value}} INR</strong>
+      </p>
+    </ion-item>
+
+  </ion-card>
+
+</ion-content>

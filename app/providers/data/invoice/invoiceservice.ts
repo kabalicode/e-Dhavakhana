@@ -42,6 +42,51 @@ export class InvoiceService {
       return 1;
   }
 
+  getInvoiceDetails(invoiceId: string){
+    var invoicedata = {
+      "invoiceno":1466533427424,
+      "suppliername":"BHAVANI MEDICALS",
+      "invoicedate":"22/06/2016",
+      "total_invoice_value":2775,
+      "supplierid":"SUP1467344348974",
+      "taxinvoiceno":"T123-98",
+      "transaction_type":"CASH",
+      "invoiceitems":
+          [
+            {"expirydate":"2019-05-28T01:59:24.678Z","total_price":1500,"mrp":10,"invoiceno":1466533427424,"discount":0,"vat":0,"drugname":"CROCIN(100MG)","drugtype":"TABLET","purchase_qty":908,"batchno":"BATCHF_JUNE212016","unitprice":5,"mfg":"REDDY LABS","drugid":1465038162203},{"expirydate":"2020-09-28T01:59:24.678Z","total_price":1275,"mrp":50,"invoiceno":1466533427424,"discount":0,"vat":2,"drugname":"GIRI (400 MG)","drugtype":"DROPS","purchase_qty":127,"batchno":"BATCHX_JUNE212016","unitprice":46,"mfg":"PFIZER","drugid":1465443397713}
+          ]
+    };
+  
+    return Promise.resolve(invoicedata); 
+  }
+
+  getSupplierInvoices(supplierId: string) {
+
+
+    var invoicedata = [{"supplierid":"SUP1467344348974","invoiceno":1466533427424,"suppliername":"BHAVANI MEDICALS","invoicedate":"22/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1466533315601,"suppliername":"BHAVANI MEDICALS","invoicedate":"21/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467521532053,"suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467520691012,"suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"}];
+  
+    return Promise.resolve(invoicedata); 
+
+    // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
+ // API CALL START
+/*
+ return new Promise(resolve => {
+    var url = "";
+    url = 'https://qshc2lp143.execute-api.us-west-2.amazonaws.com/invoice/invoice/?supplierid=' + supplierId;
+    //console.log(url);
+    this.http.get(url)
+    
+        .map(res => res.json())
+        .subscribe(data => {
+          this.data = data;
+         // console.log(this.data);
+          resolve(this.data);
+        });
+    });    //  API CALL END 
+    */
+
+}
+
   getSuppliers(searchParam: string){
     if (this.data) {
       return Promise.resolve(this.data);
@@ -58,7 +103,7 @@ export class InvoiceService {
 /*
  return new Promise(resolve => {
     var url = "";
-    url = `https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/storemaster/supplier?suppliername=${searchParam}`;
+    url = 'https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/storemaster/supplier?suppliername='+searchParam;
     //console.log(url);
     this.http.get(url)
     

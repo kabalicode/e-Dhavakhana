@@ -11,9 +11,16 @@
 @import "../pages/drugs/drugs";
 @import "../pages/drugdetails/drugdetails";
 @import "../pages/search-alternative/search-alternative";
-
-
+@import "../pages/invoice/invoice";
+@import "../pages/invoice/invoicedetails";
 
 ion-title{
     text-align: center;
+}
+ion-icon{
+    padding-right: 5px;   
+}
+ion-card ion-card-header{
+    background-color: brown;
+    color: white;
 }

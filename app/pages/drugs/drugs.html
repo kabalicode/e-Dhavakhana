@@ -17,21 +17,15 @@
         Favorites
       </ion-segment-button>
     </ion-segment>
-
-    <ion-buttons end>
-      <button (click)="presentFilter()">  
-        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
-      </button>
-    </ion-buttons>
-
-      <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="updatedrugsearch()" placeholder="Search Drug">
-      </ion-searchbar>
     
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="drugshome">
   <div *ngIf="segment=='invt'">
+
+    <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="updatedrugsearch()" placeholder="Search Drug">
+    </ion-searchbar>
 
   <div *ngIf="drugsearchcount == 0">
     <ion-item>
