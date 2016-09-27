@@ -13,6 +13,7 @@ export class InvoiceDetailsPage {
     public vwsupplierid:string;
     public vwsuppliername:string;
     public period:any;
+    public hidefilter:boolean;
 
     constructor(private nav: NavController, 
                 public modalCtrl: ModalController,
@@ -25,12 +26,21 @@ export class InvoiceDetailsPage {
             console.log("supplier name:" + this.vwsuppliername);
             this.vwsupplierid = supplierId;
 
+            this.hidefilter = true;
+
             //retrieve the invoices for a suppliers if any
               this.invoiceService.getSupplierInvoices(supplierId).then((data) => {
                   this.invoicedata = data;
                   console.log("invoice data:" + JSON.stringify(data));
                   this.period = 6;
               });
+    }
+
+    togglefilter(){
+        if(this.hidefilter)
+            this.hidefilter = false;
+        else
+            this.hidefilter = true;
     }
 
     openInvoiceDetailsModal(invoiceId){

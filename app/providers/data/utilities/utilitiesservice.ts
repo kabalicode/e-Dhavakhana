@@ -229,3 +229,4 @@ getAlternativeDrugs(searchParam: string){
 
 }
 
+}
