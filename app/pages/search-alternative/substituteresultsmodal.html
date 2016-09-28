@@ -1,0 +1,77 @@
+
+<ion-header>
+  <ion-toolbar dark>
+    <ion-title>
+       Substitute drug for : {{drugname}}
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-close" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding class="substitute-home" style="overflow-scroll:true">
+
+  <div *ngIf="lresultcount == 0">
+     <ion-card>
+              <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                              No alternative drug(s) found in internet for the drug name : <strong> {{drugname}} </strong> . Please do you own research to find alternatives.
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+              </ion-card-content> 
+     </ion-card>     
+  </div>
+
+  <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div *ngIf="lresultcount > 0">
+      <ion-item style="text-align:center">
+            <strong>  *** !! Warning !! **** </strong><br> 
+      </ion-item>
+
+      <ion-item>  Retailers are advised to check before prescribing to customers </ion-item>
+
+      <div *ngIf="ldrugdetails > 0">
+        <ion-card> 
+            <ion-card-header>
+                  {{vwmedicinedetails.brand}} 
+            </ion-card-header>
+            <ion-grid>
+
+                    <ion-row>
+                        <ion-col width-50 style="text-align:left"><ion-icon ios="ios-flask" md="md-flask"></ion-icon> {{vwmedicinedetails.category}}</ion-col>
+                        <ion-col width-50 style="text-align:left"><ion-icon ios="ios-home" md="md-home"></ion-icon> {{vwmedicinedetails.manufacturer}} </ion-col>
+                    </ion-row>
+
+              </ion-grid>
+      </ion-card>
+      </div>
+
+      <ion-card> 
+        <ion-card-header>
+              Substitue Drugs : 
+        </ion-card-header>
+      <ion-grid *ngFor="let drug of vwalternativedrugdetails" style="overflow-scroll:true">
+
+              <ion-row>
+                  <ion-col width-10 height-10> <img src= "img/{{drug.DrugType}}.png" />  </ion-col>
+                  <ion-col width-30 style="text-align:left">  {{drug.DrugName}} </ion-col>
+                  <ion-col width-60 style="text-align:left"><ion-icon ios="ios-home" md="md-home"></ion-icon> {{drug.MFGName}}</ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col width-100> <hr> </ion-col>
+              </ion-row>
+
+          </ion-grid>
+      </ion-card>
+  </div>
+</ion-content>

@@ -12,24 +12,28 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class UtilitiesService {
 
-  data: any;
+  suggesteddrugdata: any;
+  drugdetails:any;
+  alternativedrugs: any;
 
 
   constructor(private http: Http) {
-    this.data = null;
+    this.suggesteddrugdata = null;
+    this.drugdetails = null;
+    this.alternativedrugs=null;
   }
   
   getSuggestedDrugs(searchParam: string){
 // console.log("Drugs here..")
-    if (this.data) {
-      //console.log("inside if");
-      return Promise.resolve(this.data);
+  this.suggesteddrugdata=null;
+    if (this.suggesteddrugdata) {
+    
+      return Promise.resolve(this.suggesteddrugdata);
     }
 
     // Stub data during unit testing
-    console.log("utilities service here")
 
-  this.data = [
+  this.suggesteddrugdata = [
   {
     "DrugName": "Broncorex (100 ml)" 
   },
@@ -55,15 +59,15 @@ export class UtilitiesService {
     "DrugName": "Corex DX (50 ml)" 
   }
 ];
-    return Promise.resolve(this.data); 
+    return Promise.resolve(this.suggesteddrugdata); 
 
 
-     
+/*     
  // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
 
 
-/*
+
  return new Promise(resolve => {
     var url = "";
     //url = `https://63hc0yw0n6.execute-api.us-west-2.amazonaws.com/Inventory/drugs?drugname=${searchParam}`;
@@ -72,14 +76,12 @@ export class UtilitiesService {
 
     console.log(url);
 
-    //console.log(url);
     this.http.get(url)
     
         .map(res => res.json())
         .subscribe(data => {
-          this.data = data;
-         // console.log(this.data);
-          resolve(this.data);
+          this.suggesteddrugdata = data;
+          resolve(this.suggesteddrugdata);
         });
     });    //  API CALL END 
 */
@@ -87,16 +89,15 @@ export class UtilitiesService {
 }
 
 getAlternativeDrugs(searchParam: string){
-// console.log("Drugs here..")
-    if (this.data) {
-      //console.log("inside if");
-      return Promise.resolve(this.data);
+
+  this.alternativedrugs = null;
+    if (this.alternativedrugs) {
+      return Promise.resolve(this.alternativedrugs);
     }
 
     // Stub data during unit testing
-    console.log("utilities service here")
-
-   this.data = [
+    //console.log("utilities service here")
+  this.alternativedrugs = [
   {
     "DrugName": "Terkof B (100 ml)",
     "DrugType": "Syrup",
@@ -198,18 +199,59 @@ getAlternativeDrugs(searchParam: string){
     "MFGName": "Pfizer Limited (Pharmacia India Pvt Ltd)"
   }
 ];
-    return Promise.resolve(this.data); 
-     
+    return Promise.resolve(this.alternativedrugs); 
+
+
+
+/*     
+ // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
+ // API CALL START
+
+ return new Promise(resolve => {
+    var url = "";
+  
+   // url = `http://oaayush-aayush.rhcloud.com/api/medicine_suggestions?key=57029cfb1f59ea00d8294c7367a0d5&id=${searchParam}`;
+    url=`https://nnuggsvyzb.execute-api.us-west-2.amazonaws.com/Utilities/drugs/alternative?id=${searchParam}`
+
+    console.log(url);
+
+    this.http.get(url)
+    
+        .map(res => res.json())
+        .subscribe(data => {
+          this.alternativedrugs = data;
+          resolve(this.alternativedrugs);
+        });
+    });    //  API CALL END 
+  
+ */
+
+
+}
+
+getDrugDetails(drugname: string){
+ 
+   this.drugdetails = null;
+    if (this.drugdetails) {
+      return Promise.resolve(this.drugdetails);
+    }
+
+    // Stub data during unit testing
+
+    this.drugdetails = {"status":"ok","response":{"medicine":{"brand":"Corex (50 ml)","category":"Syrup","d_class":"Cough Syrups (Decongestants, Bronchodialator etc.)","generic_id":1610,"id":22549,"manufacturer":"Pfizer Limited (Pharmacia India Pvt Ltd)","package_price":42.5,"package_qty":50.0,"package_type":"ml","unit_price":4.25,"unit_qty":5.0,"unit_type":"ml"},"constituents":[{"generic_id":"1610","id":126504,"name":"Codeine Phosphate","qty":2,"strength":"10 mg\r"},{"generic_id":"1610","id":126505,"name":"Chlorpheniramine Maleate","qty":2,"strength":"4 mg\r"}]}}
+    return Promise.resolve(this.drugdetails); 
+
+
+/*
  // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
 
 
-/*
+
  return new Promise(resolve => {
     var url = "";
   
-    url = `http://oaayush-aayush.rhcloud.com/api/medicine_suggestions?key=57029cfb1f59ea00d8294c7367a0d5&id=${searchParam}`;
-    url=`https://nnuggsvyzb.execute-api.us-west-2.amazonaws.com/Utilities/drugs/alternative?id=${searchParam}`
+    url=`https://nnuggsvyzb.execute-api.us-west-2.amazonaws.com/Utilities/drugs?id=${drugname}`
 
     console.log(url);
 
@@ -218,15 +260,12 @@ getAlternativeDrugs(searchParam: string){
     
         .map(res => res.json())
         .subscribe(data => {
-          this.data = data;
-         // console.log(this.data);
-          resolve(this.data);
+          this.drugdetails = data;
+          resolve(this.drugdetails);
         });
     });    //  API CALL END 
-  
+
+    */
   }
-*/
-
 }
 
-}
