@@ -31,7 +31,7 @@
 <ion-card>
 
   <ion-card-header class="bar">
-      
+      <strong>{{vwdrug.drugname}} - {{vwdrug.drugtype}} </strong>
   </ion-card-header>
 
 
@@ -41,17 +41,17 @@
             
             <ion-col width-20 style="text-align:left">
               <img src= "img/details/{{vwdrug.drugtype}}.png" alt="Poster" class="customized-image">
-              <p style="text-align:center"><strong>{{vwdrug.drugname}} - {{vwdrug.drugtype}} </strong></p>
-              <p style="text-align:center"><i>{{vwdrug.mfgcode}} </i></p><br>
             </ion-col> 
             
             <ion-col width-30 style="text-align:left">
               <ion-item class="item-thumbnail-left item-text-wrap">
                   <p><i>Constituents: &nbsp; {{vwdrug.constituents}}</i></p><br>
+                  <p><i>Manufacturer: &nbsp; {{vwdrug.mfgcode}}</i></p><br>
                   <p><i>Schedule Drug: &nbsp; {{vwdrug.scheduledrug}}</i></p><br> 
                   <p><i>Rack Position: &nbsp;{{vwdrug.rackposition}}</i></p><br>
                   <p><i>Re-Order Qty: &nbsp; {{vwdrug.minqty}} {{vwdrug.drugtype}}(S) </i></p><br>
                   <p><i>Available Qty: &nbsp;<strong>{{vwdrug.availabledrugqty}} {{vwdrug.drugtype}}(S)</strong></i></p>
+                
               </ion-item>
             </ion-col>
 
@@ -64,7 +64,6 @@
      </ion-grid>       
   </ion-card-content>
 </ion-card>     
-
 
 
 <ion-card>
@@ -84,7 +83,7 @@
     <div *ngIf="lbatchcount > 0">
       <ion-item-group  *ngFor="let supplier of vwdrug.suppliers">
   
-        <ion-item-divider light>{{supplier.name}}</ion-item-divider>
+        <ion-item-divider light><strong>{{supplier.name}}</strong></ion-item-divider>
         <ion-item *ngFor="let batch of supplier.batches">
                     <p><ion-icon name="ios-barcode"></ion-icon>&nbsp; &nbsp;<i>Batch# : &nbsp; {{batch.batchno}}</i></p><br>
                     <p><ion-icon name="calendar"></ion-icon> &nbsp; &nbsp;<i>Expiry Date : &nbsp;{{batch.expirydate}}</i></p><br>
@@ -98,4 +97,7 @@
 
   </ion-card-content>
  </ion-card>
+
+
+
 </ion-content>
