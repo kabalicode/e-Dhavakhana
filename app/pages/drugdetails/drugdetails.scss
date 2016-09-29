@@ -1,5 +1,11 @@
 .drugdetails {
-     ion-label {
+    .spinner-container {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+         ion-label {
         white-space: normal;
     }
  
@@ -17,12 +23,6 @@
     
     ion-navbar{
         background-color: map-get($colors,gray);
-    }
-
-    .spinner-container {
-        width: 100%;
-        text-align: center;
-        padding: 10px;
     }
 }
 .customized-image{

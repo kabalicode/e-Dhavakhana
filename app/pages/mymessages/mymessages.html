@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>Store Notifications</ion-title>
+  
+    </ion-navbar>
+    <ion-toolbar dark>
+        <ion-title> **** Please note below recommendations are based on {{messagesdate}}  store data **** </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="drugshome" style="overflow-scroll:true">
+    <div *ngIf="searching" class="spinner-container">
+        <ion-spinner></ion-spinner>
+    </div>
+
+<div *ngIf="lnotificationscount > 0">  
+ <ion-card *ngFor="let item of vwnotifications">
+      <ion-card-header>
+          {{item.subject}}
+      </ion-card-header>
+        <ion-grid>
+            <ion-row>
+                <!--<ion-col width-10 style="border-style: dotted;"> <img src= "img/{{item.messagetype}}.png"/>  </ion-col> --->
+                
+                <ion-col width-10> 
+                    <ion-row >
+                        <ion-col width-30><img src= "img/{{item.messagetype}}.png"/></ion-col>   
+                        <ion-col width-70></ion-col>
+                    </ion-row>    
+                </ion-col>
+                <ion-col width-90><strong> {{item.drugname}}: &nbsp;{{item.drugtype}}</strong></ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col width-100> <hr> </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col width-100><ion-icon ios="ios-email" md="md-email"></ion-icon> {{item.message}}</ion-col>
+            </ion-row>
+        </ion-grid>
+  </ion-card>
+  
+  </div>
+  
+  
+</ion-content>

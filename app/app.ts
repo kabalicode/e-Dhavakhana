@@ -5,6 +5,7 @@ import {HomePage} from './pages/home/home';
 import {DrugsPage} from './pages/drugs/drugs';
 import {InvoicePage} from './pages/invoice/invoice';
 import {SearchAlternativePage} from './pages/search-alternative/search-alternative';
+import {MymessagesPage} from './pages/mymessages/mymessages';
 
 @Component({
   templateUrl: 'build/app.html'
@@ -37,7 +38,7 @@ class MyApp {
           { title: 'Import Drugs', icon: 'swap', component: DrugsPage} ]},
       { title: 'Master Data', icon:'build', component: DrugsPage, showchild:false , child: null  },
       { title: 'Analytics', icon:'stats', component: DrugsPage, showchild:false , child: null },
-      { title: 'Notifications', icon:'chatboxes', component: DrugsPage, showchild:false , child: null },
+      { title: 'Notifications', icon:'chatboxes', component: MymessagesPage, showchild:false , child: null },
       { title: 'Tools', icon:'hammer', showchild:false , component: HomePage,
         child:[
           { title: 'Substitutes', icon:'search', component: SearchAlternativePage}]},
