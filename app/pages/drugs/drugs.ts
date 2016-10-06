@@ -3,6 +3,7 @@ import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-
 import { UserData } from '../../providers/data/user-data';
 import {DrugsService} from '../../providers/data/drugs/drugsservice';
 import { DrugdetailsPage } from '../drugdetails/drugdetails';
+import { AddDrugsPage } from '../drugs/adddrugs';
 import {Toast} from "ionic-native";
 
 @Component({
@@ -178,6 +179,15 @@ export class DrugsPage {
         // go to the drug details page
         // and pass in the drug data
         this.nav.push(DrugdetailsPage, drugid);
+        
+    } 
+
+      public gotoAddDrugs()
+    {
+        // go to the drug details page
+        // and pass in the drug data
+        console.log("dsdsdsdsds");
+        this.nav.push(AddDrugsPage);
         
     } 
  

@@ -18,7 +18,7 @@ export class DrugsService {
     this.drugdetailsdata = null;
     this.storage = new Storage(SqlStorage);
     this.storage.query("CREATE TABLE IF NOT EXISTS DRUG_FAVORITES (id INTEGER, name TEXT, type TEXT )");
-    console.log("Table DRUG_FAVORITES Created");
+    //console.log("Table DRUG_FAVORITES Created");
   }
 
   getFavDrugs(){
