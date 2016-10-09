@@ -74,14 +74,14 @@
 
     <ion-item-sliding *ngFor="let fav of favlist">
 
-      <ion-item (click)="gotoDrugDetails(fav.id)">
+      <button ion-item (click)="gotoDrugDetails(fav.id)">
               <ion-avatar item-left>
                 <img src= "img/{{fav.type}}.png" />
               </ion-avatar>
               <h2><strong> {{fav.name}}</strong></h2>
               <h4>Drug Type:<strong>{{fav.type}}</strong></h4>
               <p>{{fav.id}}</p>
-      </ion-item>
+      </button>
 
 
       <ion-item-options>

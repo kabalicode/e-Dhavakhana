@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar dark>
+    <ion-title>
+      Add New Invoice
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-close" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding class="invoice-add" style="overflow-scroll:true">
+
+    <div class="autocomplete" *ngIf="selectedsupplierid == undefined" > <!-- This class is key for representing the autosuggest results -->
+    <ion-searchbar [(ngModel)]="queryText" placeholder="Select Supplier" (ionInput)="lookupSupplier()"></ion-searchbar>
+    <ion-list *ngIf="suggestions && suggestions.length > 0 && showlist">
+        <ion-item *ngFor="let suggestion of suggestions" (click)="select(suggestion)">
+            {{suggestion.suppliername}}
+        </ion-item>
+    </ion-list>
+    </div>
+
+    <ion-item *ngIf="selectedsupplierid != undefined">
+        <button ion-button outline item-right icon-right (click)="clearSupplierName()">
+          <ion-icon name="close-circle"></ion-icon>
+          Clear
+        </button>
+        <ion-label>Supplier Name</ion-label>
+        <ion-input type="text" [(ngModel)]="selectedsuppliername"></ion-input>
+    </ion-item>
+    
+    <form [formGroup]="invoice" (ngSubmit)="addInvoice()">
+
+      <ion-item>
+        <ion-label>Invoice Date</ion-label>
+        <ion-input type="text" formControlName="date"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Tax Invoice No.</ion-label>
+        <ion-input type="text" formControlName="taxinvoiceno"></ion-input>
+      </ion-item>
+
+        <ion-list radio-group formControlName="transactionType">
+          <ion-list-header>
+              Transaction Type
+          </ion-list-header>
+          <ion-item>
+            <ion-label>Cash</ion-label>
+            <ion-radio value="cash"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Credit</ion-label>
+            <ion-radio value="credit"></ion-radio>
+          </ion-item>
+        </ion-list>
+
+      <button type="submit" [disabled]="!invoice.valid">Add Invoice</button>
+    </form>
+
+</ion-content>

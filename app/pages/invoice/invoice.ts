@@ -4,6 +4,7 @@ import { UserData } from '../../providers/data/user-data';
 import {InvoiceService} from '../../providers/data/invoice/invoiceservice';
 import {SQLite, Toast} from "ionic-native";
 import {InvoiceDetailsPage} from '../invoice/invoicedetails';
+import {InvoiceAddPage} from '../invoice-add/invoice-add';
 
 @Component({
   templateUrl: 'build/pages/invoice/invoice.html',
@@ -187,5 +188,10 @@ export class InvoicePage {
    getSupplierInvoices(supplierid, suppliername){
        this.nav.push(InvoiceDetailsPage, {id:supplierid, name:suppliername});
    }
+
+   addNewInvoice(){
+        let invoiceAddPageModal = this.modalCtrl.create(InvoiceAddPage);
+        invoiceAddPageModal.present();
+    }
  
 }

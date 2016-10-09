@@ -6,13 +6,13 @@
 // These are the imports which make up the design of this app.
 // By default each design mode includes these shared imports.
 // App Shared Sass variables belong in app.variables.scss.
-
 @import "../pages/home/home";
 @import "../pages/drugs/drugs";
 @import "../pages/drugdetails/drugdetails";
 @import "../pages/search-alternative/search-alternative";
 @import "../pages/invoice/invoice";
 @import "../pages/invoice/invoicedetails";
+@import "../pages/invoice-add/invoice-add.scss";
 
 ion-title{
     text-align: center;
@@ -23,4 +23,24 @@ ion-icon{
 ion-card ion-card-header{
     background-color: brown;
     color: white;
+}
+
+
+.autocomplete {
+  display     : block;
+  overflow    : hidden;
+}
+
+.autocomplete ion-list {
+  margin    :   8px;
+  margin-top:   -8px;
+  border    :   1px solid #dedede;
+}
+
+.autocomplete ion-item {
+}
+
+.autocomplete ion-item:hover {
+  background    : #f1f1f1;
+  cursor        : pointer;
 }

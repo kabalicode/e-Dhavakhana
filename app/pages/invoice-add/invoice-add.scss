@@ -1,0 +1,22 @@
+.invoice-add {
+ background-color: lightsteelblue;
+}
+
+.autocomplete {
+  display     : block;
+  overflow    : hidden;
+}
+
+.autocomplete ion-list {
+  margin    :   8px;
+  margin-top:   -8px;
+  border    :   1px solid #dedede;
+}
+
+.autocomplete ion-item {
+}
+
+.autocomplete ion-item:hover {
+  background    : #f1f1f1;
+  cursor        : pointer;
+}
