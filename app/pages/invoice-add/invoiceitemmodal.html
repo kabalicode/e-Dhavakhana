@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-toolbar dark>
+    <ion-title>
+      Invoice Item 
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-close" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding  style="overflow-scroll:true">
+
+<div class="autocomplete" *ngIf="selecteddrugid == undefined" > <!-- This class is key for representing the autosuggest results -->
+<ion-searchbar [(ngModel)]="queryText" placeholder="Select Drug" (ionInput)="lookupDrug()"></ion-searchbar>
+<ion-list *ngIf="drugs && drugs.length > 0 && showlist">
+    <ion-item *ngFor="let drug of drugs" (click)="select(drug)">
+        {{drug.drugname}}
+    </ion-item>
+</ion-list>
+</div>
+
+<ion-row *ngIf="selecteddrugid != undefined">
+<ion-col> 
+<ion-item>
+    <ion-label floating>Drug Name</ion-label>
+    <ion-input type="text" [(ngModel)]="selecteddrugname" disabled="true"></ion-input>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+      <button *ngIf="!edit" ion-button outline item-right icon-right (click)="clearDrug()">
+        <ion-icon name="close-circle"></ion-icon>
+        Clear
+      </button>
+      <ion-label floating>Drug Type</ion-label>
+      <ion-input type="text" [(ngModel)]="selecteddrugtype" disabled="true"></ion-input>
+  </ion-item>
+</ion-col>
+</ion-row>
+
+  <form [formGroup]="invoiceItem" (ngSubmit)="addInvoiceItem()">
+ <ion-row>
+   <ion-col>
+    <ion-item>
+        <ion-label floating>Batch No.</ion-label>
+        <ion-input type="text" formControlName="batchno"></ion-input>
+    </ion-item>
+   </ion-col>
+   <ion-col>
+    <ion-item>
+        <ion-label floating>Manufacturer</ion-label>
+        <ion-input type="text" formControlName="mfg"></ion-input>
+    </ion-item>
+   </ion-col>
+   <ion-col>
+     <ion-item>
+        <ion-label floating>Pack Size</ion-label>
+        <ion-input type="text" formControlName="packsize" (change)="calculateUnitPrice()" ></ion-input>
+    </ion-item>
+   </ion-col>
+ </ion-row>
+    
+<ion-row>
+  <ion-col>
+    <ion-item>
+        <ion-label floating>Quantity</ion-label>
+        <ion-input type="text" formControlName="qty" (change)="calculateTotalPrice()"></ion-input>
+    </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label floating>Expiry Date (MM/YYYY)</ion-label>
+        <ion-input type="text" formControlName="expirydate"></ion-input>
+    </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label floating>MRP</ion-label>
+        <ion-input type="text" formControlName="mrp" (change)="calculateUnitPrice()"></ion-input>
+    </ion-item>
+  </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label floating>VAT(%)</ion-label>
+        <ion-input type="text" formControlName="vat" (change)="calculateTotalPrice()"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+    <ion-item>
+        <ion-label floating>Discount(%)</ion-label>
+        <ion-input type="text" formControlName="discount" (change)="calculateTotalPrice()"></ion-input>
+    </ion-item>
+    </ion-col>
+    <ion-col>
+    <ion-item>
+        <ion-label floating>Unit Price</ion-label>
+        <ion-input type="text" formControlName="unitprice" disabled="true"></ion-input>
+    </ion-item>
+    </ion-col>
+    <ion-col>
+    <ion-item>
+        <ion-label floating>Total Price</ion-label>
+        <ion-input type="text" formControlName="totalprice" disabled="true"></ion-input>
+    </ion-item>
+    </ion-col>
+  </ion-row>
+    
+  <button *ngIf="!edit" type="submit" [disabled]="!invoiceItem.valid">Add Invoice Item</button>
+  <button *ngIf="edit" type="submit" [disabled]="!invoiceItem.valid">Save Invoice Item</button>
+  
+  </form>
+</ion-content>

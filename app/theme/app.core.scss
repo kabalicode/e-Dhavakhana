@@ -44,3 +44,21 @@ ion-card ion-card-header{
   background    : #f1f1f1;
   cursor        : pointer;
 }
+
+.grid-header{
+  background-color: brown;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.grid-item{
+  border: 1px solid black;
+  border-radius: 2px;
+  text-align: center;
+  vertical-align: center;
+}
+
+.invalid {
+        border: 2px solid #ea6153;
+}

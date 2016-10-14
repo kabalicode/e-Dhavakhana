@@ -4,6 +4,7 @@ import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 import {DrugsPage} from './pages/drugs/drugs';
 import {InvoicePage} from './pages/invoice/invoice';
+import {InvoiceAddPage} from './pages/invoice-add/invoice-add';
 import {SearchAlternativePage} from './pages/search-alternative/search-alternative';
 import {MymessagesPage} from './pages/mymessages/mymessages';
 
@@ -29,7 +30,8 @@ class MyApp {
     this.pages = [
       { title: 'Dashboard', icon:'add', component: HomePage , showchild:false ,child: null},
       { title: 'Sales', icon:'pricetags', component: DrugsPage, showchild:false , child: null  },
-      { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child: null },
+      { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:[
+          { title: 'Add New Invoice', icon:'add', component: InvoiceAddPage}] },
       { title: 'Inventory', icon:'home', showchild:false , component: DrugsPage,
         child:[
           { title: 'Add New Drug', icon:'add', component: DrugsPage},

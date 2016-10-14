@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-toolbar dark>
+  <ion-toolbar primary>
     <ion-title>
       Add New Invoice
     </ion-title>
     <ion-buttons start>
-      <button ion-button (click)="dismiss()">
-        <ion-icon name="md-close" ></ion-icon>
+      <button menuToggle>
+        <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -26,19 +26,22 @@
           <ion-icon name="close-circle"></ion-icon>
           Clear
         </button>
-        <ion-label>Supplier Name</ion-label>
-        <ion-input type="text" [(ngModel)]="selectedsuppliername"></ion-input>
+        <ion-label floating>Supplier Name</ion-label>
+        <ion-input type="text" [(ngModel)]="selectedsuppliername" disabled="true"></ion-input>
     </ion-item>
     
     <form [formGroup]="invoice" (ngSubmit)="addInvoice()">
 
       <ion-item>
-        <ion-label>Invoice Date</ion-label>
+        <button ion-button outline item-right icon-right (click)="openDatePicker()">
+          <ion-icon name="calendar"></ion-icon>
+        </button>
+        <ion-label floating>Invoice Date</ion-label>
         <ion-input type="text" formControlName="date"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Tax Invoice No.</ion-label>
+        <ion-label floating>Invoice No.</ion-label>
         <ion-input type="text" formControlName="taxinvoiceno"></ion-input>
       </ion-item>
 
@@ -55,6 +58,44 @@
             <ion-radio value="credit"></ion-radio>
           </ion-item>
         </ion-list>
+
+      <ion-item>  
+          <button ion-button outline item-right icon-right (click)="createInvoiceItem()">
+            <ion-icon name="add-circle"></ion-icon>
+            Add Invoice Item
+          </button>
+      </ion-item>   
+      <ion-item>
+      <ion-grid>
+        <ion-row class='grid-header'> 
+          <ion-col width-10>&nbsp;</ion-col>  
+          <ion-col width-10>Sl.No</ion-col>
+          <ion-col width-45>Drug Name</ion-col>
+          <ion-col width-10>Drug Type</ion-col>
+          <ion-col width-20>Mfg</ion-col>
+          <ion-col>Batch No.</ion-col>
+          <ion-col>Qty</ion-col>
+          <ion-col>Rate</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let item of invoiceItems;let i = index;" class="grid-item">  
+          <ion-col width-10>
+            <button ion-button clear icon-left (click)="editInvoiceItem(i)">
+              <ion-icon name="create"></ion-icon>
+            </button>
+            <button ion-button clear icon-left (click)="deleteInvoiceItem(item)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col width-10>{{item.sno}}</ion-col>
+          <ion-col width-45>{{item.drugname}}</ion-col>
+          <ion-col width-10>{{item.drugtype}}</ion-col>
+          <ion-col width-20>{{item.mfg}}</ion-col>
+          <ion-col>{{item.batchno}}</ion-col>
+          <ion-col>{{item.qty}}</ion-col>
+          <ion-col>{{item.totalprice}}</ion-col>
+        </ion-row>
+      </ion-grid>
+      </ion-item>
 
       <button type="submit" [disabled]="!invoice.valid">Add Invoice</button>
     </form>
