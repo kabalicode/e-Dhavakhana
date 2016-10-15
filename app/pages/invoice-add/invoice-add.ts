@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ViewController, ModalController, NavController, NavParams, AlertController } from 'ionic-angular';
 import {Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import {InvoiceService} from '../../providers/data/invoice/invoiceservice';
-import {DrugsService} from '../../providers/data/drugs/drugsservice';
+import {InventoryService} from '../../providers/data/inventory/inventoryservice';
 import {DatePicker} from 'ionic-native';
 
 /*
@@ -130,7 +130,7 @@ export class InvoiceAddPage {
 
 @Component({
   templateUrl: 'build/pages/invoice-add/invoiceitemmodal.html',
-  providers: [InvoiceService,DrugsService]
+  providers: [InvoiceService,InventoryService]
 })
 
 export class InvoiceItemModal {
@@ -151,7 +151,7 @@ export class InvoiceItemModal {
                 private formBuilder: FormBuilder,
                 public navParams: NavParams, 
                 private invoiceService:InvoiceService,
-                private drugsService: DrugsService,
+                private invtService: InventoryService,
                 public viewCtrl: ViewController,
                 public alertCtrl: AlertController) {
             this.showlist = false;
@@ -241,7 +241,7 @@ export class InvoiceItemModal {
     lookupDrug(){
      console.log("into lookup drug method");
      if(this.queryText.length >0){
-      this.drugsService.getDrugs(this.queryText).then((data) => {
+      this.invtService.searchInventory(this.queryText).then((data) => {
           this.drugs = data;
           console.log("results: " + this.drugs);
           this.showlist = true;

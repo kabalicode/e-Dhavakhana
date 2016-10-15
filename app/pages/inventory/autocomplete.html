@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar dark>
+    <ion-title>
+      Search Drug
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-close" ></ion-icon>
+      </button>
+    </ion-buttons>
+  
+  </ion-toolbar>
+    <ion-searchbar primary [(ngModel)]="autocomplete.drugquery" placeholder = "Search Drug Name" [showCancelButton]="true" (ionInput)="updateSearch()" (ionCancel)="dismiss()"></ion-searchbar>
+</ion-header>
+
+
+
+<ion-content class="drugshome">
+
+<div *ngIf = "result != ''">
+  <ion-item>
+    No drug(s) found in the store inventory with a drug name : <strong> {{autocomplete.drugquery}} </strong>.<br> Please select below {{autocomplete.drugquery}} item if you wish to proceed.
+  </ion-item>
+</div>
+
+
+  <ion-list>
+    <button ion-item *ngFor="let item of autocompleteItems" (click)="chooseItem(item)">
+      {{ item }}
+    </button>
+  </ion-list>
+
+</ion-content>

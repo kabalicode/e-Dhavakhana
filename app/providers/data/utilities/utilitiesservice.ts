@@ -23,7 +23,12 @@ export class UtilitiesService {
     this.alternativedrugs=null;
   }
   
-  getSuggestedDrugs(searchParam: string){
+
+
+// api that provides list of suggested drugs
+// this method connects to trueMD API
+
+getSuggestedDrugs(searchParam: string){
 // console.log("Drugs here..")
   this.suggesteddrugdata=null;
     if (this.suggesteddrugdata) {
@@ -88,6 +93,8 @@ export class UtilitiesService {
 
 }
 
+// api that retrieve altertative list of drugs for a given drugname
+// this method connects to trueMD API
 getAlternativeDrugs(searchParam: string){
 
   this.alternativedrugs = null;
@@ -229,6 +236,8 @@ getAlternativeDrugs(searchParam: string){
 
 }
 
+// api that retrieve detailed drug information for a given drun name
+// this method connects to trueMD API
 getDrugDetails(drugname: string){
  
    this.drugdetails = null;

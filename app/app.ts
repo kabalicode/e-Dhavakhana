@@ -3,6 +3,7 @@ import {ionicBootstrap, Platform, MenuController, Nav, AlertController} from 'io
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 import {DrugsPage} from './pages/inventory/search';
+import {AddDrugsPage} from './pages/inventory/add';
 import {InvoicePage} from './pages/invoice/invoice';
 import {InvoiceAddPage} from './pages/invoice-add/invoice-add';
 import {SearchAlternativePage} from './pages/search-alternative/search-alternative';
@@ -31,13 +32,10 @@ class MyApp {
       { title: 'Dashboard', icon:'add', component: HomePage , showchild:false ,child: null},
       { title: 'Sales', icon:'pricetags', component: DrugsPage, showchild:false , child: null  },
       { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:[
-          { title: 'Add New Invoice', icon:'add', component: InvoiceAddPage}] },
+          { title: 'New Invoice', icon:'add', component: InvoiceAddPage}] },
       { title: 'Inventory', icon:'home', showchild:false , component: DrugsPage,
         child:[
-          { title: 'Add New Drug', icon:'add', component: DrugsPage},
-          { title: 'Edit Drug', icon: 'create', component: DrugsPage},
-          { title: 'Search Drug', icon: 'search', component: DrugsPage},
-          { title: 'Import Drugs', icon: 'swap', component: DrugsPage} ]},
+          { title: 'New Drug', icon:'add', component: AddDrugsPage},]},
       { title: 'Master Data', icon:'build', component: DrugsPage, showchild:false , child: null  },
       { title: 'Analytics', icon:'stats', component: DrugsPage, showchild:false , child: null },
       { title: 'Notifications', icon:'chatboxes', component: MymessagesPage, showchild:false , child: null },
