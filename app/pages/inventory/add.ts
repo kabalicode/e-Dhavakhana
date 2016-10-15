@@ -1,11 +1,11 @@
 import {Component} from "@angular/core";
 import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-angular';
-import {DrugsService} from '../../providers/data/drugs/drugsservice';
+import {InventoryService} from '../../providers/data/inventory/inventoryservice';
 import {Toast} from "ionic-native";
 
 @Component({
-  templateUrl: 'build/pages/drugs/adddrugs.html',
-  providers: [DrugsService]
+  templateUrl: 'build/pages/inventory/add.html',
+  providers: [InventoryService]
 })
 export class AddDrugsPage {
  
@@ -17,7 +17,7 @@ export class AddDrugsPage {
  
     constructor(private nav: NavController, 
                 private modalCtrl: ModalController,
-                private drugsService:DrugsService,
+                private invtservice:InventoryService,
                 public alertCtrl: AlertController) {
         
               

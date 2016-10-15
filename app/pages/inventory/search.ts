@@ -1,14 +1,13 @@
 import {Component} from "@angular/core";
 import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-angular';
-import { UserData } from '../../providers/data/user-data';
-import {DrugsService} from '../../providers/data/drugs/drugsservice';
-import { DrugdetailsPage } from '../drugdetails/drugdetails';
-import { AddDrugsPage } from '../drugs/adddrugs';
+import {InventoryService} from '../../providers/data/inventory/inventoryservice';
+import { DrugdetailsPage } from '../inventory/details';
+import { AddDrugsPage } from '../inventory/add';
 import {Toast} from "ionic-native";
 
 @Component({
-  templateUrl: 'build/pages/drugs/drugs.html',
-  providers: [UserData, DrugsService]
+  templateUrl: 'build/pages/inventory/search.html',
+  providers: [InventoryService]
 })
 export class DrugsPage {
  
@@ -23,14 +22,13 @@ export class DrugsPage {
  
     constructor(private nav: NavController, 
                 private modalCtrl: ModalController,
-                private drugsService:DrugsService,
-                private user: UserData,
+                private invtservice:InventoryService,
                 public alertCtrl: AlertController) {
               //set the default to Drugs Inventory tab segment
               this.segment = "invt";
-
+              console.log("search page")
               //retrieve the drug favorites if any
-              this.drugsService.getFavDrugs().then((data) => {
+              this.invtservice.getFavDrugs().then((data) => {
                     this.favlist = [];
                     console.log("number of fav:" + data.res.rows.length);
                     if(data.res.rows.length > 0) {
@@ -59,7 +57,7 @@ export class DrugsPage {
             }
         }
 
-      let result = this.drugsService.addFavDrug(item);
+      let result = this.invtservice.addFavDrug(item);
       this.refresh();
       if( result == 1){
         this.showToast("Favorite added successfully","bottom");
@@ -67,7 +65,7 @@ export class DrugsPage {
     }
  
     public refresh() {
-        this.drugsService.getFavDrugs().then((data) => {
+        this.invtservice.getFavDrugs().then((data) => {
             this.favlist = [];
                     console.log("number of fav:" + data.res.rows.length);
                     if(data.res.rows.length > 0) {
@@ -94,14 +92,14 @@ export class DrugsPage {
         // We will only perform the search if we have 3 or more characters
         if ((fltvar.trim().length == 3) || (fltvar.trim().length >3 && this.bdrugapiinvoked==false)) {
                 this.searching=true;
-                this.drugsService.getDrugs(fltvar).then((data) => {
+                this.invtservice.searchInventory(fltvar).then((data) => {
                 //console.log(data);
                 //this.vwdrugs = data;
                 this.modeldrugs = data;
                 //this.adddrugimages();
                 this.vwdrugs = this.modeldrugs;
                 this.bdrugapiinvoked = true;
-                this.drugsService.data=null;
+                this.invtservice.data=null;
                 this.drugsearchcount = this.vwdrugs.length;
                 this.searching=false;
                 //console.log("drugcount inside if:" + this.drugsearchcount);
@@ -110,7 +108,7 @@ export class DrugsPage {
         }else if (fltvar.trim().length == 0){
                 this.bdrugapiinvoked = false;
                 this.drugsearchcount = -1;
-                this.drugsService.data=null;
+                this.invtservice.data=null;
                 this.vwdrugs = null;
                 this.modeldrugs = null;
                 this.searching=false;
@@ -152,7 +150,7 @@ export class DrugsPage {
           handler: () => {
             let navTransition = alert.dismiss();  
 
-            let result = this.drugsService.removeFavDrug(item);
+            let result = this.invtservice.removeFavDrug(item);
             this.refresh();
 
             if(result == 1){

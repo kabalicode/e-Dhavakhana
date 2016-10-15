@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {ionicBootstrap, Platform, MenuController, Nav, AlertController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
-import {DrugsPage} from './pages/drugs/drugs';
+import {DrugsPage} from './pages/inventory/search';
 import {InvoicePage} from './pages/invoice/invoice';
 import {InvoiceAddPage} from './pages/invoice-add/invoice-add';
 import {SearchAlternativePage} from './pages/search-alternative/search-alternative';

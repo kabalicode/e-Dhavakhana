@@ -1,0 +1,103 @@
+<!--
+  Generated template for the DrugdetailsPage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+  <!--
+  <ion-navbar>
+    <ion-title>Drug Details</ion-title>
+  </ion-navbar> -->
+
+  <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>Current  Inventory Levels of  :  {{vwdrug.drugname}} </ion-title>
+  
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding class="drugshome" style="overflow-scroll:true">
+
+  <div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+
+
+<ion-card>
+
+  <ion-card-header class="bar">
+      <strong>{{vwdrug.drugname}} - {{vwdrug.drugtype}} </strong>
+  </ion-card-header>
+
+
+  <ion-card-content>
+     <ion-grid>
+        <ion-row responsive-sm>
+            
+            <ion-col width-20 style="text-align:left">
+              <img src= "img/details/{{vwdrug.drugtype}}.png" alt="Poster" class="customized-image">
+            </ion-col> 
+            
+            <ion-col width-30 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap">
+                  <p><i>Constituents: &nbsp; {{vwdrug.constituents}}</i></p><br>
+                  <p><i>Manufacturer: &nbsp; {{vwdrug.mfgcode}}</i></p><br>
+                  <p><i>Schedule Drug: &nbsp; {{vwdrug.scheduledrug}}</i></p><br> 
+                  <p><i>Rack Position: &nbsp;{{vwdrug.rackposition}}</i></p><br>
+                  <p><i>Re-Order Qty: &nbsp; {{vwdrug.minqty}} {{vwdrug.drugtype}}(S) </i></p><br>
+                  <p><i>Available Qty: &nbsp;<strong>{{vwdrug.availabledrugqty}} {{vwdrug.drugtype}}(S)</strong></i></p>
+                
+              </ion-item>
+            </ion-col>
+
+            <ion-col width-50 style=" text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap">
+
+              </ion-item>
+            </ion-col> 
+        </ion-row>
+     </ion-grid>       
+  </ion-card-content>
+</ion-card>     
+
+
+<ion-card>
+  <ion-card-header class="bar">
+   <strong> Current Stock Position by Supplier :</strong>
+  </ion-card-header>
+
+  <ion-card-content>
+
+      <div class="warning" *ngIf="lbatchcount < 1">
+          <ion-item>
+            <strong> {{vwdrug.drugname}} &nbsp; stock is not available in the store, please place an order by navigating via. order book (URL)</strong>
+          </ion-item>
+      </div>
+
+
+    <div *ngIf="lbatchcount > 0">
+      <ion-item-group  *ngFor="let supplier of vwdrug.suppliers">
+  
+        <ion-item-divider light><strong>{{supplier.name}}</strong></ion-item-divider>
+        <ion-item *ngFor="let batch of supplier.batches">
+                    <p><ion-icon name="ios-barcode"></ion-icon>&nbsp; &nbsp;<i>Batch# : &nbsp; {{batch.batchno}}</i></p><br>
+                    <p><ion-icon name="calendar"></ion-icon> &nbsp; &nbsp;<i>Expiry Date : &nbsp;{{batch.expirydate}}</i></p><br>
+                    <p><ion-icon name="ios-flask"></ion-icon> &nbsp; &nbsp; <i>Available Qty: &nbsp;{{batch.availablebatchqty}} &nbsp;{{batch.drugtype}}</i></p><br>
+                    <p><ion-icon name="pricetags"></ion-icon>&nbsp; &nbsp;<i>MRP: &nbsp;{{batch.mrp}} &nbsp; (RS) </i></p><br>
+                    <p><ion-icon name="document"></ion-icon> &nbsp; &nbsp; Invoice# : <a id="invoicelink" title="Click to do something"  href="#" onclick="MyFunction();return false;"><i>&nbsp;{{batch.invoiceno}}</i></a></p>
+                  <hr>
+        </ion-item>
+      </ion-item-group>
+    </div>
+
+  </ion-card-content>
+ </ion-card>
+
+
+
+</ion-content>
