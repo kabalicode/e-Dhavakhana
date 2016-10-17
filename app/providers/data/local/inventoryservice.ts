@@ -16,6 +16,7 @@ export class LocalDrugInventory {
     this.data = null;
     this.storage = new Storage(SqlStorage);
     this.storage.query("CREATE TABLE IF NOT EXISTS store_drugmaster (drugid INTEGER, drugname TEXT, drugtype TEXT, mfgcode TEXT ,scheduledrug TEXT )");
+  
     console.log("store_drugmaster table created");
     console.log("getalldrugs");
     this.getlocaldrugitems();
@@ -81,7 +82,7 @@ export class LocalDrugInventory {
                 if (responseobject.rows.length >0)
                 {
                         for(var i = 0; i < responseobject.rows.length; i++) {
-                            this.globaldrugslist.push({drugid: responseobject.rows[i].drugid, drugname: responseobject.rows[i].drugname,drugtype: responseobject.rows[i].drugtype});
+                            this.globaldrugslist.push({drugid: responseobject.rows[i].drugid, drugname: responseobject.rows[i].drugname,drugtype: responseobject.rows[i].drugtype,mfgcode: responseobject.rows[i].mfgcode});
                     }
 
                 }
