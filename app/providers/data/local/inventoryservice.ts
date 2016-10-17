@@ -7,20 +7,25 @@ import {Storage, SqlStorage} from 'ionic-angular';
 export class LocalDrugInventory {
  
   data: any;
-  drugdetails:any;
+  //drugdetails:any;
   storage: Storage;
+  public globaldrugslist: Array<Object>;
+
  
   constructor(private http: Http) {
     this.data = null;
     this.storage = new Storage(SqlStorage);
     this.storage.query("CREATE TABLE IF NOT EXISTS store_drugmaster (drugid INTEGER, drugname TEXT, drugtype TEXT, mfgcode TEXT ,scheduledrug TEXT )");
-    console.log("store_drugmaster tabe created");
+    console.log("store_drugmaster table created");
+    console.log("getalldrugs");
+    this.getlocaldrugitems();
+
  }
   
  // returns all drugs in local store 
-  getAllDrugs(item: any){
-        return Promise.resolve(this.storage.query("SELECT * FROM store_drugmaster "));
-  }
+ /* getAllDrugs(){
+        return Promise.resolve(this.storage.query("SELECT drugid,drugname,drugtype FROM store_drugmaster "));
+  }*/
 
   // search a drug in the local store by drug id
   searchDrug(item: any){
@@ -32,6 +37,7 @@ export class LocalDrugInventory {
         this.storage.query("INSERT INTO store_drugmaster(drugid, drugname, drugtype,mfgcode,scheduledrug) VALUES (?,?,?,?,?)", [item.drugid, item.drugname, item.drugtype,
         item.mfgcode, item.scheduledrug]).then((data) => 
         {
+            this.globaldrugslist.push({drugid: item.drugid, drugname: item.drugname,drugtype: item.drugtype});
             return Promise.resolve(true);
         }, (error) => {
             return Promise.resolve(false);
@@ -50,6 +56,45 @@ export class LocalDrugInventory {
       return Promise.resolve(true);
   }
 
+  // search drugs in local store
+  getAllDrugs(){
+      
+      return  this.storage.query("SELECT drugid,drugname,drugtype FROM store_drugmaster");
+      //console.log("getalldrugs" + this.alldrugdataobject);
+      //return this.alldrugdataobject;
+
+  }
+
+   getlocaldrugitems() 
+    {
+      
+        this.getAllDrugs().then((res) => {
+            this.globaldrugslist = [];
+        
+            let responseobject : any;
+            responseobject = res;
+
+            if (typeof responseobject!== 'undefined' && responseobject!== null)
+            {
+                responseobject = responseobject.res;
+                console.log(responseobject.rows.length);
+                if (responseobject.rows.length >0)
+                {
+                        for(var i = 0; i < responseobject.rows.length; i++) {
+                            this.globaldrugslist.push({drugid: responseobject.rows[i].drugid, drugname: responseobject.rows[i].drugname,drugtype: responseobject.rows[i].drugtype});
+                    }
+
+                }
+                console.log("globaldrugslist");
+                console.log(this.globaldrugslist);
+            }
+
+            }, (error) => {
+                console.log("ERROR: " + JSON.stringify(error));
+            
+            });
+
+    }
 
 
 }

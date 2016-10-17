@@ -14,7 +14,7 @@ import {UtilitiesService} from '../../providers/data/utilities/utilitiesservice'
 
 @Component({
   templateUrl: 'build/pages/inventory/add.html',
-  providers: [InventoryService,LocalDrugInventory,UtilitiesService]
+  providers: [InventoryService,UtilitiesService]
 })
 export class AddDrugsPage {
  
@@ -47,6 +47,8 @@ export class AddDrugsPage {
   // busy variables
   searching: any = false;
 
+  
+
   constructor(private nav: NavController, 
               private modalCtrl: ModalController,
               private invtservice:InventoryService,
@@ -76,7 +78,7 @@ export class AddDrugsPage {
         this.packtype = this.adddrug.controls['packtype'];
         this.composition = this.adddrug.controls['composition'];
 
-        
+
 
     }    
 

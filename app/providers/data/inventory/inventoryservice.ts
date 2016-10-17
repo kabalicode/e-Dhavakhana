@@ -17,7 +17,7 @@ export class InventoryService {
     this.favlist = [];
     this.drugdetailsdata = null;
     this.storage = new Storage(SqlStorage);
-    console.log("inside inventory data service");
+    console.log("inside inventory API service");
     this.storage.query("CREATE TABLE IF NOT EXISTS DRUG_FAVORITES (id INTEGER, name TEXT, type TEXT )");
     //console.log("Table DRUG_FAVORITES Created");
   }

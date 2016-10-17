@@ -1,13 +1,18 @@
 import {Component} from "@angular/core";
 import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-angular';
-import {InventoryService} from '../../providers/data/inventory/inventoryservice';
+
 import { DrugdetailsPage } from '../inventory/details';
 import { AddDrugsPage } from '../inventory/add';
 import {Toast} from "ionic-native";
 
+// providers
+import {InventoryService} from '../../providers/data/inventory/inventoryservice';
+import {LocalDrugInventory} from '../../providers/data/local/inventoryservice';
+
+
 @Component({
   templateUrl: 'build/pages/inventory/search.html',
-  providers: [InventoryService]
+  providers : [InventoryService]
 })
 export class DrugsPage {
  
@@ -19,25 +24,33 @@ export class DrugsPage {
     searching: any = false;
     segment:any;
     public favlist: any;
+
+    //drugslist: Array<Object>;
  
     constructor(private nav: NavController, 
                 private modalCtrl: ModalController,
                 private invtservice:InventoryService,
+                private localdrugservice : LocalDrugInventory,
                 public alertCtrl: AlertController) {
-              //set the default to Drugs Inventory tab segment
-              this.segment = "invt";
-              console.log("search page")
-              //retrieve the drug favorites if any
-              this.invtservice.getFavDrugs().then((data) => {
-                    this.favlist = [];
-                    console.log("number of fav:" + data.res.rows.length);
-                    if(data.res.rows.length > 0) {
-                        for(var i = 0; i < data.res.rows.length; i++) {
-                            this.favlist.push({id: data.res.rows.item(i).id, name: data.res.rows.item(i).name,type: data.res.rows.item(i).type });
-                        }
-                    }
-              });
+        
+        //set the default to Drugs Inventory tab segment
+        this.segment = "invt";
+
+        console.log("constructor method");
+
+
+        //retrieve the drug favorites if any
+        this.invtservice.getFavDrugs().then((data) => {
+            this.favlist = [];
+            if(data.res.rows.length > 0) {
+                for(var i = 0; i < data.res.rows.length; i++) {
+                    this.favlist.push({id: data.res.rows.item(i).id, name: data.res.rows.item(i).name,type: data.res.rows.item(i).type });
+                }
+            }
+        });
+
     }
+    
  
     showToast(message, position) {
         Toast.show(message, "short", position).subscribe(
@@ -87,8 +100,36 @@ export class DrugsPage {
         
         var fltvar = this.queryText;
         fltvar = fltvar.toUpperCase();
- 
 
+
+        if (fltvar.trim().length == 0){
+                this.bdrugapiinvoked = false;
+                this.drugsearchcount = -1;
+                this.invtservice.data=null;
+                this.vwdrugs = null;
+                this.modeldrugs = null;
+                this.searching=false;
+        }else
+        {
+
+            this.modeldrugs = this.localdrugservice.globaldrugslist;
+            var serachData=this.modeldrugs;
+            this.searching=false;
+            if (typeof serachData !== 'undefined' && serachData !== null)
+                {
+                    for (var i = 0; i <serachData.length; i++) {
+
+                    var jsval = (serachData[i].drugname);
+
+                    if (jsval.indexOf(fltvar) >= 0) 
+                        filtervalue.push(serachData[i]);
+                    
+                }
+                this.vwdrugs = filtervalue;
+                this.drugsearchcount = filtervalue.length;
+                }
+        }
+/*
         // We will only perform the search if we have 3 or more characters
         if ((fltvar.trim().length == 3) || (fltvar.trim().length >3 && this.bdrugapiinvoked==false)) {
                 this.searching=true;
@@ -129,8 +170,8 @@ export class DrugsPage {
                 this.drugsearchcount = filtervalue.length;
               }
 
-          }        
-        }
+          }       */ 
+    }
   
 
    removeFavorite(slidingItem: ItemSliding, item) {

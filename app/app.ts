@@ -9,6 +9,9 @@ import {InvoiceAddPage} from './pages/invoice-add/invoice-add';
 import {SearchAlternativePage} from './pages/search-alternative/search-alternative';
 import {MymessagesPage} from './pages/mymessages/mymessages';
 
+//import providers
+import {LocalDrugInventory} from './providers/data/local/inventoryservice';
+
 @Component({
   templateUrl: 'build/app.html'
 })
@@ -69,4 +72,4 @@ class MyApp {
   }
 }
 
-ionicBootstrap(MyApp);
+ionicBootstrap(MyApp,[LocalDrugInventory]);
