@@ -31,9 +31,9 @@
 
     <ion-item-sliding *ngFor="let address of vwaddress" [hidden]="address.hide">
 
-      <button ion-item (click)="gotoSupplierDetails(supplier.supplierid)">
+      <button ion-item (click)="chooseItem(address)">
               <h2><strong> {{address.Address}}</strong></h2>
-              <h4>City:<strong>{{address.City}}</strong></h4>
+              <h4>{{address.City}}</h4>
               <p>{{address.State}} - {{address.Country}}</p>
       </button>
 

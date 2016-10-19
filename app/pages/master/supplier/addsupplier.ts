@@ -6,43 +6,54 @@ import { AbstractControl} from '@angular/common';
 import {AutocompleteAddressPage} from './autocomplete';
 
 // providers
-import {InventoryService} from '../../../providers/data/inventory/inventoryservice';
-import {LocalDrugInventory} from '../../../providers/data/local/inventoryservice';
+import {SupplierAPIService} from '../../../providers/data/supplier/supplierservice';
+import {LocalSupplierMaster} from '../../../providers/data/local/supplierservice';
 import {UtilitiesService} from '../../../providers/data/utilities/utilitiesservice'
 
 
 
 @Component({
   templateUrl: 'build/pages/master/supplier/addsupplier.html',
-  providers: [InventoryService,UtilitiesService]
+  providers: [SupplierAPIService,UtilitiesService]
 })
 export class AddSupplierPage {
  
   // form controls
-  drugname: AbstractControl;
-  drugtype: AbstractControl;
-  mfgcode:AbstractControl;
-  scheduledrug:AbstractControl;
-  rackposition:AbstractControl;
-  minqty:AbstractControl;
-  packtype:AbstractControl;
-  composition:AbstractControl;
+  suppliername: AbstractControl;
+  
+  address:AbstractControl;
+  city:AbstractControl;
+  state:AbstractControl;
+  country:AbstractControl;
+  pin:AbstractControl;
+  
+  contactname:AbstractControl;
+  landlineno:AbstractControl;
+  mobileno:AbstractControl;
+  
+  GSTNO:AbstractControl;
+  TINNO:AbstractControl;
 
   // form name  
-  adddrug : any;
+  addsupplier : any;
 
 
   // variables to hold data
-  manufacturer:any;
-  medicinename:any;
-  medicinetype:any;
-  reorderqty:any;
-  packagetype:any;
-  comp: any;
-  schedulemedicine:any;
-  medicineposition:any;
+  vendorname:any;
+  vendoraddress:any;
+  vendorcity:any;
+  vendorstate:any;
+  vendorcountry:any;
+  vendorpin:any;
+  vendorcontactname:any;
+  vendorlandlineno:any;
+  vendormobileno:any;
+  vendorGST:any;
+  vendorTIN:any;
+
+  
   vwmedicinedetails:any;
-  ldrugdetails = 0;
+  
     
   // busy variables
   searching: any = false;
@@ -51,55 +62,88 @@ export class AddSupplierPage {
 
   constructor(private nav: NavController, 
               private modalCtrl: ModalController,
-              private invtservice:InventoryService,
-              private localdrugservice: LocalDrugInventory,
+              private supplierapiservice:SupplierAPIService,
+              private localsupplierservice: LocalSupplierMaster,
               private utildrugservice: UtilitiesService,
               public alertCtrl: AlertController,
               private fb: FormBuilder) 
     {
 
-        this.adddrug = fb.group({
-            drugname: ['', Validators.compose([Validators.required])],
-            drugtype: ['',Validators.compose([Validators.required])],
-            mfgcode: ['',Validators.compose([Validators.required,])],
-            scheduledrug: ['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 ]*'),Validators.maxLength(2)])],
-            rackposition: [''],
-            minqty: ['',Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
-            packtype: [''],
-            composition: ['']
+        this.addsupplier = fb.group({
+            suppliername: ['', Validators.compose([Validators.required])],
+            address: ['',Validators.compose([Validators.required,])],
+            city: [''],
+            state: [''],
+            country: [''],
+            pin: [''],
+            contactname: ['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z]*')])],
+            landlineno: [''],
+            mobileno: ['',Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
+            GSTNO: [''],
+            TINNO: ['']
           });
 
-        this.drugname = this.adddrug.controls['drugname']; 
-        this.drugtype = this.adddrug.controls['drugtype']; 
-        this.mfgcode = this.adddrug.controls['mfgcode'];
-        this.scheduledrug = this.adddrug.controls['scheduledrug'];
-        this.rackposition = this.adddrug.controls['rackposition'];
-        this.minqty = this.adddrug.controls['minqty'];
-        this.packtype = this.adddrug.controls['packtype'];
-        this.composition = this.adddrug.controls['composition'];
+        this.suppliername = this.addsupplier.controls['suppliername']; 
+
+        this.address = this.addsupplier.controls['address'];
+        this.city = this.addsupplier.controls['city'];
+        this.state = this.addsupplier.controls['state'];
+        this.country = this.addsupplier.controls['country'];
+        this.pin = this.addsupplier.controls['pin'];
+
+        this.contactname = this.addsupplier.controls['contactname'];
+        this.landlineno= this.addsupplier.controls['landlineno'];
+        this.mobileno=this.addsupplier.controls['mobileno'];
+        this.GSTNO=this.addsupplier.controls['GSTNO'];
+        this.TINNO=this.addsupplier.controls['TINNO'];
+  
 
 
 
     }    
 
- manageDrug(): void {
+ manageSupplier(): void {
   
    console.log("save!!!!")
     
-    let drugitem = {
-        drugid: null,
-        drugname: this.medicinename.toUpperCase(),
-        drugtype: this.medicinetype.toUpperCase(),
-        mfgcode: this.manufacturer.toUpperCase(),
-        scheduledrug: this.schedulemedicine.toUpperCase(),
-        rackposition: this.medicineposition.toUpperCase(),
-        minqty : this.reorderqty,
-        packagetype: this.packagetype.toUpperCase(),
-        composition: this.comp.toUpperCase()
+    let supplieritem = {
+        supplierid: null,
+        suppliername: this.vendorname.toUpperCase(),
+        address: this.vendoraddress.toUpperCase(),
+        city: this.vendorcity.toUpperCase(),
+        state: this.vendorstate.toUpperCase(),
+        country : this.vendorcountry,
+        pin:  this.vendorpin,
+        contactname: this.vendorcontactname.toUpperCase(),
+        landline:this.vendorlandlineno,
+        mobileno:this.vendormobileno,
+        GST: this.vendorGST,
+        TIN: this.vendorTIN
+
+
     };
 
+
     this.searching=true;
-    this.invtservice.manageDrug(drugitem).then((res) => {
+    let JSONPayload : string;
+
+    JSONPayload = '{"suppliername":' + supplieritem.suppliername + ','
+    JSONPayload = JSONPayload + '"address": {"streetname":' + supplieritem.address + ","
+    JSONPayload = JSONPayload + '"city":' + supplieritem.city + ","
+    JSONPayload = JSONPayload + '"state":' + supplieritem.state + ","
+    JSONPayload = JSONPayload + '"pin" :' + supplieritem.pin + "},"
+
+    JSONPayload = JSONPayload + '"contactinfo": {"contactname":' + supplieritem.contactname + ","
+    JSONPayload = JSONPayload + '"landlineno" :' + supplieritem.landline + ","
+    JSONPayload = JSONPayload + '"mobileno": ' + supplieritem.mobileno + "},"
+
+    JSONPayload = JSONPayload + '"taxdetails": {"TIN#":' + supplieritem.TIN + ","
+    JSONPayload = JSONPayload + '"GST#":' + supplieritem.GST + "}}"
+
+    let JSONObject:any;
+    JSONObject = JSON.parse(JSONPayload);
+
+    this.supplierapiservice.manageSupplier(JSONObject).then((res) => {
  
             //loading.dismiss();
             //this.nav.popToRoot();
@@ -119,8 +163,8 @@ export class AddSupplierPage {
 
                   if (responseobject.response == "SUCESS")
                   {
-                    let sdrugid = responseobject.drugid;
-                    drugitem.drugid = sdrugid; //Append drug id
+                    let ssupplierid = responseobject.supplierid;
+                    supplieritem.supplierid = ssupplierid; //Append drug id
 
                     let soperation = responseobject.operation;
                     let smessage = "";
@@ -128,12 +172,12 @@ export class AddSupplierPage {
 
                     if (soperation == "UPDATE")
                     {
-                      smessage = this.medicinename + " has been sucessfully updated to the drug inventory  !";
-                      stitle = "Update Drug : " //+ this.medicinename;
+                      smessage = this.vendorname + " has been sucessfully updated   !";
+                      stitle = "Update Supplier : " //+ this.vendorname;
                     }else if (soperation == "CREATE")
                     {
-                      smessage = this.medicinename + " has been added sucessfully to the drug inventory !";
-                      stitle = "Add New Drug : " //+ this.medicinename
+                      smessage = this.vendorname + " has been added sucessfully !";
+                      stitle = "Add New Supplier : " //+ this.vendorname
                     }
 
                       let alert = this.alertCtrl.create({
@@ -146,16 +190,19 @@ export class AddSupplierPage {
                               console.log('Ok clicked');
 
                               // store drug info to local store
-                              this.syncdrugdata_local(drugitem); // store data to local
+                              this.syncdrugdata_local(supplieritem); // store data to local
 
-                              this.medicinename="";
-                              this.packagetype ="";
-                              this.schedulemedicine="H";
-                              this.medicineposition=null;
-                              this.manufacturer = "";
-                              this.medicinetype ="";
-                              this.reorderqty=0;
-                              this.comp="";
+                              this.vendorname="";
+                              this.vendoraddress ="";
+                              this.vendorcity="";
+                              this.vendorstate="";
+                              this.vendorcountry = "";
+                              this.vendorpin ="";
+                              this.vendorcontactname="";
+                              this.vendorlandlineno="";
+                              this.vendormobileno="";
+                              this.vendorGST="";
+                              this.vendorTIN="";
  
                             }
                           }
@@ -184,12 +231,18 @@ export class AddSupplierPage {
                               console.log('Ok clicked');
 
                               // store drug info to local store
-                              this.medicinename="";
-                              this.manufacturer = "";
-                              this.medicinetype ="";
-                              this.reorderqty=0;
-                              this.packagetype ="";
-                              this.comp="";
+
+                              this.vendorname="";
+                              this.vendoraddress ="";
+                              this.vendorcity="";
+                              this.vendorstate="";
+                              this.vendorcountry = "";
+                              this.vendorpin ="";
+                              this.vendorcontactname="";
+                              this.vendorlandlineno="";
+                              this.vendormobileno="";
+                              this.vendorGST="";
+                              this.vendorTIN="";
 
                             }
                           }
@@ -199,12 +252,11 @@ export class AddSupplierPage {
 
 
         });
-
   } // manage drug
 
 
 syncdrugdata_local(item:any){
-    this.localdrugservice.searchDrug(item).then((res) => {
+    this.localsupplierservice.searchSupplier(item).then((res) => {
       let responseobject : any;
       responseobject = res;
 
@@ -216,13 +268,13 @@ syncdrugdata_local(item:any){
                       if (responseobject.TOTALRECORDS >0)
                       {
 
-                        this.localdrugservice.updateDrug(item).then((res) => {
+                        this.localsupplierservice.updateSupplier(item).then((res) => {
                          console.log("UPDATE RECORD TO LOCAL STORE");
                           return res;
                         });
                       }else
                       {
-                          this.localdrugservice.addDrug(item).then((res) => {
+                          this.localsupplierservice.addSupplier(item).then((res) => {
                           console.log("INSERT NEW RECORDS TO LOCAL STORE");
                           return  res;
                           });
@@ -233,66 +285,26 @@ syncdrugdata_local(item:any){
  }// store drug data to local
 
 
- showSuggestedDrugsModal () {
+ showSuggestedAddressModal () {
       let modal = this.modalCtrl.create(AutocompleteAddressPage);
       let me = this;
       
       modal.onDidDismiss(data => {
 
       //this.address.place = data;
-      this.medicinename = data;
-      this.medicinename = this.medicinename.toUpperCase();
+      console.log(data);
+      //this.vendorname = data;
+      //this.vendorname = this.vendorname.toUpperCase();
 
-      this.ldrugdetails = 0;
-      if ((this.medicinename.indexOf("|!|DISMISS")>0) || (this.medicinename=="|!|DISMISS"))
+     // this.ldrugdetails = 0;
+       if (typeof data!== 'undefined' && data!== null)
         {
-          this.medicinename = this.medicinename.replace("|!|DISMISS","")
-          this.manufacturer = "";
-          this.medicinetype ="";
-          this.reorderqty=0;
-          this.packagetype ="";
-          this.comp="";
-        }else  
-        {
-            // get detailed drug information.
-           
-            this.utildrugservice.getDrugDetails(this.medicinename).then((data) => {
-
-                this.vwmedicinedetails = data;
-                 
-                if (typeof this.vwmedicinedetails!== 'undefined' && this.vwmedicinedetails!== null)
-                {
-                   this.ldrugdetails = 1;
-                   this.vwmedicinedetails = this.vwmedicinedetails.response;
-                   if(this.vwmedicinedetails) 
-                   {
-                     if (typeof this.vwmedicinedetails.constituents !== 'undefined' && this.vwmedicinedetails.constituents!==null)
-                     {
-                       var mixture="";
-                       for (var index=0 ; index < this.vwmedicinedetails.constituents.length; index++)
-                       {
-                         mixture = mixture + this.vwmedicinedetails.constituents[index].name + "-" + this.vwmedicinedetails.constituents[index].strength + ";" ;
-                         mixture = mixture.replace("\r","");
-                       }
-                     }
-
-                     this.comp = mixture.toUpperCase();
-
-                      this.vwmedicinedetails = this.vwmedicinedetails.medicine;
-                      this.manufacturer = this.vwmedicinedetails.manufacturer;
-                      
-                      this.medicinetype = this.vwmedicinedetails.category;
-                      this.medicinetype = this.medicinetype.toUpperCase();
-                      
-                      this.packagetype = this.vwmedicinedetails.package_type;
-                      this.packagetype = this.packagetype.toUpperCase();
-
-            
-                   }   
-                }
-
-            }); 
-        }   
+          this.vendoraddress = data.Address;
+          this.vendorcity = data.City;
+          this.vendorstate= data.State;
+          this.vendorcountry =data.Country;
+          this.vendorpin = data.Pincode;
+        }
     });
    
     modal.present();

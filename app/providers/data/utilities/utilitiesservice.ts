@@ -297,7 +297,7 @@ findAddress(pinno: string){
   
     url=`https://www.whizapi.com/api/v2/util/ui/in/indian-city-by-postal-code?project-app-key=jtw4hxuywp9kl64yultf8ejj&pin=${pinno}`
 
-    console.log(url);
+   // console.log(url);
 
     //console.log(url);
     this.http.get(url)

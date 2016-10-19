@@ -18,92 +18,55 @@
 
 
   <ion-list inset>
-      <form [formGroup]="adddrug" (ngSubmit)="manageDrug()">
+      <form [formGroup]="addsupplier" (ngSubmit)="manageSupplier()">
 
 
-          <!-- Drug Name -->
-          
-          <ion-item [class.error]="!drugname.valid && drugname.touched">
+          <!-- Supplier Name -->
+          <ion-item [class.error]="!suppliername.valid && suppliername.touched">
               <!-- <ion-label color="primary" stacked><strong>Drug Name</strong></ion-label> -->
-              <ion-label color="primary" stacked><strong>Drug Name</strong></ion-label>
-              <ion-input type="text" (click)="showSuggestedDrugsModal()" (touchstart) ="showSuggestedDrugsModal()" value="" [(ngModel)]="medicinename" name="medicinename" formControlName="drugname" required placeholder="Select/Enter drug name"></ion-input>
+              <ion-label color="primary" stacked><strong>Supplier Name</strong></ion-label>
+              <ion-input type="text"  value="" [(ngModel)]="vendorname" name="vendorname" formControlName="suppliername" required placeholder="Enter Supplier Name"></ion-input>
+          </ion-item>
+          <p *ngIf="suppliername.hasError('required') && suppliername.touched" danger>*Please provide valid supplier name</p>
+
+          <br>
+
+          <!-- Supplier Address -->
+          <ion-item>
+              <ion-label color="primary" stacked><strong>Address:</strong></ion-label>
+              <ion-input type="text" (click)="showSuggestedAddressModal()" (touchstart) ="showSuggestedAddressModal()" value="" formControlName="address" placeholder="Please click here" [(ngModel)]="vendoraddress" name="vendoraddress"></ion-input>         
+              <ion-input type="text" value="" formControlName="city" placeholder="city" [(ngModel)]="vendorcity" name="vendorcity"></ion-input>
+              <ion-input type="text" value="" formControlName="state" placeholder="state" [(ngModel)]="vendorstate" name="vendorstate"></ion-input>
+              <ion-input type="text" value="" formControlName="country" placeholder="country" [(ngModel)]="vendorcountry" name="vendorcountry"></ion-input>
+              <ion-input type="text" value="" formControlName="pin" placeholder="pin" [(ngModel)]="vendorpin" name="vendorpin"></ion-input> 
           </ion-item>
 
           <br>
 
-          <ion-item class="for-select">
-              <ion-label>Drug Type</ion-label>
-              <ion-select cancelText="Cancel" okText="Ok" formControlName="drugtype"  [(ngModel)]="medicinetype" name="medicinetype" placeholder="Select Drug Type">
-                  <ion-option value="CAPSULE">CAPSULE</ion-option>
-                  <ion-option value="CREAM">CREAM</ion-option>
-                  <ion-option value="DROPS">DROPS</ion-option>
-                  <ion-option value="POWDER">POWDER</ion-option>
-                  <ion-option value="SYRUP">SYRUP</ion-option>
-                  <ion-option value="TABLET">TABLET</ion-option>
-              </ion-select>
+          <!-- Contact Details  -->   
+          <ion-item>
+              <ion-label color="primary" stacked><strong>Contact Details:</strong></ion-label>
+              <ion-input type="text"  value="" formControlName="contactname" placeholder="Please provide contact person name(*)" [(ngModel)]="vendorcontactname" name="vendorcontactname"></ion-input>         
+              <ion-input type="text" value="" formControlName="landlineno" placeholder="office or landline number" [(ngModel)]="vendorlandlineno" name="vendorlandlineno"></ion-input>
+              <ion-input type="text" value="" formControlName="mobileno" placeholder="Enter Mobile Number(*)" [(ngModel)]="vendormobileno" name="vendormobileno"></ion-input>
           </ion-item>
-
-          <br>
-
-          <!-- MFG Code  -->   
-          <ion-item [class.error]="!mfgcode.valid && mfgcode.touched">
-              <ion-label color="primary" stacked><strong>MFG Name</strong></ion-label>
-              <ion-input type="text" value="" formControlName="mfgcode" placeholder="E.g. RANBAXY" [(ngModel)]="manufacturer" name="manufacturer"></ion-input>         
-          </ion-item>
-
-          <p *ngIf="mfgcode.hasError('required') && mfgcode.touched" danger>*Please provide drug manufacturer name</p>
 
           <br>  
 
-          <!-- Schedule Drug  -->   
-          <ion-item [class.error]="!scheduledrug.valid && scheduledrug.touched">
-              <ion-label color="primary" stacked><strong>Scheduled Drug</strong></ion-label>
-              <ion-input type="text"  formControlName="scheduledrug" [(ngModel)]="schedulemedicine" name="schedulemedicine"  placeholder="E.g. H"></ion-input>  
+          <!-- Tax Details  -->   
+          <ion-item >
+              <ion-label color="primary" stacked><strong>Tax Details:</strong></ion-label>
+              <ion-input type="text"  formControlName="GSTNO" [(ngModel)]="vendorGST" name="vendorGST"  placeholder="Enter GST#"></ion-input> 
+              <ion-input type="text"  formControlName="TINNO" [(ngModel)]="vendorTIN" name="vendorTIN"  placeholder="Enter TIN#"></ion-input>   
           </ion-item>
-          
-          <p *ngIf="scheduledrug.hasError('required') && scheduledrug.touched" danger>*Please enter schedule code of the drug.</p>
           
           <br> 
-
-          <!-- re-order levels -->
-          <ion-item [class.error]="!minqty.valid && minqty.touched">
-              <ion-label color="primary" stacked><strong>Inventory Re-Order Quantity({{medicinetype}}) </strong></ion-label>
-              <ion-input type="text" value="" formControlName="minqty"  [(ngModel)]="reorderqty" name="reorderqty" placeholder="E.g. 100"></ion-input>         
-          </ion-item>
-
-          <p *ngIf="minqty.hasError('required') && minqty.touched" danger>*Please specify the minimum re-order qty that you would like to maintain in store.</p>
-          <p *ngIf="minqty.hasError('pattern') && minqty.touched" danger>*Please specify the re-order qty in numbers.</p>
-          <br>
-
-          <!-- Rack Position -->   
-          <ion-item [class.error]="!rackposition.valid && rackposition.touched">
-              <ion-label color="primary" stacked><strong>Rack Position</strong></ion-label>
-              <ion-input type="text" value="" formControlName="rackposition" [(ngModel)]="medicineposition" name="medicineposition" placeholder="E.g. A"></ion-input>         
-          </ion-item>
-
-          <p *ngIf="rackposition.hasError('required') && rackposition.touched" danger>*Please specify the rack poistion where drug will be placed in store.</p>
-
-        
-          <!-- packsize -->
-          <br>
-          <ion-item >
-              <ion-label color="primary" stacked><strong>Package Type </strong></ion-label>
-              <ion-input type="text" value="" formControlName="packtype"  [(ngModel)]="packagetype" name="packagetype" placeholder="E.g. 10 TABLETS"></ion-input>         
-          </ion-item>
-          
-          <!-- constitunets -->
-          <br>
-          <ion-item >
-              <ion-label color="primary" stacked><strong>composition </strong></ion-label>
-              <ion-input type="text" value="" formControlName="composition" [(ngModel)]="comp" name="comp" placeholder="E.g. Albendazole: 400 mg"></ion-input>         
-          </ion-item>
-      <button type="submit" [disabled]="!adddrug.valid">Submit</button>
+         
+      <button type="submit" [disabled]="!addsupplier.valid">Submit</button>
       
       </form>
         <div *ngIf="searching" class="spinner-container">
             <ion-spinner></ion-spinner>
         </div> 
   </ion-list>
-
-
 </ion-content>

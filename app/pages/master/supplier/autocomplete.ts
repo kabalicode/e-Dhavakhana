@@ -24,10 +24,8 @@ export class AutocompleteAddressPage {
   }
 
   dismiss() {
-    var strdrugname = this.autocomplete.pinquery;
-    strdrugname = strdrugname + "|!|DISMISS"
-    strdrugname = strdrugname.toUpperCase();
-    this.viewCtrl.dismiss(strdrugname);
+   
+    this.viewCtrl.dismiss();
   }
 
   chooseItem(item: any) {
