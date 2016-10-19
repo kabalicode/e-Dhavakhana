@@ -83,67 +83,36 @@ export class InvoicePage {
  
     updatesuppliersearch(){
         this.vwsuppliers = null;
-        var filtervalue = [];
-		
-        
+        var filtervalue = [];        
         var fltvar = this.queryText;
         fltvar = fltvar.toUpperCase();
  
         console.log("query text:" + this.queryText);
         // We will only perform the search if we have 3 or more characters
-        if ((fltvar.trim().length == 3) || (fltvar.trim().length >3 && this.binvoiceapiinvoked==false)) {
+        if ((fltvar.trim().length > 2 )) {
                 
                 let loading = this.loadingCtrl.create({
-                spinner: 'hide',
-                content: 'Loading Please Wait...'
+                    content: 'Please Wait...'
                 });
 
                 loading.present();
                 
-                this.searching=true;
                 this.invoiceService.getSuppliers(fltvar).then((data) => {
-                //console.log(data);
-                //this.vwdrugs = data;
-                this.modelsupplier = data;
-                //this.adddrugimages();
-                this.vwsuppliers = this.modelsupplier;
-                console.log("suppliers result:" + JSON.stringify(this.vwsuppliers));
-                this.binvoiceapiinvoked = true;
-                this.invoiceService.data=null;
-                console.log("suppliers result length:" + this.vwsuppliers.length);
-                this.suppliersearchcount = this.vwsuppliers.length;
-                this.searching=false;
+                    this.modelsupplier = data;
+                    this.vwsuppliers = this.modelsupplier;
+                    console.log("suppliers result:" + JSON.stringify(this.vwsuppliers));
+                    console.log("suppliers result length:" + this.vwsuppliers.length);
+                    this.suppliersearchcount = this.vwsuppliers.length;
+                    
+                    loading.dismiss();
+                });
 
-                loading.dismiss();
-                //console.log("drugcount inside if:" + this.drugsearchcount);
-            });
-
-        }else if (fltvar.trim().length == 0){
-                this.binvoiceapiinvoked = false;
+        }else{
                 this.suppliersearchcount = -1;
-                this.invoiceService.data=null;
                 this.vwsuppliers = null;
                 this.modelsupplier = null;
-                this.searching=false;
-        }else {
-            var serachData=this.modelsupplier;
-            this.searching=false;
-            if (typeof serachData !== 'undefined' && serachData !== null)
-              {
-                    for (var i = 0; i <serachData.length; i++) {
-
-                    var jsval = (serachData[i].drugname);
-
-                    if (jsval.indexOf(fltvar) >= 0) 
-                        filtervalue.push(serachData[i]);
-                    
-                }
-                this.vwsuppliers = filtervalue;
-                this.suppliersearchcount = filtervalue.length;
-              }
-
-          }        
-        }
+        }        
+    }
   
 
    removeFavorite(slidingItem: ItemSliding, item) {
@@ -190,8 +159,9 @@ export class InvoicePage {
    }
 
    addNewInvoice(){
-        let invoiceAddPageModal = this.modalCtrl.create(InvoiceAddPage);
-        invoiceAddPageModal.present();
+        /*let invoiceAddPageModal = this.modalCtrl.create(InvoiceAddPage);
+        invoiceAddPageModal.present();*/
+        this.nav.push(InvoiceAddPage);
     }
  
 }

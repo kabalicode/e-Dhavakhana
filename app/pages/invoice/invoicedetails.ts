@@ -27,13 +27,18 @@ export class InvoiceDetailsPage {
             this.vwsupplierid = supplierId;
 
             this.hidefilter = true;
-
+            let loadctrl = loadingCtrl.create(
+                {
+                    content: "Please wait",
+                });
+            loadctrl.present();
             //retrieve the invoices for a suppliers if any
-              this.invoiceService.getSupplierInvoices(supplierId).then((data) => {
-                  this.invoicedata = data;
-                  console.log("invoice data:" + JSON.stringify(data));
-                  this.period = 6;
-              });
+            this.invoiceService.getSupplierInvoices(supplierId).then((data) => {
+                this.invoicedata = data;
+                console.log("invoice data:" + JSON.stringify(data));
+                this.period = 6;
+                loadctrl.dismiss();
+            });
     }
 
     togglefilter(){
@@ -44,33 +49,40 @@ export class InvoiceDetailsPage {
     }
 
     openInvoiceDetailsModal(invoiceId){
-        let invoicedetailsModal = this.modalCtrl.create(InvoiceDetailsModal, {invoiceno:invoiceId});
-        invoicedetailsModal.present();
+        let loadctrl = this.loadingCtrl.create(
+                {
+                    content: "Loading ....",
+                });
+        loadctrl.present();
+        
+        this.invoiceService.getInvoiceDetails(invoiceId).then((data) => {
+                console.log("invoice detailsresult:" + data);
+                
+
+                loadctrl.onDidDismiss(() => {
+                    let invoicedetailsModal = this.modalCtrl.create(InvoiceDetailsModal, {invoicedtlsdata:data});
+                    invoicedetailsModal.present();
+                });
+
+                loadctrl.dismiss();
+                
+              }); 
     }
 
 }
 
 @Component({
-  templateUrl: 'build/pages/invoice/invoicedetailsmodal.html',
-  providers: [InvoiceService]
+  templateUrl: 'build/pages/invoice/invoicedetailsmodal.html'
 })
 
 export class InvoiceDetailsModal {
 
     invoicedtldata:any;
 
-    constructor(private nav: NavController, 
+    constructor(
                 public navParams: NavParams, 
-                private invoiceService:InvoiceService,
-                public viewCtrl: ViewController,
-                public alertCtrl: AlertController, public loadingCtrl:LoadingController) {
-            var invoiceid = navParams.data.invoiceno;
-            console.log("invoice id:" + invoiceid);
-
-            this.invoiceService.getInvoiceDetails(invoiceid).then((data) => {
-                  this.invoicedtldata = data;
-                  console.log("invoice details:" + JSON.stringify(data));
-              });
+                public viewCtrl: ViewController) {
+            this.invoicedtldata = navParams.data.invoicedtlsdata;
     }
 
     dismiss(){
