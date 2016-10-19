@@ -180,11 +180,11 @@ this.drugdetailsdata = null;
   
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        //console.log("inside review code");
-        //console.log(JSON.stringify(review));
-        this.http.post('https://63hc0yw0n6.execute-api.us-west-2.amazonaws.com/Inventory/drugs', JSON.stringify(supplieritem), {headers: headers})
+        console.log(JSON.stringify(supplieritem));
+        this.http.post('https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/storemaster/supplier', supplieritem, {headers: headers})
           .subscribe((data) => {
             resolve(data);
+            console.log(data);
           });
   
       });

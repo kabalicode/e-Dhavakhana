@@ -15,7 +15,8 @@ export class LocalSupplierMaster {
   constructor(private http: Http) {
     this.data = null;
     this.storage = new Storage(SqlStorage);
-    this.storage.query("CREATE TABLE IF NOT EXISTS store_suppliermaster (supplierid TEXT, suppliername TEXT, suppliertown TEXT)");
+    
+    this.storage.query("CREATE TABLE IF NOT EXISTS store_suppliermaster (supplierid TEXT, suppliername TEXT, suppliercity TEXT)");
   
     console.log("store_suppliermaster table created");
     //console.log("getalldrugs");
@@ -31,9 +32,9 @@ export class LocalSupplierMaster {
 
   // add drug to local store
     addSupplier(item:any){
-        this.storage.query("INSERT INTO store_suppliermaster(supplierid, suppliername,suppliertown) VALUES (?,?,?)", [item.supplierid, item.suppliername,item.suppliertown]).then((data) => 
+        this.storage.query("INSERT INTO store_suppliermaster(supplierid, suppliername,suppliercity) VALUES (?,?,?)", [item.supplierid, item.suppliername,item.suppliercity]).then((data) => 
         {
-            this.globalsupplierlist.push({supplierid: item.supplierid, suppliername: item.supplierid, suppliertown: item.suppliertown });
+            this.globalsupplierlist.push({supplierid: item.supplierid, suppliername: item.supplierid, suppliercity: item.suppliercity });
             return Promise.resolve(true);
         }, (error) => {
             return Promise.resolve(false);
@@ -43,7 +44,7 @@ export class LocalSupplierMaster {
 
     // update a drug in local store
     updateSupplier(item:any){
-      this.storage.query("UPDATE store_suppliermaster SET suppliername =?, suppliertown=? WHERE supplierid = ?", [item.suppliername,item.suppliertown,item.supplierid]).then((data) => {
+      this.storage.query("UPDATE store_suppliermaster SET suppliername =?, suppliercity=? WHERE supplierid = ?", [item.suppliername,item.suppliercity,item.supplierid]).then((data) => {
           return Promise.resolve(true);
       }, (error) => {
            return Promise.resolve(false);
@@ -54,7 +55,7 @@ export class LocalSupplierMaster {
   // search drugs in local store
   getAllSuppliers(){
       
-      return  this.storage.query("SELECT supplierid, suppliername,suppliertown FROM store_suppliermaster");
+      return  this.storage.query("SELECT supplierid, suppliername,suppliercity FROM store_suppliermaster");
       //console.log("getalldrugs" + this.alldrugdataobject);
       //return this.alldrugdataobject;
 
@@ -76,7 +77,7 @@ export class LocalSupplierMaster {
                 if (responseobject.rows.length >0)
                 {
                         for(var i = 0; i < responseobject.rows.length; i++) {
-                            this.globalsupplierlist.push({supplierid: responseobject.rows[i].supplierid, suppliername: responseobject.rows[i].suppliername,suppliertown: responseobject.rows[i].suppliertown});
+                            this.globalsupplierlist.push({supplierid: responseobject.rows[i].supplierid, suppliername: responseobject.rows[i].suppliername,suppliercity: responseobject.rows[i].suppliercity});
                     }
 
                 }
