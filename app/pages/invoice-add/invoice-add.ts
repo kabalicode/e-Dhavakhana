@@ -25,6 +25,7 @@ export class InvoiceAddPage {
   suppliers:any;
   suggestions:any;
   showlist:boolean = false;
+  searching:boolean = false;
   queryText:string = "";
   selectedsupplierid:any;
   selectedsuppliername:any;
@@ -56,9 +57,14 @@ export class InvoiceAddPage {
    lookupSupplier(){
      console.log("into method");
      if(this.queryText.trim().length >2){
+<<<<<<< HEAD
+=======
+      this.searching = true;
+>>>>>>> origin/master
       this.invoiceService.getSuppliers(this.queryText).then((data) => {
           this.suggestions = data;
           console.log("results: " + this.suggestions);
+          this.searching = false;
           this.showlist = true;
           console.log("showlist flag:" + this.showlist);
       });

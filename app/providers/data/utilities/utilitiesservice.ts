@@ -15,7 +15,6 @@ export class UtilitiesService {
   suggesteddrugdata: any;
   drugdetails:any;
   alternativedrugs: any;
-  addressdetails:any;
 
 
   constructor(private http: Http) {
@@ -275,41 +274,5 @@ getDrugDetails(drugname: string){
 
     */
   }
-
-
-findAddress(pinno: string){
- 
-   this.addressdetails = null;
-    if (this.addressdetails) {
-      return Promise.resolve(this.addressdetails);
-    }
-
-
- // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
- // API CALL START
-
-
-
- return new Promise(resolve => {
-    var url = "";
-  
-    url=`https://www.whizapi.com/api/v2/util/ui/in/indian-city-by-postal-code?project-app-key=jtw4hxuywp9kl64yultf8ejj&pin=${pinno}`
-
-   // console.log(url);
-
-    //console.log(url);
-    this.http.get(url)
-    
-        .map(res => res.json())
-        .subscribe(data => {
-          this.addressdetails = data;
-          resolve(this.addressdetails);
-        });
-    });    //  API CALL END 
-
-   
-  }
-
-
 }
 

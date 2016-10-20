@@ -31,6 +31,13 @@ ion-card ion-card-header{
   overflow    : hidden;
 }
 
+.autocomplete ion-spinner {
+  margin-left:   500px;
+  margin-top:   -32px;
+  margin-bottom: 26px;
+  margin-right: 8px;
+}
+
 .autocomplete ion-list {
   margin    :   8px;
   margin-top:   -8px;
