@@ -12,12 +12,15 @@
 
     <div class="autocomplete" *ngIf="selectedsupplierid == undefined" > <!-- This class is key for representing the autosuggest results -->
     <ion-searchbar [(ngModel)]="queryText" placeholder="Search Supplier (Enter min 3 characters)" (ionInput)="lookupSupplier()"></ion-searchbar>
+    <ion-spinner *ngIf="searching" icon="spiral"></ion-spinner>
     <ion-list *ngIf="suggestions && suggestions.length > 0 && showlist">
         <ion-item *ngFor="let suggestion of suggestions" (click)="select(suggestion)">
             {{suggestion.suppliername}}
         </ion-item>
     </ion-list>
     </div>
+    
+    <div *ngIf="showlist && suggestions.length==0"> <p class="errorText" >No Supplier found with given name.</p></div>
 
     <ion-item *ngIf="selectedsupplierid != undefined">
         <button ion-button outline item-right icon-right (click)="clearSupplierName()">
