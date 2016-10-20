@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ViewController} from 'ionic-angular';
+import {ViewController,LoadingController} from 'ionic-angular';
 import {UtilitiesService} from '../../../providers/data/utilities/utilitiesservice'
 
 @Component({
@@ -12,10 +12,10 @@ export class AutocompleteAddressPage {
   autocomplete;
   result;
   vwaddress:any;
-  searching: any = false;
+  //searching: any = false;
   //service = new google.maps.places.AutocompleteService();
 
-  constructor (public viewCtrl: ViewController, private drugutilservice:UtilitiesService) {
+  constructor (public viewCtrl: ViewController, private drugutilservice:UtilitiesService,public loadingCtrl:LoadingController) {
    // this.autocompleteItems = [];
     this.autocomplete = {
       pinquery: ''
@@ -44,14 +44,21 @@ export class AutocompleteAddressPage {
 
     if ((this.autocomplete.pinquery.trim().length == 6))
     {
-        this.searching=true;
+        //this.searching=true;
+        let loading = this.loadingCtrl.create({
+                    content: 'Please Wait...'
+        });
+
+        loading.present();
+        
         this.drugutilservice.findAddress(this.autocomplete.pinquery).then((data) => {
 
-                    this.searching=false;
+                    //this.searching=false;
                     this.vwaddress = data;
                     this.drugutilservice.addressdetails=null;
                     //this.autocompleteItems = [];
                     me.result="";
+                    loading.dismiss();
                     
                     this.vwaddress = this.vwaddress.Data;
                     console.log(this.vwaddress);

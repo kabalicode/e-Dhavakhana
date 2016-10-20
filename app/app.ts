@@ -12,6 +12,7 @@ import {SupplierSearchPage} from './pages/master/supplier/search';
 
 //import providers
 import {LocalDrugInventory} from './providers/data/local/inventoryservice';
+import {LocalSupplierMaster} from './providers/data/local/supplierservice';
 
 @Component({
   templateUrl: 'build/app.html'
@@ -74,4 +75,4 @@ class MyApp {
   }
 }
 
-ionicBootstrap(MyApp,[LocalDrugInventory]);
+ionicBootstrap(MyApp,[LocalDrugInventory,LocalSupplierMaster]);

@@ -17,12 +17,12 @@
 </ion-header>
 
 <ion-content class="drugshome">
-  <div *ngIf="segment=='invt'">
+  <div>
 
     <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="updatesuppliersearch()" placeholder="Search By Supplier Name">
     </ion-searchbar>
 
-  <div *ngIf="drugsearchcount == 0">
+  <div *ngIf="suppliersearchcount == 0">
     <ion-item>
       No supplier(s) found  with a supplier name : <strong> {{queryText}} </strong> . Please check your search
       criteria and try with a different supplier name.
@@ -39,7 +39,7 @@
 
       <button ion-item (click)="gotoSupplierDetails(supplier.supplierid)">
               <h2><strong> {{supplier.suppliername}}</strong></h2>
-              <h4>Supplier Town:<strong>{{supplier.suppliertown}}</strong></h4>
+              <h4>Supplier Town:<strong>{{supplier.suppliercity}}</strong></h4>
               <p>{{supplier.supplierid}}</p>
       </button>
 

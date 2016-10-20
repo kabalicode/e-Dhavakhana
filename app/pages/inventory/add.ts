@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import { Page,NavController,AlertController,ModalController } from 'ionic-angular';
+import { Page,NavController,AlertController,ModalController,LoadingController } from 'ionic-angular';
 import {ViewController} from 'ionic-angular';
 import {Validators, FormBuilder } from '@angular/forms';
 import { AbstractControl} from '@angular/common';
@@ -45,7 +45,7 @@ export class AddDrugsPage {
   ldrugdetails = 0;
     
   // busy variables
-  searching: any = false;
+ // searching: any = false;
 
   
 
@@ -55,7 +55,8 @@ export class AddDrugsPage {
               private localdrugservice: LocalDrugInventory,
               private utildrugservice: UtilitiesService,
               public alertCtrl: AlertController,
-              private fb: FormBuilder) 
+              private fb: FormBuilder,
+              public loadingCtrl:LoadingController) 
     {
 
         this.adddrug = fb.group({
@@ -98,14 +99,15 @@ export class AddDrugsPage {
         composition: this.comp.toUpperCase()
     };
 
-    this.searching=true;
+      let loading = this.loadingCtrl.create({
+                  content: 'Please Wait...'
+      });
     this.invtservice.manageDrug(drugitem).then((res) => {
  
             //loading.dismiss();
             //this.nav.popToRoot();
             console.log("success!!")  
-            //console.log(res);
-            this.searching=false;
+
 
             let responseobject : any;
             responseobject = res;
@@ -144,7 +146,7 @@ export class AddDrugsPage {
                             text: 'Ok',
                             handler: () => {
                               console.log('Ok clicked');
-
+                               loading.dismiss();
                               // store drug info to local store
                               this.syncdrugdata_local(drugitem); // store data to local
 
@@ -161,6 +163,7 @@ export class AddDrugsPage {
                           }
                         ]
                       });
+                      loading.dismiss();
                       alert.present();
 
                   }
@@ -173,31 +176,6 @@ export class AddDrugsPage {
 
         }, (err) => {
             console.log(err);
-            this.searching = false;
-            let alert = this.alertCtrl.create({
-                        title: "Error!!",
-                        message: "Error occured while updating the store inventory. Please contact support tam" ,
-                        buttons: [
-                          {
-                            text: 'Ok',
-                            handler: () => {
-                              console.log('Ok clicked');
-
-                              // store drug info to local store
-                              this.medicinename="";
-                              this.manufacturer = "";
-                              this.medicinetype ="";
-                              this.reorderqty=0;
-                              this.packagetype ="";
-                              this.comp="";
-
-                            }
-                          }
-                        ]
-                      });
-                      alert.present();
-
-
         });
 
   } // manage drug

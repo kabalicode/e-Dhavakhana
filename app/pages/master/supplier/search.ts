@@ -12,17 +12,17 @@ import {LocalSupplierMaster} from '../../../providers/data/local/supplierservice
 
 @Component({
   templateUrl: 'build/pages/master/supplier/search.html',
-  providers : [LocalSupplierMaster,SupplierAPIService]
+  providers : [SupplierAPIService]
 })
 export class SupplierSearchPage {
  
     vwsuppliers: any;
     modelsuppliers:any;
-    bdrugapiinvoked= false;
-    drugsearchcount = -1;
+   
+    suppliersearchcount = -1;
     queryText = '';
     searching: any = false;
-    segment:any;
+    //segment:any;
     //public favlist: any;
 
     //drugslist: Array<Object>;
@@ -34,20 +34,12 @@ export class SupplierSearchPage {
                 public alertCtrl: AlertController) {
         
         //set the default to Drugs Inventory tab segment
-       this.segment = "invt";
+      // this.segment = "invt";
 
         console.log("constructor method");
 
 
-        //retrieve the drug favorites if any
-     /*   this.invtservice.getFavDrugs().then((data) => {
-            this.favlist = [];
-            if(data.res.rows.length > 0) {
-                for(var i = 0; i < data.res.rows.length; i++) {
-                    this.favlist.push({id: data.res.rows.item(i).id, name: data.res.rows.item(i).name,type: data.res.rows.item(i).type });
-                }
-            }
-        });*/
+
 
     }
     
@@ -60,11 +52,11 @@ export class SupplierSearchPage {
         var fltvar = this.queryText;
         fltvar = fltvar.toUpperCase();
 
- /*
-        if (fltvar.trim().length == 0){
-                this.bdrugapiinvoked = false;
-                this.drugsearchcount = -1;
-                this.invtservice.data=null;
+ 
+
+           if (fltvar.trim().length == 0){
+               
+                this.suppliersearchcount = -1;
                 this.vwsuppliers = null;
                 this.modelsuppliers = null;
                 this.searching=false;
@@ -78,47 +70,6 @@ export class SupplierSearchPage {
                 {
                     for (var i = 0; i <serachData.length; i++) {
 
-                    var jsval = (serachData[i].drugname);
-
-                    if (jsval.indexOf(fltvar) >= 0) 
-                        filtervalue.push(serachData[i]);
-                    
-                }
-                this.vwsuppliers = filtervalue;
-                this.drugsearchcount = filtervalue.length;
-                }
-        }*/
-
-        // We will only perform the search if we have 3 or more characters
-        if ((fltvar.trim().length == 3) || (fltvar.trim().length >3 && this.bdrugapiinvoked==false)) {
-                this.searching=true;
-                this.supplierapiservice.searchSupplier(fltvar).then((data) => {
-                //console.log(data);
-                //this.vwdrugs = data;
-                this.modelsuppliers = data;
-                //this.adddrugimages();
-                this.vwsuppliers = this.modelsuppliers;
-                this.bdrugapiinvoked = true;
-                this.supplierapiservice.data=null;
-                this.drugsearchcount = this.vwsuppliers.length;
-                this.searching=false;
-                //console.log("drugcount inside if:" + this.drugsearchcount);
-            });
-
-        }else if (fltvar.trim().length == 0){
-                this.bdrugapiinvoked = false;
-                this.drugsearchcount = -1;
-                this.supplierapiservice.data=null;
-                this.vwsuppliers = null;
-                this.modelsuppliers = null;
-                this.searching=false;
-        }else {
-            var serachData=this.modelsuppliers;
-            this.searching=false;
-            if (typeof serachData !== 'undefined' && serachData !== null)
-              {
-                    for (var i = 0; i <serachData.length; i++) {
-
                     var jsval = (serachData[i].suppliername);
 
                     if (jsval.indexOf(fltvar) >= 0) 
@@ -126,10 +77,9 @@ export class SupplierSearchPage {
                     
                 }
                 this.vwsuppliers = filtervalue;
-                this.drugsearchcount = filtervalue.length;
-              }
-
-          }       
+                this.suppliersearchcount = filtervalue.length;
+                }
+        }    
     }
   
 

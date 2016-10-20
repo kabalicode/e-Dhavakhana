@@ -38,7 +38,7 @@ getSuggestedDrugs(searchParam: string){
     }
 
     // Stub data during unit testing
-
+/*
   this.suggesteddrugdata = [
   {
     "DrugName": "Broncorex (100 ml)" 
@@ -66,9 +66,9 @@ getSuggestedDrugs(searchParam: string){
   }
 ];
     return Promise.resolve(this.suggesteddrugdata); 
+*/
 
 
-/*     
  // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
 
@@ -90,7 +90,7 @@ getSuggestedDrugs(searchParam: string){
           resolve(this.suggesteddrugdata);
         });
     });    //  API CALL END 
-*/
+
 
 }
 
@@ -105,6 +105,7 @@ getAlternativeDrugs(searchParam: string){
 
     // Stub data during unit testing
     //console.log("utilities service here")
+    /*
   this.alternativedrugs = [
   {
     "DrugName": "Terkof B (100 ml)",
@@ -208,10 +209,10 @@ getAlternativeDrugs(searchParam: string){
   }
 ];
     return Promise.resolve(this.alternativedrugs); 
+*/
 
 
 
-/*     
  // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
 
@@ -231,9 +232,6 @@ getAlternativeDrugs(searchParam: string){
           resolve(this.alternativedrugs);
         });
     });    //  API CALL END 
-  
- */
-
 
 }
 

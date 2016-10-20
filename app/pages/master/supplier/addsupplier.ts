@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import { Page,NavController,AlertController,ModalController } from 'ionic-angular';
+import { Page,NavController,AlertController,ModalController , LoadingController} from 'ionic-angular';
 import {ViewController} from 'ionic-angular';
 import {Validators, FormBuilder } from '@angular/forms';
 import { AbstractControl} from '@angular/common';
@@ -56,7 +56,7 @@ export class AddSupplierPage {
   
     
   // busy variables
-  searching: any = false;
+  //searching: any = false;
 
   
 
@@ -66,21 +66,22 @@ export class AddSupplierPage {
               private localsupplierservice: LocalSupplierMaster,
               private utildrugservice: UtilitiesService,
               public alertCtrl: AlertController,
-              private fb: FormBuilder) 
+              private fb: FormBuilder,
+              public loadingCtrl:LoadingController) 
     {
 
         this.addsupplier = fb.group({
             suppliername: ['', Validators.compose([Validators.required])],
             address: ['',Validators.compose([Validators.required,])],
-            city: [''],
+            city: ['',],
             state: [''],
             country: [''],
             pin: [''],
-            contactname: ['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z]*')])],
-            landlineno: [''],
-            mobileno: ['',Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
-            GSTNO: [''],
-            TINNO: ['']
+            contactname: ['',Validators.compose([Validators.required,])],
+            landlineno: ['',Validators.compose([Validators.required,])],
+            mobileno: ['',Validators.compose([Validators.required,])],
+            GSTNO: ['',Validators.compose([Validators.required,])],
+            TINNO: ['',Validators.compose([Validators.required,])]
           });
 
         this.suppliername = this.addsupplier.controls['suppliername']; 
@@ -102,15 +103,14 @@ export class AddSupplierPage {
 
     }    
 
- manageSupplier(): void {
-  
-   console.log("save!!!!")
-    
-    let supplieritem = {
+postSupplierInfo(){
+  console.log("i am here");
+
+   let supplieritem = {
         supplierid: null,
         suppliername: this.vendorname.toUpperCase(),
         address: this.vendoraddress.toUpperCase(),
-        city: this.vendorcity.toUpperCase(),
+        suppliercity: this.vendorcity.toUpperCase(),
         state: this.vendorstate.toUpperCase(),
         country : this.vendorcountry,
         pin:  this.vendorpin,
@@ -120,36 +120,40 @@ export class AddSupplierPage {
         GST: this.vendorGST,
         TIN: this.vendorTIN
 
-
     };
 
 
-    this.searching=true;
+    //this.searching=true;
     let JSONPayload : string;
 
-    JSONPayload = '{"suppliername":' + supplieritem.suppliername + ','
-    JSONPayload = JSONPayload + '"address": {"streetname":' + supplieritem.address + ","
-    JSONPayload = JSONPayload + '"city":' + supplieritem.city + ","
-    JSONPayload = JSONPayload + '"state":' + supplieritem.state + ","
-    JSONPayload = JSONPayload + '"pin" :' + supplieritem.pin + "},"
+   
 
-    JSONPayload = JSONPayload + '"contactinfo": {"contactname":' + supplieritem.contactname + ","
-    JSONPayload = JSONPayload + '"landlineno" :' + supplieritem.landline + ","
-    JSONPayload = JSONPayload + '"mobileno": ' + supplieritem.mobileno + "},"
+    JSONPayload = '{"suppliername":"' + supplieritem.suppliername + '",'
+    JSONPayload = JSONPayload + '"address": {"areaname":"' + supplieritem.address + '",'
+    JSONPayload = JSONPayload + '"suppliercity":"' + supplieritem.suppliercity + '",'
+    JSONPayload = JSONPayload + '"state":"' + supplieritem.state + '",'
+    JSONPayload = JSONPayload + '"pin" :"' + supplieritem.pin + '"},'
+    JSONPayload = JSONPayload + '"contactinfo": {"contactname":"' + supplieritem.contactname + '",'
+    JSONPayload = JSONPayload + '"landlineno" :' + supplieritem.landline + ','
+    JSONPayload = JSONPayload + '"mobileno": ' + supplieritem.mobileno + '},'
+    JSONPayload = JSONPayload + '"taxdetails": {"TIN#":"' + supplieritem.TIN + '",'
+    JSONPayload = JSONPayload + '"GST#":"' + supplieritem.GST + '"}}'
 
-    JSONPayload = JSONPayload + '"taxdetails": {"TIN#":' + supplieritem.TIN + ","
-    JSONPayload = JSONPayload + '"GST#":' + supplieritem.GST + "}}"
+    console.log(JSONPayload);
+    
+    let loading = this.loadingCtrl.create({
+                    content: 'Please Wait...'
+        });
 
-    let JSONObject:any;
-    JSONObject = JSON.parse(JSONPayload);
+    loading.present();
 
-    this.supplierapiservice.manageSupplier(JSONObject).then((res) => {
+     this.supplierapiservice.manageSupplier(JSONPayload).then((res) => {
  
             //loading.dismiss();
             //this.nav.popToRoot();
             console.log("success!!")  
             //console.log(res);
-            this.searching=false;
+           
 
             let responseobject : any;
             responseobject = res;
@@ -172,7 +176,7 @@ export class AddSupplierPage {
 
                     if (soperation == "UPDATE")
                     {
-                      smessage = this.vendorname + " has been sucessfully updated   !";
+                      smessage = this.vendorname + " has been  updated  sucessfully !";
                       stitle = "Update Supplier : " //+ this.vendorname;
                     }else if (soperation == "CREATE")
                     {
@@ -188,12 +192,12 @@ export class AddSupplierPage {
                             text: 'Ok',
                             handler: () => {
                               console.log('Ok clicked');
-
+                               loading.dismiss();
                               // store drug info to local store
-                              this.syncdrugdata_local(supplieritem); // store data to local
+                             this.syncdrugdata_local(supplieritem); // store data to local
 
-                              this.vendorname="";
-                              this.vendoraddress ="";
+                              this.vendorname=null;
+                              this.vendoraddress =null;
                               this.vendorcity="";
                               this.vendorstate="";
                               this.vendorcountry = "";
@@ -203,11 +207,13 @@ export class AddSupplierPage {
                               this.vendormobileno="";
                               this.vendorGST="";
                               this.vendorTIN="";
+                              //this.addsupplier.valid=false;
  
                             }
                           }
                         ]
                       });
+                      loading.dismiss();
                       alert.present();
 
                   }
@@ -220,39 +226,10 @@ export class AddSupplierPage {
 
         }, (err) => {
             console.log(err);
-            this.searching = false;
-            let alert = this.alertCtrl.create({
-                        title: "Error!!",
-                        message: "Error occured while updating the store inventory. Please contact support tam" ,
-                        buttons: [
-                          {
-                            text: 'Ok',
-                            handler: () => {
-                              console.log('Ok clicked');
-
-                              // store drug info to local store
-
-                              this.vendorname="";
-                              this.vendoraddress ="";
-                              this.vendorcity="";
-                              this.vendorstate="";
-                              this.vendorcountry = "";
-                              this.vendorpin ="";
-                              this.vendorcontactname="";
-                              this.vendorlandlineno="";
-                              this.vendormobileno="";
-                              this.vendorGST="";
-                              this.vendorTIN="";
-
-                            }
-                          }
-                        ]
-                      });
-                      alert.present();
-
-
+           
         });
-  } // manage drug
+
+}
 
 
 syncdrugdata_local(item:any){
@@ -283,6 +260,7 @@ syncdrugdata_local(item:any){
                 return false;
    });
  }// store drug data to local
+
 
 
  showSuggestedAddressModal () {
