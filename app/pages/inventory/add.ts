@@ -102,6 +102,7 @@ export class AddDrugsPage {
       let loading = this.loadingCtrl.create({
                   content: 'Please Wait...'
       });
+      loading.present();
     this.invtservice.manageDrug(drugitem).then((res) => {
  
             //loading.dismiss();
@@ -111,6 +112,7 @@ export class AddDrugsPage {
 
             let responseobject : any;
             responseobject = res;
+            //console.log(responseobject);
 
             if (typeof responseobject!== 'undefined' && responseobject!== null)
             {
@@ -118,6 +120,8 @@ export class AddDrugsPage {
                 {
                   let sjsonresponse = responseobject._body;
                   responseobject = JSON.parse(sjsonresponse);
+
+                  //console.log(responseobject.response);
 
                   if (responseobject.response == "SUCESS")
                   {
@@ -127,7 +131,7 @@ export class AddDrugsPage {
                     let soperation = responseobject.operation;
                     let smessage = "";
                     let stitle = "";
-
+                    //console.log(soperation);  
                     if (soperation == "UPDATE")
                     {
                       smessage = this.medicinename + " has been sucessfully updated to the drug inventory  !";
@@ -182,9 +186,12 @@ export class AddDrugsPage {
 
 
 syncdrugdata_local(item:any){
+ // console.log("syncdrugdata_local");
+ // console.log(item);
     this.localdrugservice.searchDrug(item).then((res) => {
       let responseobject : any;
       responseobject = res;
+   //   console.log(res);
 
        if (typeof responseobject!== 'undefined' && responseobject!== null)
                 {
