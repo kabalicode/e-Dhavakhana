@@ -7,8 +7,6 @@ import 'rxjs/add/operator/map';
 export class InvoiceService {
  
   data: any;
-  supplierList = [];
-  searchkey: string;
   storage: Storage;
   favlist: any;
  
@@ -45,7 +43,7 @@ export class InvoiceService {
   }
 
   getInvoiceDetails(invoiceId: string){
-    /*var invoicedata = {
+    var invoicedata = {
       "invoiceno":1466533427424,
       "suppliername":"BHAVANI MEDICALS",
       "invoicedate":"22/06/2016",
@@ -59,36 +57,19 @@ export class InvoiceService {
           ]
     };
   
-    return Promise.resolve(invoicedata); */
-
-    // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
- // API CALL START
-
- return new Promise(resolve => {
-    var url = "";
-    url = 'https://qshc2lp143.execute-api.us-west-2.amazonaws.com/invoice/invoice/' + invoiceId;
-    //console.log(url);
-    this.http.get(url)
-    
-        .map(res => res.json())
-        .subscribe(data => {
-          this.data = data;
-         // console.log(this.data);
-          resolve(this.data);
-        });
-    });    //  API CALL END 
+    return Promise.resolve(invoicedata); 
   }
 
   getSupplierInvoices(supplierId: string) {
 
 
-    // var invoicedata = [{"supplierid":"SUP1467344348974","invoiceno":1466533427424, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"22/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1466533315601, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"21/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467521532053, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467520691012, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"}];
+    var invoicedata = [{"supplierid":"SUP1467344348974","invoiceno":1466533427424, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"22/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1466533315601, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"21/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467521532053, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"},{"supplierid":"SUP1467344348974","invoiceno":1467520691012, "taxinvoiceno":"T123-98","suppliername":"BHAVANI MEDICALS","invoicedate":"25/06/2016","total_invoice_value":2775,"batchno":"MASTER"}];
   
-    // return Promise.resolve(invoicedata); 
+    return Promise.resolve(invoicedata); 
 
     // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
-
+/*
  return new Promise(resolve => {
     var url = "";
     url = 'https://qshc2lp143.execute-api.us-west-2.amazonaws.com/invoice/invoice/?supplierid=' + supplierId;
@@ -102,58 +83,24 @@ export class InvoiceService {
           resolve(this.data);
         });
     });    //  API CALL END 
-    
+    */
 
 }
 
-  addInvoice(invoice: any){
-    if (invoice) {
-      console.log("new invoice obj:" + JSON.stringify(invoice));
-      //return Promise.resolve("");
-      return new Promise(resolve => {
-          var url = "";
-          url = 'https://qshc2lp143.execute-api.us-west-2.amazonaws.com/invoice/invoice';
-          //console.log(url);
-          this.http.post(url, invoice)
-              .map(res => res.json())
-              .subscribe(data => {
-                this.data = data;
-                console.log(this.data);
-                resolve(this.data);
-              });
-          }); 
-    }
-  }
-
-  checkmatches(obj){
-    console.log("search key in checkmatches:" + this.searchkey);
-    if (obj.suppliername.toUpperCase().indexOf(this.searchkey.toUpperCase()) > -1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   getSuppliers(searchParam: string){
-    var params = {searchkey: searchParam};
-    console.log("search key:" + this.searchkey);
-    if (this.supplierList && this.supplierList.length > 0) {
-      var filteredList = this.supplierList.filter(this.checkmatches, params);
-      console.log("length of filtered list:" + filteredList.length);
-      if(filteredList.length > 0) {
-        return Promise.resolve(filteredList);
-      }
+    if (this.data) {
+      return Promise.resolve(this.data);
     }
  
     // Stub data during unit testing
 
-   /*this.data = [{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344348974","suppliername":"BHAVANI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}},{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344014894","suppliername":"VAISHNAVI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}},{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344436960","suppliername":"SRI BALAJI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}}];
-    return Promise.resolve(this.data); */
+   this.data = [{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344348974","suppliername":"BHAVANI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}},{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344014894","suppliername":"VAISHNAVI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}},{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344436960","suppliername":"SRI BALAJI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}}];
+    return Promise.resolve(this.data); 
 
      
  // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
-
+/*
  return new Promise(resolve => {
     var url = "";
     url = 'https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/storemaster/supplier?suppliername='+searchParam;
@@ -162,11 +109,11 @@ export class InvoiceService {
     
         .map(res => res.json())
         .subscribe(data => {
-          this.supplierList = data;
+          this.data = data;
          // console.log(this.data);
-          resolve(this.supplierList);
+          resolve(this.data);
         });
     });    //  API CALL END 
-    
+    */
   }
 }

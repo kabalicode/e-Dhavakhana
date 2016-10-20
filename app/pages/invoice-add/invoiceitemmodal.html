@@ -15,7 +15,7 @@
 <div class="autocomplete" *ngIf="selecteddrugid == undefined" > <!-- This class is key for representing the autosuggest results -->
 <ion-searchbar [(ngModel)]="queryText" placeholder="Select Drug" (ionInput)="lookupDrug()"></ion-searchbar>
 <ion-list *ngIf="drugs && drugs.length > 0 && showlist">
-    <ion-item *ngFor="let drug of drugs | drugsfilter:queryText" (click)="select(drug)">
+    <ion-item *ngFor="let drug of drugs" (click)="select(drug)">
         {{drug.drugname}}
     </ion-item>
 </ion-list>
@@ -26,12 +26,6 @@
 <ion-item>
     <ion-label floating>Drug Name</ion-label>
     <ion-input type="text" [(ngModel)]="selecteddrugname" disabled="true"></ion-input>
-</ion-item>
-</ion-col>
-<ion-col> 
-<ion-item>
-    <ion-label floating>Mfg</ion-label>
-    <ion-input type="text" [(ngModel)]="selecteddrugmfgcode" disabled="true"></ion-input>
 </ion-item>
 </ion-col>
 <ion-col>
@@ -53,54 +47,45 @@
         <ion-label floating>Batch No.</ion-label>
         <ion-input type="text" formControlName="batchno"></ion-input>
     </ion-item>
-    <div class="errorText" *ngIf="invoiceItem.controls['batchno'].hasError('required') && invoiceItem.controls['batchno'].touched">*Please provide Batch No.</div>
    </ion-col>
-  <ion-col>
-    <ion-item>
-        <ion-label floating>Expiry Date (MM/YYYY)</ion-label>
-        <ion-input type="text" formControlName="expirydate"></ion-input>
-    </ion-item>
-    <div class="errorText" *ngIf="invoiceItem.controls['expirydate'].hasError('required') && invoiceItem.controls['expirydate'].touched">*Please provide Expiry Date</div>
-    <div class="errorText" *ngIf="invoiceItem.controls['expirydate'].hasError('pattern') && invoiceItem.controls['expirydate'].touched">*Please enter valid Expiry Date</div>
-  </ion-col>
-   <!--<ion-col>
+   <ion-col>
     <ion-item>
         <ion-label floating>Manufacturer</ion-label>
         <ion-input type="text" formControlName="mfg"></ion-input>
     </ion-item>
-   </ion-col>-->
-   <!--<ion-col>
+   </ion-col>
+   <ion-col>
      <ion-item>
         <ion-label floating>Pack Size</ion-label>
         <ion-input type="text" formControlName="packsize" (change)="calculateUnitPrice()" ></ion-input>
     </ion-item>
-   </ion-col>-->
+   </ion-col>
  </ion-row>
     
 <ion-row>
   <ion-col>
     <ion-item>
         <ion-label floating>Quantity</ion-label>
-        <ion-input type="number" formControlName="purchaseqty"></ion-input>
+        <ion-input type="text" formControlName="qty" (change)="calculateTotalPrice()"></ion-input>
     </ion-item>
-    <div class="errorText" *ngIf="invoiceItem.controls['purchaseqty'].hasError('required') && invoiceItem.controls['purchaseqty'].touched">*Please provide the Quantity</div>
-    <div class="errorText" *ngIf="invoiceItem.controls['purchaseqty'].hasError('pattern') && invoiceItem.controls['purchaseqty'].touched">*Please enter valid Quantity</div>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label floating>Expiry Date (MM/YYYY)</ion-label>
+        <ion-input type="text" formControlName="expirydate"></ion-input>
+    </ion-item>
   </ion-col>
   <ion-col>
     <ion-item>
         <ion-label floating>MRP</ion-label>
-        <ion-input type="number" formControlName="mrp"></ion-input>
+        <ion-input type="text" formControlName="mrp" (change)="calculateUnitPrice()"></ion-input>
     </ion-item>
-    <div class="errorText" *ngIf="invoiceItem.controls['mrp'].hasError('required') && invoiceItem.controls['mrp'].touched">*Please provide MRP</div>
-    <div class="errorText" *ngIf="invoiceItem.controls['mrp'].hasError('pattern') && invoiceItem.controls['mrp'].touched">*Please enter valid MRP</div>
   </ion-col>
     <ion-col>
       <ion-item>
         <ion-label floating>VAT(%)</ion-label>
-        <ion-input type="number" formControlName="vat"></ion-input>
+        <ion-input type="text" formControlName="vat" (change)="calculateTotalPrice()"></ion-input>
       </ion-item>
-    <div class="errorText" *ngIf="invoiceItem.controls['vat'].hasError('required') && invoiceItem.controls['vat'].touched">*Please provide VAT(%)</div>
-    <div class="errorText" *ngIf="invoiceItem.controls['vat'].hasError('pattern') && invoiceItem.controls['vat'].touched">*Please enter valid VAT(%)</div>
     </ion-col>
   </ion-row>
 
@@ -108,24 +93,20 @@
     <ion-col>
     <ion-item>
         <ion-label floating>Discount(%)</ion-label>
-        <ion-input type="number" formControlName="discount" (change)="calculateTotalPrice()"></ion-input>
+        <ion-input type="text" formControlName="discount" (change)="calculateTotalPrice()"></ion-input>
     </ion-item>
-    <div class="errorText" *ngIf="invoiceItem.controls['discount'].hasError('required') && invoiceItem.controls['discount'].touched">*Please provide Discount(%)</div>
-    <div class="errorText" *ngIf="invoiceItem.controls['discount'].hasError('pattern') && invoiceItem.controls['discount'].touched">*Please enter valid Discount(%)</div>
     </ion-col>
-    <!--<ion-col>
+    <ion-col>
     <ion-item>
         <ion-label floating>Unit Price</ion-label>
         <ion-input type="text" formControlName="unitprice" disabled="true"></ion-input>
     </ion-item>
-    </ion-col>-->
+    </ion-col>
     <ion-col>
     <ion-item>
         <ion-label floating>Total Price</ion-label>
-        <ion-input type="number" formControlName="total_price"></ion-input>
+        <ion-input type="text" formControlName="totalprice" disabled="true"></ion-input>
     </ion-item>
-    <div class="errorText" *ngIf="invoiceItem.controls['total_price'].hasError('required') && invoiceItem.controls['total_price'].touched">*Please provide Total Price</div>
-    <div class="errorText" *ngIf="invoiceItem.controls['total_price'].hasError('pattern') && invoiceItem.controls['total_price'].touched">*Please enter valid value</div>
     </ion-col>
   </ion-row>
     

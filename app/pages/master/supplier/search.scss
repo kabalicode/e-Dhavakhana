@@ -1,0 +1,34 @@
+.drugshome {
+
+     ion-label {
+        white-space: normal;
+    }
+ 
+    ion-item-sliding {
+        margin: 10px;
+    }
+
+    background-color: lightsteelblue;
+
+    .header {
+            margin-bottom: 15px;
+            width: 100%;
+            height: 200px;
+        }
+    
+    ion-navbar{
+        background-color: map-get($colors,gray);
+    }
+
+    .spinner-container {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+}
+
+
+    .segment-button {
+        color: #fafafa;
+        background-color: black;
+    }
