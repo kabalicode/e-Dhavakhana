@@ -73,7 +73,7 @@
       <h2><strong> Tax Invoice # {{invoice.taxinvoiceno}}</strong></h2>
       <p>
         <ion-icon ios="ios-calendar" md="md-calendar"></ion-icon>
-        Invoice Date:<strong>{{invoice.invoicedate}}</strong>,
+        Invoice Date:<strong>{{invoice.invoicedate | date: 'dd/MM/yyyy'}}</strong>,
         <ion-icon ios="ios-pricetags" md="md-pricetags"></ion-icon>Total Value:
         <strong> {{invoice.total_invoice_value}} INR</strong>
       </p>

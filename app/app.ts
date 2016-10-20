@@ -8,7 +8,6 @@ import {InvoicePage} from './pages/invoice/invoice';
 import {InvoiceAddPage} from './pages/invoice-add/invoice-add';
 import {SearchAlternativePage} from './pages/search-alternative/search-alternative';
 import {MymessagesPage} from './pages/mymessages/mymessages';
-import {SupplierSearchPage} from './pages/master/supplier/search';
 
 //import providers
 import {LocalDrugInventory} from './providers/data/local/inventoryservice';
@@ -40,8 +39,7 @@ class MyApp {
       { title: 'Inventory', icon:'home', showchild:false , component: DrugsPage,
         child:[
           { title: 'New Drug', icon:'add', component: AddDrugsPage},]},
-      { title: 'Master Data', icon:'build', component: DrugsPage, showchild:false , child:[
-          { title: 'Supplier', icon:'contact', component: SupplierSearchPage}]  },
+      { title: 'Master Data', icon:'build', component: DrugsPage, showchild:false , child: null  },
       { title: 'Analytics', icon:'stats', component: DrugsPage, showchild:false , child: null },
       { title: 'Notifications', icon:'chatboxes', component: MymessagesPage, showchild:false , child: null },
       { title: 'Tools', icon:'hammer', showchild:false , component: HomePage,
