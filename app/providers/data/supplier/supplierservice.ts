@@ -49,7 +49,7 @@ searchSupplier(suppliername: string){
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         console.log(JSON.stringify(supplieritem));
-        this.http.post('https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/storemaster/supplier', supplieritem, {headers: headers})
+        this.http.post('https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/MasterData/supplier', supplieritem, {headers: headers})
             .subscribe((data) => {
             resolve(data);
             console.log(data);
