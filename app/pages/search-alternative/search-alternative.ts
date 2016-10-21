@@ -20,10 +20,13 @@ export class SearchAlternativePage {
     bapiinvoked= false;
     searchcount = -1;
     queryText = '';
-    searching: any = false;
+   // searching: any = false;
 
 
-  constructor(private navCtrl: NavController, private utilitydrugsService:UtilitiesService,  public modalCtrl: ModalController) {
+  constructor(private navCtrl: NavController, 
+             private utilitydrugsService:UtilitiesService,  
+             public modalCtrl: ModalController,
+             public loadingCtrl:LoadingController) {
 
   }
 
@@ -39,7 +42,15 @@ updatedrugsearch(){
 
         // We will only perform the search if we have 3 or more characters
         if ((fltvar.length == 5) || (fltvar.length >5 && this.bapiinvoked==false)) {
-                this.searching=true;
+                //this.searching=true;
+
+                let loading = this.loadingCtrl.create({
+                        content: 'Please Wait...'
+                });
+
+                loading.present();
+
+
                 this.utilitydrugsService.getSuggestedDrugs(fltvar).then((data) => {
                 console.log(data);
                 //this.vwdrugs = data;
@@ -49,7 +60,8 @@ updatedrugsearch(){
                 this.bapiinvoked = true;
                 this.utilitydrugsService.suggesteddrugdata=null;
                 this.searchcount = this.vwsearchresults.length;
-                this.searching=false;
+                loading.dismiss();
+                //this.searching=false;
                 //console.log("drugcount inside if:" + this.drugsearchcount);
             });
 
@@ -59,10 +71,10 @@ updatedrugsearch(){
                 this.utilitydrugsService.suggesteddrugdata=null;
                 this.vwsearchresults = null;
                 this.modelsearchresults = null;
-                this.searching=false;
+                //this.searching=false;
         }else {
             var serachData=this.modelsearchresults;
-            this.searching=false;
+           // this.searching=false;
             if (typeof serachData !== 'undefined' && serachData !== null)
               {
                     for (var i = 0; i <serachData.length; i++) {
@@ -91,8 +103,10 @@ updatedrugsearch(){
         // and pass in the drug data
         //this.navCtrl.push(ResultsAlternativePage, drugname);
 
-        let DrugsModal = this.modalCtrl.create(SubstitueDrugsModal, {drugname:drugname});
-        DrugsModal.present();
+        //let DrugsModal = this.modalCtrl.create(SubstitueDrugsModal, {drugname:drugname});
+       // DrugsModal.present();
+
+        this.navCtrl.push(SubstitueDrugsModal, drugname);
         
     } 
 
@@ -110,23 +124,34 @@ export class SubstitueDrugsModal {
 
     drugparams: any;
     drugname: any;
-    searching: any = false;
+    //searching: any = false;
     vwalternativedrugdetails : any
     lresultcount = 0;
     vwmedicinedetails:any;
     vwconstituents: any;
     ldrugdetails = 0;
 
-    constructor(public navParams: NavParams,private navCtrl: NavController, private utilitydrugsService:UtilitiesService,public viewCtrl: ViewController) {
-            console.log(navParams.data);
-            this.drugname = navParams.data.drugname;
+    constructor(public navParams: NavParams,
+               private navCtrl: NavController, 
+               private utilitydrugsService:UtilitiesService,
+               public viewCtrl: ViewController,
+               public loadingCtrl:LoadingController) {
+           // console.log(navParams.data);
+            //this.drugname = navParams.data.drugname;
             
+            this.drugname = navParams.data;
+            //this.searching=true;
 
-            this.searching=true;
+            let loading = this.loadingCtrl.create({
+                    content: 'Please Wait...'
+            });
+
+            loading.present();
 
             // get detailed drug information
             this.lresultcount = -1;
-            
+           // console.log("ss");
+           // console.log(this.drugname);
             //get alternative drug information
             this.utilitydrugsService.getAlternativeDrugs(this.drugname).then((data) => {
 
@@ -140,10 +165,12 @@ export class SubstitueDrugsModal {
             });
 
             // get detailed drug information.
+            
             this.ldrugdetails = 0;
             this.utilitydrugsService.getDrugDetails(this.drugname).then((data) => {
 
                 this.vwmedicinedetails = data;
+                
                  
                 if (typeof this.vwmedicinedetails!== 'undefined' && this.vwmedicinedetails!== null)
                 {
@@ -153,8 +180,8 @@ export class SubstitueDrugsModal {
                 }
 
             });    
-
-            this.searching=false;
+            loading.dismiss();
+            //this.searching=false;
         
     }
 

@@ -79,7 +79,8 @@ this.data = null;
  return new Promise(resolve => {
     var url = "";
    
-    url = `https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/storemaster/supplier/${supplierid}`;
+    url = `https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/MasterData/supplier/${supplierid}`;
+    
    // console.log(url);
     this.http.get(url)
     

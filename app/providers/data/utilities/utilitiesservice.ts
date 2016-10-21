@@ -245,12 +245,12 @@ getDrugDetails(drugname: string){
     }
 
     // Stub data during unit testing
-
+/*
     this.drugdetails = {"status":"ok","response":{"medicine":{"brand":"Corex (50 ml)","category":"Syrup","d_class":"Cough Syrups (Decongestants, Bronchodialator etc.)","generic_id":1610,"id":22549,"manufacturer":"Pfizer Limited (Pharmacia India Pvt Ltd)","package_price":42.5,"package_qty":50.0,"package_type":"ml","unit_price":4.25,"unit_qty":5.0,"unit_type":"ml"},"constituents":[{"generic_id":"1610","id":126504,"name":"Codeine Phosphate","qty":2,"strength":"10 mg\r"},{"generic_id":"1610","id":126505,"name":"Chlorpheniramine Maleate","qty":2,"strength":"4 mg\r"}]}}
     return Promise.resolve(this.drugdetails); 
+*/
 
 
-/*
  // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
 
@@ -273,7 +273,7 @@ getDrugDetails(drugname: string){
         });
     });    //  API CALL END 
 
-    */
+    
   }
 
 

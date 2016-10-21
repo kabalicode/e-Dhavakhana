@@ -10,6 +10,8 @@ import {SearchAlternativePage} from './pages/search-alternative/search-alternati
 import {MymessagesPage} from './pages/mymessages/mymessages';
 import {SupplierSearchPage} from './pages/master/supplier/search';
 
+import {DefaultPage} from './pages/default/default';
+
 //import providers
 import {LocalDrugInventory} from './providers/data/local/inventoryservice';
 import {LocalSupplierMaster} from './providers/data/local/supplierservice';
@@ -35,7 +37,7 @@ class MyApp {
     // set our app's pages
     this.pages = [
       { title: 'Dashboard', icon:'add', component: HomePage , showchild:false ,child: null},
-      { title: 'Sales', icon:'pricetags', component: DrugsPage, showchild:false , child: null  },
+      { title: 'Sales', icon:'pricetags', component: DefaultPage, showchild:false , child: null  },
       { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:[
           { title: 'New Invoice', icon:'add', component: InvoiceAddPage}] },
       { title: 'Inventory', icon:'home', showchild:false , component: DrugsPage,
@@ -43,13 +45,13 @@ class MyApp {
           { title: 'New Drug', icon:'add', component: AddDrugsPage},]},
       { title: 'Master Data', icon:'build', component: DrugsPage, showchild:false , child:[
           { title: 'Supplier', icon:'contact', component: SupplierSearchPage}]  },
-      { title: 'Analytics', icon:'stats', component: DrugsPage, showchild:false , child: null },
+      { title: 'Analytics', icon:'stats', component: DefaultPage, showchild:false , child: null },
       { title: 'Notifications', icon:'chatboxes', component: MymessagesPage, showchild:false , child: null },
       { title: 'Tools', icon:'hammer', showchild:false , component: HomePage,
         child:[
           { title: 'Substitutes', icon:'search', component: SearchAlternativePage}]},
-      { title: 'Books', icon:'logo-usd', component: DrugsPage, showchild:false , child: null  },
-      { title: 'MyAccount', icon:'person', component: DrugsPage, showchild:false , child: null },
+      { title: 'Books', icon:'logo-usd', component: DefaultPage, showchild:false , child: null  },
+      { title: 'MyAccount', icon:'person', component: DefaultPage, showchild:false , child: null },
     ];
   }
 

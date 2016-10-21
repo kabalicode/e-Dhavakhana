@@ -147,13 +147,13 @@ export class InvoiceService {
  
     // Stub data during unit testing
 
-   /*this.data = [{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344348974","suppliername":"BHAVANI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}},{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344014894","suppliername":"VAISHNAVI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}},{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344436960","suppliername":"SRI BALAJI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}}];
-    return Promise.resolve(this.data); */
+   this.data = [{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344348974","suppliername":"BHAVANI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}},{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344014894","suppliername":"VAISHNAVI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}},{"taxdetails":{"TIN#":"KHCR","GST#":"20150625"},"supplierid":"SUP1467344436960","suppliername":"SRI BALAJI MEDICALS","address":{"pin":"560037","state":"Karnataka","town":"Bangalore","streetname":"MG Road","city":"Bangalore"}}];
+    return Promise.resolve(this.data); 
 
      
  // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
-
+/*
  return new Promise(resolve => {
     var url = "";
     url = 'https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/storemaster/supplier?suppliername='+searchParam;
@@ -167,6 +167,6 @@ export class InvoiceService {
           resolve(this.supplierList);
         });
     });    //  API CALL END 
-    
+    */
   }
 }
