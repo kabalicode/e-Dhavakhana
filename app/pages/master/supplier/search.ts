@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-angular';
 
-//import { DrugdetailsPage } from '../../inventory/details';
+import { SupplierDetailsPage } from '../../master/supplier/details';
 import { AddSupplierPage } from '../../master/supplier/addsupplier';
 //import {Toast} from "ionic-native";
 
@@ -65,6 +65,7 @@ export class SupplierSearchPage {
 
             this.modelsuppliers = this.localsupplierservice.globalsupplierlist;
             var serachData=this.modelsuppliers;
+            console.log(serachData);
             this.searching=false;
             if (typeof serachData !== 'undefined' && serachData !== null)
                 {
@@ -84,11 +85,11 @@ export class SupplierSearchPage {
   
 
 
-  gotoSupplierDetails(supplierid)
+  gotoSupplierDetails(supplierid: string)
     {
         // go to the drug details page
         // and pass in the drug data
-       // this.nav.push(DrugdetailsPage, drugid);
+        this.nav.push(SupplierDetailsPage, supplierid);
         
     } 
 

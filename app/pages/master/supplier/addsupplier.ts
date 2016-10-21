@@ -136,8 +136,8 @@ postSupplierInfo(){
     JSONPayload = JSONPayload + '"contactinfo": {"contactname":"' + supplieritem.contactname + '",'
     JSONPayload = JSONPayload + '"landlineno" :' + supplieritem.landline + ','
     JSONPayload = JSONPayload + '"mobileno": ' + supplieritem.mobileno + '},'
-    JSONPayload = JSONPayload + '"taxdetails": {"TIN#":"' + supplieritem.TIN + '",'
-    JSONPayload = JSONPayload + '"GST#":"' + supplieritem.GST + '"}}'
+    JSONPayload = JSONPayload + '"taxdetails": {"TIN":"' + supplieritem.TIN + '",'
+    JSONPayload = JSONPayload + '"GST":"' + supplieritem.GST + '"}}'
 
     console.log(JSONPayload);
     

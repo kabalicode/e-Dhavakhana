@@ -34,7 +34,7 @@ export class LocalSupplierMaster {
     addSupplier(item:any){
         this.storage.query("INSERT INTO store_suppliermaster(supplierid, suppliername,suppliercity) VALUES (?,?,?)", [item.supplierid, item.suppliername,item.suppliercity]).then((data) => 
         {
-            this.globalsupplierlist.push({supplierid: item.supplierid, suppliername: item.supplierid, suppliercity: item.suppliercity });
+            this.globalsupplierlist.push({supplierid: item.supplierid, suppliername: item.suppliername, suppliercity: item.suppliercity });
             return Promise.resolve(true);
         }, (error) => {
             return Promise.resolve(false);

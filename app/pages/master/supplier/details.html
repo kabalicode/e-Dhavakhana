@@ -1,0 +1,70 @@
+<!--
+  Generated template for the DrugdetailsPage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+  <!--
+  <ion-navbar>
+    <ion-title>Drug Details</ion-title>
+  </ion-navbar> -->
+
+  <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>Details of :  {{suppliername}} </ion-title>
+  
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding class="drugshome" style="overflow-scroll:true">
+
+
+<ion-card>
+
+  <ion-card-header class="bar">
+      <strong>{{suppliername}} - {{suppliertown}} </strong>
+      
+  </ion-card-header>
+
+
+  <ion-card-content>
+     <ion-grid>
+        <ion-row responsive-sm>
+           <ion-col width-40 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap">
+                  <p><i><b>Contact Details: </b></i></p><br>
+                  <p><i>Contact Name : {{contactname}}</i></p><br>
+                  <p><i>Office No: {{officeno}}</i></p><br>
+                  <p><i>Mobile No: {{mobileno}}</i></p><br>
+              </ion-item>
+            </ion-col> 
+            
+            <ion-col width-40 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap">
+                  <p><i><b>Address: </b></i></p><br>
+                  <p><i>Area Name: {{areaname}}</i></p><br>
+                  <p><i>City: {{city}}</i></p><br>
+                  <p><i>State: {{state}}</i></p><br>
+                  <p><i>Pin: {{pin}}</i></p><br>
+                            
+              </ion-item>
+            </ion-col>
+
+            <ion-col width-20 style=" text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap">
+                  <p><i><b>Tax Details: </b></i></p><br>
+                  <p><i>GSTNo: {{GSTNo}}</i></p><br>
+                  <p><i>TINNo: {{TINNo}}</i></p><br>
+              </ion-item>
+            </ion-col> 
+        </ion-row>
+     </ion-grid>       
+  </ion-card-content>
+</ion-card>     
+
+</ion-content>
