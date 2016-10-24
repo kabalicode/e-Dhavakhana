@@ -23,10 +23,11 @@
 
 <ion-content padding class="drugshome" style="overflow-scroll:true">
 
+  <!--
   <div *ngIf="searching" class="spinner-container">
     <ion-spinner></ion-spinner>
   </div>
-
+-->
 
 <ion-card>
 
@@ -49,8 +50,9 @@
                   <p><i>Manufacturer: &nbsp; {{vwdrug.mfgcode}}</i></p><br>
                   <p><i>Schedule Drug: &nbsp; {{vwdrug.scheduledrug}}</i></p><br> 
                   <p><i>Rack Position: &nbsp;{{vwdrug.rackposition}}</i></p><br>
-                  <p><i>Re-Order Qty: &nbsp; {{vwdrug.minqty}} {{vwdrug.drugtype}}(S) </i></p><br>
-                  <p><i>Available Qty: &nbsp;<strong>{{vwdrug.availabledrugqty}} {{vwdrug.drugtype}}(S)</strong></i></p>
+                  <p><i>Package Type: &nbsp;{{vwdrug.packagetype}}</i></p><br>
+                  <p><i>Re-Order Qty: &nbsp; {{vwdrug.minqty}} {{vwdrug.drugtype}} </i></p><br>
+                  <p><i>Available Qty: &nbsp;<strong>{{vwdrug.availabledrugqty}} {{vwdrug.drugtype}}</strong></i></p>
                 
               </ion-item>
             </ion-col>
@@ -75,7 +77,7 @@
 
       <div class="warning" *ngIf="lbatchcount < 1">
           <ion-item>
-            <strong> {{vwdrug.drugname}} &nbsp; stock is not available in the store, please place an order by navigating via. order book (URL)</strong>
+            <strong> {{vwdrug.drugname}} &nbsp; stock is not available in the store, please track order by navigating via. order wanting menu</strong>
           </ion-item>
       </div>
 

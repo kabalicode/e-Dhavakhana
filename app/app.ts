@@ -3,7 +3,7 @@ import {ionicBootstrap, Platform, MenuController, Nav, AlertController} from 'io
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 import {DrugsPage} from './pages/inventory/search';
-import {AddDrugsPage} from './pages/inventory/add';
+//import {AddDrugsPage} from './pages/inventory/add';
 import {InvoicePage} from './pages/invoice/invoice';
 import {InvoiceAddPage} from './pages/invoice-add/invoice-add';
 import {SearchAlternativePage} from './pages/search-alternative/search-alternative';
@@ -40,9 +40,7 @@ class MyApp {
       { title: 'Sales', icon:'pricetags', component: DefaultPage, showchild:false , child: null  },
       { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:[
           { title: 'New Invoice', icon:'add', component: InvoiceAddPage}] },
-      { title: 'Inventory', icon:'home', showchild:false , component: DrugsPage,
-        child:[
-          { title: 'New Drug', icon:'add', component: AddDrugsPage},]},
+      { title: 'Inventory', icon:'home', showchild:false , child: null, component: DrugsPage},
       { title: 'Master Data', icon:'build', component: DrugsPage, showchild:false , child:[
           { title: 'Supplier', icon:'contact', component: SupplierSearchPage}]  },
       { title: 'Analytics', icon:'stats', component: DefaultPage, showchild:false , child: null },

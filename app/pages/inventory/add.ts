@@ -142,6 +142,9 @@ export class AddDrugsPage {
                       stitle = "Add New Drug : " //+ this.medicinename
                     }
 
+                    // store drug info to local store
+                    this.syncdrugdata_local(drugitem); // store data to local
+
                       let alert = this.alertCtrl.create({
                         title: stitle,
                         message: smessage,
@@ -150,9 +153,8 @@ export class AddDrugsPage {
                             text: 'Ok',
                             handler: () => {
                               console.log('Ok clicked');
+                               
                                loading.dismiss();
-                              // store drug info to local store
-                              this.syncdrugdata_local(drugitem); // store data to local
 
                               this.medicinename="";
                               this.packagetype ="";
@@ -269,10 +271,18 @@ syncdrugdata_local(item:any){
                       this.medicinetype = this.vwmedicinedetails.category;
                       this.medicinetype = this.medicinetype.toUpperCase();
                       
-                      this.packagetype = this.vwmedicinedetails.package_type;
-                      this.packagetype = this.packagetype.toUpperCase();
+                      if ( (typeof this.vwmedicinedetails.package_type !== 'undefined' && this.vwmedicinedetails.package_type!==null)  &&
+                           (typeof this.vwmedicinedetails.package_qty !== 'undefined' && this.vwmedicinedetails.package_qty!==null) )
+                      {     
+                        let packageqty = this.vwmedicinedetails.package_qty ;
+                        packageqty = parseInt(packageqty, 10)
 
-            
+                        console.log("packageqty:" + packageqty);
+
+                        this.packagetype = packageqty + " " + this.vwmedicinedetails.package_type;
+                        this.packagetype = this.packagetype.toUpperCase();
+
+                      }
                    }   
                 }
 

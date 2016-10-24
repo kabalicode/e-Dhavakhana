@@ -12,7 +12,7 @@ export class SupplierAPIService {
   constructor(private http: Http) {
     this.data = null;
     this.supplierdetailsdata = null;
-    console.log("inside supplier API service");
+    //console.log("inside supplier API service");
   }
 
  
@@ -48,11 +48,11 @@ searchSupplier(suppliername: string){
   
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        console.log(JSON.stringify(supplieritem));
+        //console.log(JSON.stringify(supplieritem));
         this.http.post('https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/MasterData/supplier', supplieritem, {headers: headers})
             .subscribe((data) => {
             resolve(data);
-            console.log(data);
+            //console.log(data);
           });
   
       });

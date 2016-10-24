@@ -26,8 +26,18 @@ export class LocalSupplierMaster {
   
 
   // search a supplier in the local store by supplier id
-  searchSupplier(item: any){
-     return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_suppliermaster WHERE supplierid = ?",[item.supplierid]);
+ // searchSupplier(item: any){
+   //  return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_suppliermaster WHERE supplierid = ?",[item.supplierid]);
+ // }
+
+    // search a supplier in the local store by supplier id
+  getSupplierId(item: any){
+     return this.storage.query("SELECT supplierid FROM store_suppliermaster WHERE suppliername = ? AND suppliercity=?",[item.suppliername,item.suppliercity]);
+  }
+
+  // search a supplier in the local store by supplier id
+  searchSupplierByName(item: any){
+     return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_suppliermaster WHERE suppliername = ? AND suppliercity=?",[item.suppliername,item.suppliercity]);
   }
 
   // add drug to local store
