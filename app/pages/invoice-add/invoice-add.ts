@@ -5,6 +5,7 @@ import {Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import {InvoiceService} from '../../providers/data/invoice/invoiceservice';
 import {InventoryService} from '../../providers/data/inventory/inventoryservice';
 import {LocalDrugInventory} from '../../providers/data/local/inventoryservice';
+import {LocalSupplierMaster} from '../../providers/data/local/supplierservice';
 import {DatePicker} from 'ionic-native';
 import {DrugsFilterPipe} from '../../filters/drugs-filter';
 import {Invoice} from '../../models/invoice';
@@ -32,12 +33,14 @@ export class InvoiceAddPage {
   invoiceItems: any;
   invoiceObj = new Invoice();
   datePipe = new DatePipe();
+  searchkey:string;
 
   constructor(private viewCtrl: ViewController,
               private modalCtrl: ModalController,
               private alertCtrl: AlertController,
               private loadCtrl: LoadingController,
               private navCtrl: NavController,
+              private localSupplierMaster: LocalSupplierMaster,
               private invoiceService:InvoiceService, private formBuilder: FormBuilder) {
     this.selectedsupplierid = undefined;
     this.selectedsuppliername = "";
@@ -54,17 +57,31 @@ export class InvoiceAddPage {
     });
   }
 
+  checkmatches(obj){
+    console.log("search key in checkmatches:" + this.searchkey);
+      if (obj.suppliername.toUpperCase().indexOf(this.searchkey.toUpperCase()) > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
    lookupSupplier(){
      console.log("into method");
      if(this.queryText.trim().length >2){
       this.searching = true;
-      this.invoiceService.getSuppliers(this.queryText).then((data) => {
-          this.suggestions = data;
-          console.log("results: " + this.suggestions);
-          this.searching = false;
-          this.showlist = true;
-          console.log("showlist flag:" + this.showlist);
-      });
+      var params = {searchkey:this.queryText.trim()};
+      this.suggestions = this.localSupplierMaster.globalsupplierlist.filter(this.checkmatches,params);
+      console.log("results: " + this.suggestions);
+      this.searching = false;
+      this.showlist = true;
+      // this.invoiceService.getSuppliers(this.queryText).then((data) => {
+      //     this.suggestions = data;
+      //     console.log("results: " + this.suggestions);
+      //     this.searching = false;
+      //     this.showlist = true;
+      //     console.log("showlist flag:" + this.showlist);
+      // });
      }else{ // clear the suggestions
        this.showlist = false;
        this.suggestions = undefined;
@@ -223,8 +240,8 @@ export class InvoiceAddPage {
             this.clearSupplierName();
             this.invoice.controls['date'].updateValue(" ");
             this.invoice.controls['taxinvoiceno'].updateValue(" ");
-            this.invoice.controls['date'].touched = false;
-            this.invoice.controls['taxinvoiceno'].touched = false;
+            this.invoice.controls['date'].setErrors(null);
+            this.invoice.controls['taxinvoiceno'].setErrors(null);
          }else{
            let alert = this.alertCtrl.create({
               title: "Error",
@@ -284,6 +301,7 @@ export class InvoiceItemModal {
     year:number;
     datePipe = new DatePipe();
     zerovalue = 0;
+    searchkey:string;
     
     constructor(private nav: NavController, 
                 private formBuilder: FormBuilder,
@@ -342,52 +360,30 @@ export class InvoiceItemModal {
 
     calculateUnitPrice(){
       return;
-      // if(!this.invoiceItem.controls['packsize'].hasError() && 
-      //     !this.invoiceItem.controls['mrp'].hasError()){
-      //       var packsize = this.invoiceItem.controls['packsize'].value;
-      //       var mrp = this.invoiceItem.controls['mrp'].value;
-      //       console.log("packsize:" + packsize);
-      //       console.log("mrp:" + mrp);
-      //       if(packsize>0 && mrp>0){
-      //         var unitprice = mrp/packsize;
-      //         console.log("unitprice:"+ unitprice);
-      //         this.invoiceItem.controls['unitprice'].updateValue(unitprice);
-      //       }
-      //     }
-      // this.calculateTotalPrice();    
-    }
+     }
 
     calculateTotalPrice(){
       return;
-      // if(!this.invoiceItem.controls['mrp'].hasError() && 
-      //     !this.invoiceItem.controls['discount'].hasError() && 
-      //     !this.invoiceItem.controls['vat'].hasError() &&
-      //     !this.invoiceItem.controls['qty'].hasError() ){
-      //       var discount = this.invoiceItem.controls['discount'].value;
-      //       var mrp = this.invoiceItem.controls['mrp'].value;
-      //       var vat = this.invoiceItem.controls['vat'].value;
-      //       var qty = this.invoiceItem.controls['qty'].value;
-      //       console.log("discount:" + discount);
-      //       console.log("mrp:" + mrp);
-      //       console.log("vat:" + vat);
-      //       console.log("qty:" + qty);
-      //       if(discount>0 && mrp>0 && vat>0 && qty>0){
-      //         var totalprice = mrp - ((mrp*discount)/100);
-      //         totalprice = totalprice*qty;
-      //         console.log("totalprice:"+ totalprice);
-      //         this.invoiceItem.controls['totalprice'].updateValue(totalprice);
-      //       }
-      //     }
     }
 
     dismiss(){
         this.viewCtrl.dismiss();
     }
 
+    checkmatches(obj){
+    console.log("search key in checkmatches:" + this.searchkey);
+      if (obj.drugname.toUpperCase().indexOf(this.searchkey.toUpperCase()) > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     lookupDrug(){
      console.log("into lookup drug method");
-     if(this.queryText.length >0){
-      this.drugs = this.localDrugInventory.globaldrugslist;
+     if(this.queryText.trim().length >0){
+      var params = {searchkey:this.queryText.trim()}; 
+      this.drugs = this.localDrugInventory.globaldrugslist.filter(this.checkmatches, params);
       this.showlist = true;
      }else{ // clear the suggestions
        this.showlist = false;

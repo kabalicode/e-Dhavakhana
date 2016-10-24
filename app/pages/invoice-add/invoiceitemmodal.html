@@ -13,13 +13,15 @@
 <ion-content padding  style="overflow-scroll:true">
 
 <div class="autocomplete" *ngIf="selecteddrugid == undefined" > <!-- This class is key for representing the autosuggest results -->
-<ion-searchbar [(ngModel)]="queryText" placeholder="Select Drug" (ionInput)="lookupDrug()"></ion-searchbar>
+<ion-searchbar [(ngModel)]="queryText" [debounce]="500" placeholder="Select Drug" (ionInput)="lookupDrug()"></ion-searchbar>
 <ion-list *ngIf="drugs && drugs.length > 0 && showlist">
     <ion-item *ngFor="let drug of drugs | drugsfilter:queryText" (click)="select(drug)">
         {{drug.drugname}}
     </ion-item>
 </ion-list>
 </div>
+
+<div *ngIf="showlist && drugs.length==0"> <p class="errorText" >No Drug found with given name.</p></div>
 
 <ion-row *ngIf="selecteddrugid != undefined">
 <ion-col> 

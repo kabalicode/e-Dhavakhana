@@ -14,71 +14,82 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding class="drugshome" style="overflow-scroll:true">
+<ion-content padding style="overflow-scroll:true">
 
 
-  <ion-list inset>
       <form [formGroup]="addsupplier" (ngSubmit)="postSupplierInfo()">
 
 
           <!-- Supplier Name -->
           <ion-item [class.error]="!suppliername.valid && suppliername.touched">
-              <!-- <ion-label color="primary" stacked><strong>Drug Name</strong></ion-label> -->
-              <ion-label color="primary" stacked><strong>Supplier Name</strong></ion-label>
-              <ion-input type="text"  value="" [(ngModel)]="vendorname" name="vendorname" formControlName="suppliername" required placeholder="Enter Supplier Name"></ion-input>
+              <!-- <ion-label floating>Drug Name</ion-label> -->
+              <ion-label floating>Supplier Name</ion-label>
+              <ion-input type="text"  value="" [(ngModel)]="vendorname" name="vendorname" formControlName="suppliername" required></ion-input>
           </ion-item>
           <p *ngIf="suppliername.hasError('required') && suppliername.touched" danger>*Please provide valid supplier name</p>
 
           <!-- Supplier Address -->
           <ion-item>
-              <ion-label color="primary" stacked><strong>Address:</strong></ion-label>
-              <ion-input type="text" (click)="showSuggestedAddressModal()" (touchstart) ="showSuggestedAddressModal()" value="" formControlName="address" placeholder="Please enter locality name" [(ngModel)]="vendoraddress" name="vendoraddress"></ion-input>         
-              <ion-input type="text" value="" formControlName="city" placeholder="city" [(ngModel)]="vendorcity" name="vendorcity"></ion-input>
-              <ion-input type="text" value="" formControlName="state" placeholder="state" [(ngModel)]="vendorstate" name="vendorstate"></ion-input>
-              <ion-input type="text" value="" formControlName="country" placeholder="country" [(ngModel)]="vendorcountry" name="vendorcountry"></ion-input>
-              <ion-input type="text" value="" formControlName="pin" placeholder="pin" [(ngModel)]="vendorpin" name="vendorpin"></ion-input> 
+              <ion-label floating>Address</ion-label>
+              <ion-input type="text" (click)="showSuggestedAddressModal()" (touchstart) ="showSuggestedAddressModal()" value="" formControlName="address" [(ngModel)]="vendoraddress" name="vendoraddress"></ion-input>         
+              <ion-input type="text" value="" formControlName="city" placeholder="City" [(ngModel)]="vendorcity" name="vendorcity"></ion-input>
+              <ion-input type="text" value="" formControlName="state" placeholder="State" [(ngModel)]="vendorstate" name="vendorstate"></ion-input>
+              <ion-input type="text" value="" formControlName="country" placeholder="Country" [(ngModel)]="vendorcountry" name="vendorcountry"></ion-input>
+              <ion-input type="text" value="" formControlName="pin" placeholder="PIN" [(ngModel)]="vendorpin" name="vendorpin"></ion-input> 
           </ion-item>
 
         
-
+          <ion-row>
+          <ion-col>    
           <!-- Contact Details  -->   
           <ion-item>
-              <ion-label color="primary" stacked><strong>Contact Name</strong></ion-label>
-              <ion-input type="text"  value="" formControlName="contactname" placeholder="Please provide contact person name(*)" [(ngModel)]="vendorcontactname" name="vendorcontactname"></ion-input>         
+              <ion-label floating>Contact Name</ion-label>
+              <ion-input type="text"  value="" formControlName="contactname" [(ngModel)]="vendorcontactname" name="vendorcontactname"></ion-input>         
            </ion-item>
+          </ion-col> 
           
-
+          <ion-col>
          <ion-item>   
-             <ion-label color="primary" stacked><strong>Office No</strong></ion-label> 
-              <ion-input type="text" value="" formControlName="landlineno" placeholder="office or landline number" [(ngModel)]="vendorlandlineno" name="vendorlandlineno"></ion-input>
+             <ion-label floating>Office No</ion-label> 
+              <ion-input type="text" value="" formControlName="landlineno" [(ngModel)]="vendorlandlineno" name="vendorlandlineno"></ion-input>
           </ion-item>
           <p *ngIf="landlineno.hasError('required') && landlineno.touched" danger>*Please provide supplier store no.</p>
+          </ion-col>
 
+          <ion-col>
            <ion-item>
-               <ion-label color="primary" stacked><strong>Mobile No</strong></ion-label>
-              <ion-input type="text" value="" formControlName="mobileno" placeholder="Enter Mobile Number(*)" [(ngModel)]="vendormobileno" name="vendormobileno"></ion-input>
+               <ion-label floating>Mobile No</ion-label>
+              <ion-input type="text" value="" formControlName="mobileno" [(ngModel)]="vendormobileno" name="vendormobileno"></ion-input>
           </ion-item>
            <p *ngIf="mobileno.hasError('required') && mobileno.touched" danger>*Please provide supplier contact person mobile no.</p>
-           
+          </ion-col>
+          </ion-row>
 
+          <ion-row>
+              <ion-col>
           <!-- Tax Details  -->   
           <ion-item >
-              <ion-label color="primary" stacked><strong>GST No</strong></ion-label>
-              <ion-input type="text"  formControlName="GSTNO" [(ngModel)]="vendorGST" name="vendorGST"  placeholder="Enter GST#"></ion-input> 
+              <ion-label floating>GST No</ion-label>
+              <ion-input type="text"  formControlName="GSTNO" [(ngModel)]="vendorGST" name="vendorGST" ></ion-input> 
           </ion-item>
             <p *ngIf="GSTNO.hasError('required') && GSTNO.touched" danger>*Please provide supplier GST#.</p>
-           
+              </ion-col>
 
-           <ion-item>
-              <ion-label color="primary" stacked><strong>TIN No</strong></ion-label>     
-              <ion-input type="text"  formControlName="TINNO" [(ngModel)]="vendorTIN" name="vendorTIN"  placeholder="Enter TIN#"></ion-input>   
-          </ion-item>
-          <p *ngIf="TINNO.hasError('required') && TINNO.touched" danger>*Please provide supplier TIN#.</p>
-          
+            <ion-col>  
+            <ion-item>
+                <ion-label floating>TIN No</ion-label>     
+                <ion-input type="text"  formControlName="TINNO" [(ngModel)]="vendorTIN" name="vendorTIN" ></ion-input>   
+            </ion-item>
+            <p *ngIf="TINNO.hasError('required') && TINNO.touched" danger>*Please provide supplier TIN#.</p>
+            </ion-col>
+
+          </ion-row>
          
-      <button type="submit" [disabled]="!addsupplier.valid">Submit</button>
-      
+      <ion-row>
+          <ion-col>   
+            <button type="submit" [disabled]="!addsupplier.valid">Submit</button>
+          </ion-col>
+      </ion-row>
       </form>
      
-  </ion-list>
 </ion-content>
