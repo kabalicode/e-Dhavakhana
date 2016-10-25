@@ -11,7 +11,7 @@
 <ion-content padding class="invoice-add" style="overflow-scroll:true">
 
     <div class="autocomplete" *ngIf="selectedsupplierid == undefined" > <!-- This class is key for representing the autosuggest results -->
-    <ion-searchbar [(ngModel)]="queryText" [debounce]="500" placeholder="Search Supplier (Enter min 3 characters)" (ionInput)="lookupSupplier()"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="queryText" [debounce]="500" placeholder="Search Supplier" (ionInput)="lookupSupplier()"></ion-searchbar>
     <ion-spinner *ngIf="searching" icon="spiral"></ion-spinner>
     <ion-list *ngIf="suggestions && suggestions.length > 0 && showlist">
         <ion-item *ngFor="let suggestion of suggestions" (click)="select(suggestion)">

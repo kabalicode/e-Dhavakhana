@@ -69,7 +69,7 @@ export class InvoiceAddPage {
 
    lookupSupplier(){
      console.log("into method");
-     if(this.queryText.trim().length >2){
+     if(this.queryText.trim().length >0){
       this.searching = true;
       var params = {searchkey:this.queryText.trim()};
       this.suggestions = this.localSupplierMaster.globalsupplierlist.filter(this.checkmatches,params);
@@ -110,7 +110,7 @@ export class InvoiceAddPage {
         date: new Date(),
         mode: 'date'
       }).then(
-        date => {console.log("Got date: ", date); this.invoice.controls["date"].updateValue(this.datePipe.transform(date,"dd/MM/YYY"))},
+        date => {console.log("Got date: ", date); this.invoice.controls["date"].updateValue(this.datePipe.transform(date,"dd/MM/yyyy"))},
         err => console.log("Error occurred while getting date:", err)
       );
    }

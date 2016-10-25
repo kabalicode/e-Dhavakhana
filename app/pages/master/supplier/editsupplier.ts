@@ -178,11 +178,11 @@ syncdrugdata_AWS(JSONPayload: string, item: any){
 
 //console.log(JSONPayload);  
        
- /* let loading = this.loadingCtrl.create({
-                  content: 'Please Wait...'
+  let loading = this.loadingCtrl.create({
+          content: 'Please Wait...'
       });
 
-  loading.present();*/
+  loading.present();
 
   this.supplierapiservice.manageSupplier(JSONPayload).then((res) => {
 
@@ -221,9 +221,8 @@ syncdrugdata_AWS(JSONPayload: string, item: any){
                     smessage = this.vendorname + " has been added sucessfully !";
                     stitle = "Add New Supplier : " 
                   }
-                  //loading.dismiss();
                   
-
+                  loading.onDidDismiss(() => {
                     let alert = this.alertCtrl.create({
                       title: stitle,
                       message: smessage,
@@ -240,8 +239,10 @@ syncdrugdata_AWS(JSONPayload: string, item: any){
                     });
                     //loading.dismiss();
                     alert.present();
+                  });
 
                 }
+                  loading.dismiss();
                   //console.log("new code");
 
               }
