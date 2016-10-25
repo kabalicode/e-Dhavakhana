@@ -47,8 +47,9 @@
             <ion-grid>
 
                     <ion-row>
-                      
-                        <ion-col width-100 style="text-align:left"><ion-icon ios="ios-home" md="md-home"></ion-icon> {{vwmedicinedetails.manufacturer}}</ion-col>
+                        <ion-col width-40 style="text-align:left"><ion-icon ios="ios-home" md="md-home"></ion-icon> {{vwmedicinedetails.manufacturer}}</ion-col>
+                        <ion-col width-40 style="text-align:left"><ion-icon ios="ios-clipboard" md="md-clipboard"></ion-icon> {{composition}}</ion-col>
+                         <ion-col width-20 style="text-align:left"><ion-icon ios="ios-medkit" md="md-medkit"></ion-icon> {{packagetype}}</ion-col>
                     </ion-row>
 
               </ion-grid>
@@ -62,9 +63,9 @@
       <ion-grid *ngFor="let drug of vwalternativedrugdetails" style="overflow-scroll:true">
 
               <ion-row>
-                  <ion-col width-10 height-10> <img src= "img/{{drug.DrugType}}.png" />  </ion-col>
-                  <ion-col width-30>{{drug.DrugName}}</ion-col>
-                  <ion-col width-60><ion-icon ios="ios-home" md="md-home"></ion-icon> {{drug.MFGName}} </ion-col>
+                  <ion-col width-10 height-10> <img src= "img/{{drug.category}}.png" /> </ion-col>
+                  <ion-col width-30>{{drug.brand}}</ion-col>
+                  <ion-col width-60><ion-icon ios="ios-home" md="md-home"></ion-icon> {{drug.manufacturer}} </ion-col>
               </ion-row>
               <ion-row>
                   <ion-col width-100> <hr> </ion-col>

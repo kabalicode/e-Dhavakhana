@@ -17,7 +17,15 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title center>Details of :  {{suppliername}} </ion-title>
-  
+
+    <ion-buttons end>
+        <button (click)="gotoEditupplier()">
+            <ion-avatar item-left >
+              <img src= "img/edit.png" />
+            </ion-avatar>
+        </button>
+   </ion-buttons>
+
     </ion-navbar>
 </ion-header>
 
@@ -28,7 +36,7 @@
 
   <ion-card-header class="bar">
       <strong>{{suppliername}} - {{suppliertown}} </strong>
-      
+
   </ion-card-header>
 
 
@@ -50,6 +58,7 @@
                   <p><i>Area Name: {{areaname}}</i></p><br>
                   <p><i>City: {{city}}</i></p><br>
                   <p><i>State: {{state}}</i></p><br>
+                  <p><i>Country: {{country}}</i></p><br>
                   <p><i>Pin: {{pin}}</i></p><br>
                             
               </ion-item>

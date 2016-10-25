@@ -40,10 +40,7 @@ export class AutocompletePage {
   }
   
   updateSearch() {
-    if (this.autocomplete.drugquery == '') {
-      this.autocompleteItems = [];
-      return;
-    }
+
         var fltvar = this.autocomplete.drugquery;
         fltvar = fltvar.toUpperCase();
 
@@ -51,7 +48,6 @@ export class AutocompletePage {
         if ((this.autocomplete.drugquery.trim().length == 3) || (this.autocomplete.drugquery.trim().length >3 && this.bdrugapiinvoked==false)) {
                 
               let me = this;
-              //console.log(this.autocomplete.drugquery);
 
               let loading = this.loadingCtrl.create({
                     content: 'Please Wait...'
@@ -66,10 +62,12 @@ export class AutocompletePage {
                     this.bdrugapiinvoked = true;
                     me.result="";
                     loading.dismiss();
+                    this.vwdrugs = this.vwdrugs.response;
+                    this.vwdrugs = this.vwdrugs.suggestions;
                     if ((this.vwdrugs.length >0))
                     {
                             this.vwdrugs.forEach(function (prediction) {
-                            me.autocompleteItems.push(prediction.DrugName);                 
+                            me.autocompleteItems.push(prediction.suggestion);                 
                         //   this.autocompleteItems.push(prediction.DrugName);
                         });
                     }else
@@ -79,7 +77,7 @@ export class AutocompletePage {
                     }
               });
 
-        }else if (this.autocomplete.drugquery.trim().length == 0){
+        }else if (fltvar == ""){
                 this.bdrugapiinvoked = false;
                 this.autocompleteItems = [];
                 this.vwdrugs = null;
@@ -88,16 +86,15 @@ export class AutocompletePage {
             var serachData=this.vwdrugs;
             let me = this;
             me.autocompleteItems=[];
-            //console.log(serachData);
             if (typeof serachData !== 'undefined' && serachData !== null)
               {
                     for (var i = 0; i <serachData.length; i++) {
 
-                    var jsval = (serachData[i].DrugName);
+                    var jsval = (serachData[i].suggestion);
                     jsval = jsval.toUpperCase();
 
                     if (jsval.indexOf(fltvar) >= 0) 
-                        me.autocompleteItems.push(serachData[i].DrugName);
+                        me.autocompleteItems.push(serachData[i].suggestion);
                     
                 }
                // console.log(me.autocompleteItems)

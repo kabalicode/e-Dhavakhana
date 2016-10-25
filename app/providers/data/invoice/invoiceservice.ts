@@ -98,7 +98,7 @@ export class InvoiceService {
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
-         // console.log(this.data);
+          if (this.data == "") this.data = null;
           resolve(this.data);
         });
     });    //  API CALL END 

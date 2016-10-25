@@ -3,7 +3,7 @@ import { NavController,LoadingController } from 'ionic-angular';
 import { NavParams } from 'ionic-angular';
 import {SupplierAPIService} from '../../../providers/data/supplier/supplierservice';
 
-
+import { EditSupplierPage } from '../../master/supplier/editsupplier';
 
 /*
   Generated class for the DrugdetailsPage page.
@@ -29,6 +29,7 @@ export class SupplierDetailsPage {
   areaname : string;
   pin: string;
   state: string;
+  country:string
   city: string;
   contactname: string;
   officeno: number;
@@ -36,10 +37,32 @@ export class SupplierDetailsPage {
   GSTNo: string;
   TINNo: string;
 
-  constructor(public navParams: NavParams, private supplierservice:SupplierAPIService,public loadingCtrl:LoadingController) {
+  constructor(public navParams: NavParams, private supplierservice:SupplierAPIService,public loadingCtrl:LoadingController,private nav: NavController) {
       this.supplierid = navParams.data;
 
-     // this.searching=true;
+    
+
+  }
+
+      public gotoEditupplier()
+    {
+        // go to the drug details page
+        // and pass in the drug data
+        console.log("dsdsdsdsds");
+         if (typeof this.vwsupplier !== 'undefined' && this.vwsupplier !== null)
+              this.nav.push(EditSupplierPage,this.vwsupplier);
+        else
+          {
+            console.log("error!!")
+          }
+      
+        
+    } 
+   
+   ionViewWillEnter() {
+      console.log("ionviewwillenter"); 
+
+       // this.searching=true;
       let loading = this.loadingCtrl.create({
                     content: 'Please Wait...'
         });
@@ -51,7 +74,7 @@ export class SupplierDetailsPage {
 
         this.vwsupplier = data;
         
-        //console.log(this.vwsupplier);
+        console.log(this.vwsupplier);
         this.supplierservice.data=null;
         loading.dismiss();
 
@@ -66,6 +89,7 @@ export class SupplierDetailsPage {
           this.areaname = this.vwsupplier.address.areaname;
           this.city = this.vwsupplier.address.suppliercity;
           this.state = this.vwsupplier.address.state;
+          this.country = this.vwsupplier.address.country;
           this.pin = this.vwsupplier.address.pin;
         }
 
@@ -89,9 +113,6 @@ export class SupplierDetailsPage {
       
     });
 
-  }
-
-
-   
+   }
 
 }

@@ -14,6 +14,7 @@ export class InvoiceDetailsPage {
     public vwsuppliername:string;
     public period:any;
     public hidefilter:boolean;
+    public invoicesexists : boolean;
 
     constructor(private nav: NavController, 
                 public modalCtrl: ModalController,
@@ -27,6 +28,7 @@ export class InvoiceDetailsPage {
             this.vwsupplierid = supplierId;
 
             this.hidefilter = true;
+            this.invoicesexists = false;
             let loadctrl = loadingCtrl.create(
                 {
                     content: "Please wait",
@@ -35,8 +37,11 @@ export class InvoiceDetailsPage {
             //retrieve the invoices for a suppliers if any
             this.invoiceService.getSupplierInvoices(supplierId).then((data) => {
                 this.invoicedata = data;
-                console.log("invoice data:" + JSON.stringify(data));
                 this.period = 6;
+                if (typeof this.invoicedata!== 'undefined' && this.invoicedata!== null)
+                   {
+                       this.invoicesexists = (this.invoicedata.length > 0);
+                   } 
                 loadctrl.dismiss();
             });
     }

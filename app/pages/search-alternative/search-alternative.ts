@@ -56,11 +56,18 @@ updatedrugsearch(){
                 //this.vwdrugs = data;
                 this.modelsearchresults = data;
                 //this.adddrugimages();
+                
                 this.vwsearchresults = this.modelsearchresults;
                 this.bapiinvoked = true;
                 this.utilitydrugsService.suggesteddrugdata=null;
+                
+                
+                this.vwsearchresults = this.vwsearchresults.response;
+                this.vwsearchresults = this.vwsearchresults.suggestions;
                 this.searchcount = this.vwsearchresults.length;
+
                 loading.dismiss();
+               
                 //this.searching=false;
                 //console.log("drugcount inside if:" + this.drugsearchcount);
             });
@@ -79,7 +86,7 @@ updatedrugsearch(){
               {
                     for (var i = 0; i <serachData.length; i++) {
 
-                    var jsval = (serachData[i].DrugName);
+                    var jsval = (serachData[i].suggestion);
                     jsval = jsval.toUpperCase();
 
                    // console.log(jsval);
@@ -130,6 +137,8 @@ export class SubstitueDrugsModal {
     vwmedicinedetails:any;
     vwconstituents: any;
     ldrugdetails = 0;
+    composition: string;
+    packagetype:string
 
     constructor(public navParams: NavParams,
                private navCtrl: NavController, 
@@ -156,6 +165,8 @@ export class SubstitueDrugsModal {
             this.utilitydrugsService.getAlternativeDrugs(this.drugname).then((data) => {
 
             this.vwalternativedrugdetails = data;
+            this.vwalternativedrugdetails = this.vwalternativedrugdetails.response;
+            this.vwalternativedrugdetails = this.vwalternativedrugdetails.medicine_alternatives;
             
             this.lresultcount = this.vwalternativedrugdetails.length;
             
@@ -165,7 +176,7 @@ export class SubstitueDrugsModal {
             });
 
             // get detailed drug information.
-            
+           
             this.ldrugdetails = 0;
             this.utilitydrugsService.getDrugDetails(this.drugname).then((data) => {
 
@@ -174,10 +185,40 @@ export class SubstitueDrugsModal {
                  
                 if (typeof this.vwmedicinedetails!== 'undefined' && this.vwmedicinedetails!== null)
                 {
-                   this.ldrugdetails = 1;
-                   this.vwmedicinedetails = this.vwmedicinedetails.response;
-                   if(this.vwmedicinedetails) this.vwmedicinedetails = this.vwmedicinedetails.medicine;
+                    this.ldrugdetails = 1;
+                    this.vwmedicinedetails = this.vwmedicinedetails.response;
+
+                    if (typeof this.vwmedicinedetails.constituents !== 'undefined' && this.vwmedicinedetails.constituents!==null)
+                    {
+                        var mixture="";
+                        for (var index=0 ; index < this.vwmedicinedetails.constituents.length; index++)
+                        {
+                            mixture = mixture + this.vwmedicinedetails.constituents[index].name + "-" + this.vwmedicinedetails.constituents[index].strength + ";" ;
+                            mixture = mixture.replace("\r","");
+                        }
+                        this.composition = mixture.toUpperCase();
+                    }
+                   
+                    if(this.vwmedicinedetails) this.vwmedicinedetails = this.vwmedicinedetails.medicine;
+
+                    if(this.vwmedicinedetails) 
+                    {
+
+                        if ( (typeof this.vwmedicinedetails.package_type !== 'undefined' && this.vwmedicinedetails.package_type!==null)  &&
+                            (typeof this.vwmedicinedetails.package_qty !== 'undefined' && this.vwmedicinedetails.package_qty!==null) )
+                        {     
+                            let packageqty = this.vwmedicinedetails.package_qty ;
+                            packageqty = parseInt(packageqty, 10)
+
+                            console.log("packageqty:" + packageqty);
+
+                            this.packagetype = packageqty + " " + this.vwmedicinedetails.package_type;
+                            this.packagetype = this.packagetype.toUpperCase();
+
+                        }
+                   } 
                 }
+
 
             });    
             loading.dismiss();

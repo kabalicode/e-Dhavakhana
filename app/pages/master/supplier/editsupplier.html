@@ -1,0 +1,98 @@
+
+<ion-header>
+  <ion-navbar primary>
+
+     <ion-title>
+       Edit Supplier - {{vendorname}}
+    </ion-title>
+
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-close" ></ion-icon>
+      </button>
+    </ion-buttons>
+
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="overflow-scroll:true">
+        
+
+      <form [formGroup]="editsupplier" (ngSubmit)="postSupplierInfo()">
+
+
+          <!-- Supplier Name -->
+          <ion-item >
+              <!-- <ion-label floating>Drug Name</ion-label> -->
+              <ion-label>{{vendorname}}</ion-label>
+          </ion-item>
+          <!-- <p *ngIf="suppliername.hasError('required') && suppliername.touched" danger>*Please provide valid supplier name</p>  -->
+
+          <!-- Supplier Address -->
+          <ion-item>
+              <ion-label floating>Address</ion-label>
+              <ion-input type="text"   formControlName="address" [(ngModel)]="vendoraddress" name="vendoraddress"></ion-input>         
+              <ion-label>{{vendorcity}} </ion-label>
+              <ion-input type="text"  formControlName="state" placeholder="State" [(ngModel)]="vendorstate" name="vendorstate"></ion-input>
+              <ion-input type="text"  formControlName="country" placeholder="Country" [(ngModel)]="vendorcountry" name="vendorcountry"></ion-input>
+              <ion-input type="text"  formControlName="pin" placeholder="PIN" [(ngModel)]="vendorpin" name="vendorpin"></ion-input> 
+          </ion-item>
+
+        
+          <ion-row>
+                <ion-col>    
+                    <!-- Contact Details  -->   
+                    <ion-item>
+                        <ion-label floating>Contact Name</ion-label>
+                        <ion-input type="text"  formControlName="contactname" [(ngModel)]="vendorcontactname" name="vendorcontactname" required></ion-input>         
+                    </ion-item>
+                     <p *ngIf="contactname.hasError('required') && contactname.touched" danger>*Please provide valid contact name</p>
+                </ion-col> 
+               
+                
+                <ion-col>
+                    <ion-item>   
+                        <ion-label floating>Office No</ion-label> 
+                        <ion-input type="text"  formControlName="landlineno" [(ngModel)]="vendorlandlineno" name="vendorlandlineno"></ion-input>
+                    </ion-item>
+                     <p *ngIf="landlineno.hasError('required') && landlineno.touched" danger>*Please provide supplier store no.</p>
+                </ion-col>
+
+                <ion-col>
+                    <ion-item>
+                        <ion-label floating>Mobile No</ion-label>
+                        <ion-input type="text" formControlName="mobileno" [(ngModel)]="vendormobileno" name="vendormobileno" required></ion-input>
+                    </ion-item>
+                     <p *ngIf="mobileno.hasError('required') && mobileno.touched" danger>**Please provide supplier contact person mobile no.</p>
+                </ion-col>
+          </ion-row>
+
+          <ion-row>
+              <ion-col>
+          <!-- Tax Details  -->   
+                    <ion-item >
+                        <ion-label floating>GST No</ion-label>
+                        <ion-input type="text"  formControlName="GSTNO" [(ngModel)]="vendorGST" name="vendorGST" ></ion-input> 
+                    </ion-item>
+                        <p *ngIf="GSTNO.hasError('required') && GSTNO.touched" danger>*Please provide supplier GST#.</p>
+              </ion-col>
+
+            <ion-col>  
+                <ion-item>
+                    <ion-label floating>TIN No</ion-label>     
+                    <ion-input type="text"  formControlName="TINNO" [(ngModel)]="vendorTIN" name="vendorTIN" ></ion-input>   
+                </ion-item>
+              <p *ngIf="TINNO.hasError('required') && TINNO.touched" danger>*Please provide supplier TIN#.</p>
+            </ion-col>
+
+          </ion-row>
+         
+      <ion-row>
+          <ion-col>   
+            <button type="submit" [disabled]="!editsupplier.valid">Submit</button>
+          </ion-col>
+      </ion-row>
+      </form>
+     
+</ion-content>

@@ -64,6 +64,12 @@
 
   </div>
 
+  <div *ngIf="invoicesexists == false">
+    <ion-item>
+      No invoices(s) exists  for supplier : <strong> {{vwsuppliername}} </strong>.
+    </ion-item>
+  </div>
+
   <ion-card *ngFor="let invoice of invoicedata">
 
     <button ion-item (click)="openInvoiceDetailsModal(invoice.invoiceno)">

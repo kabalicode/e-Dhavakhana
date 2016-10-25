@@ -58,6 +58,7 @@ export class InvoiceAddPage {
   }
 
   checkmatches(obj){
+    console.log(obj);
     console.log("search key in checkmatches:" + this.searchkey);
       if (obj.suppliername.toUpperCase().indexOf(this.searchkey.toUpperCase()) > -1) {
         return true;

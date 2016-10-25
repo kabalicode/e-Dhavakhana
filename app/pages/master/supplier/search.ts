@@ -3,7 +3,6 @@ import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-
 
 import { SupplierDetailsPage } from '../../master/supplier/details';
 import { AddSupplierPage } from '../../master/supplier/addsupplier';
-//import {Toast} from "ionic-native";
 
 // providers
 import {SupplierAPIService} from '../../../providers/data/supplier/supplierservice';
@@ -98,7 +97,7 @@ export class SupplierSearchPage {
         // go to the drug details page
         // and pass in the drug data
         console.log("dsdsdsdsds");
-       this.nav.push(AddSupplierPage);
+        this.nav.push(AddSupplierPage);
         
     } 
  

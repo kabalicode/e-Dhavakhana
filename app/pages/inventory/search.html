@@ -7,12 +7,13 @@
     <ion-title center>Drug Inventory</ion-title>
 
      <ion-buttons end>
-      <button ion-button (click)="gotoAddDrugs()">
-        <ion-icon name="add-circle"></ion-icon>
-      </button>
-    </ion-buttons>
+        <button ion-button (click)="gotoAddDrugs()">
+          <ion-icon name="add-circle"></ion-icon>
+        </button>
 
+      </ion-buttons>
 
+      
     </ion-navbar>
     <ion-toolbar dark>
 <ion-segment [(ngModel)]="segment" (ionChange)="updatedrugsearch()">
@@ -23,6 +24,7 @@
       <ion-segment-button value="favorites">
         Favorites
       </ion-segment-button>
+
     </ion-segment>
     
     </ion-toolbar>
@@ -40,6 +42,7 @@
       criteria and try with a different drug name.
     </ion-item>
   </div>
+
 
   <div *ngIf="searching" class="spinner-container">
     <ion-spinner></ion-spinner>

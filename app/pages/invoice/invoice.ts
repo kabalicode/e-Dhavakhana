@@ -5,6 +5,7 @@ import {InvoiceService} from '../../providers/data/invoice/invoiceservice';
 import {SQLite, Toast} from "ionic-native";
 import {InvoiceDetailsPage} from '../invoice/invoicedetails';
 import {InvoiceAddPage} from '../invoice-add/invoice-add';
+import {LocalSupplierMaster} from '../../providers/data/local/supplierservice';
 
 @Component({
   templateUrl: 'build/pages/invoice/invoice.html',
@@ -20,11 +21,13 @@ export class InvoicePage {
     searching: any = false;
     segment:any;
     public favlist: any;
+    searchkey:string;
  
     constructor(private nav: NavController, 
                 private modalCtrl: ModalController,
                 private invoiceService:InvoiceService,
                 private user: UserData,
+                private localSupplierMaster: LocalSupplierMaster,
                 public alertCtrl: AlertController, public loadingCtrl:LoadingController) {
               //set the default to Drugs Inventory tab segment
               this.segment = "invt";
@@ -80,7 +83,18 @@ export class InvoicePage {
     ionViewLoaded(){
  
     }
- 
+
+ /*
+    checkmatches(obj){
+        console.log(obj);
+        console.log("search key in checkmatches:" + this.searchkey);
+        if (obj.suppliername.toUpperCase().indexOf(this.searchkey.toUpperCase()) > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     updatesuppliersearch(){
         this.vwsuppliers = null;
         var filtervalue = [];        
@@ -91,27 +105,69 @@ export class InvoicePage {
         // We will only perform the search if we have 3 or more characters
         if ((fltvar.trim().length > 2 )) {
                 
-                let loading = this.loadingCtrl.create({
+              /* let loading = this.loadingCtrl.create({
                     content: 'Please Wait...'
                 });
 
-                loading.present();
+                loading.present();*/
+                //var params = {searchkey:this.queryText.trim()};
+              //  this.vwsuppliers = this.localSupplierMaster.globalsupplierlist.filter(this.checkmatches,params);
+               // this.suppliersearchcount = this.vwsuppliers.length;
                 
-                this.invoiceService.getSuppliers(fltvar).then((data) => {
+             /*   this.invoiceService.getSuppliers(fltvar).then((data) => {
                     this.modelsupplier = data;
                     this.vwsuppliers = this.modelsupplier;
                     console.log("suppliers result:" + JSON.stringify(this.vwsuppliers));
                     console.log("suppliers result length:" + this.vwsuppliers.length);
                     this.suppliersearchcount = this.vwsuppliers.length;
                     
-                    loading.dismiss();
-                });
+                    //loading.dismiss();
+                });*/
 
-        }else{
+       // }else{
+             //   this.suppliersearchcount = -1;
+            //    this.vwsuppliers = null;
+               // this.modelsupplier = null;
+    //   }        
+  //  } */
+
+      updatesuppliersearch(){
+        this.vwsuppliers = null;
+        var filtervalue = [];
+		
+       
+        var fltvar = this.queryText;
+        fltvar = fltvar.toUpperCase();
+
+ 
+
+           if (fltvar.trim().length == 0){
+               
                 this.suppliersearchcount = -1;
                 this.vwsuppliers = null;
                 this.modelsupplier = null;
-        }        
+               // this.searching=false;
+        }else
+        {
+
+            this.modelsupplier = this.localSupplierMaster.globalsupplierlist;
+            var serachData=this.modelsupplier;
+            console.log(serachData);
+            //this.searching=false;
+            if (typeof serachData !== 'undefined' && serachData !== null)
+                {
+                    for (var i = 0; i <serachData.length; i++) {
+
+                    var jsval = (serachData[i].suppliername);
+
+                    if (jsval.indexOf(fltvar) >= 0) 
+                        filtervalue.push(serachData[i]);
+                    
+                }
+                this.vwsuppliers = filtervalue;
+                this.suppliersearchcount = filtervalue.length;
+                }
+        }    
     }
   
 
