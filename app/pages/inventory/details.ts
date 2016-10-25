@@ -5,7 +5,7 @@ import {InventoryService} from '../../providers/data/inventory/inventoryservice'
 
 // Import the drug model
 import {Drug} from '../../models/drug';
-//import {supplier} from '../../models/supplier';
+import { EditDrugsPage } from '../../pages/inventory/editdrug';
 
 /*
   Generated class for the DrugdetailsPage page.
@@ -28,12 +28,20 @@ export class DrugdetailsPage {
 
   constructor(public navParams: NavParams, 
              private invtdataservice:InventoryService,
-             public loadingCtrl:LoadingController) {
+             public loadingCtrl:LoadingController,
+             private nav: NavController) {
       this.drugid = navParams.data;
 
       //this.searching=true;
 
-      let loading = this.loadingCtrl.create({
+     
+
+  }
+
+ionViewWillEnter() {
+  console.log("ionviewwillenter");
+  
+   let loading = this.loadingCtrl.create({
                     content: 'Please Wait...'
       });
 
@@ -59,9 +67,22 @@ export class DrugdetailsPage {
       
     });
 
-  }
+}
 
 
-   
+  public gotoEditDrug()
+    {
+        // go to the drug details page
+        // and pass in the drug data
+        console.log("dsdsdsdsds");
+         if (typeof this.vwdrug !== 'undefined' && this.vwdrug !== null)
+              this.nav.push(EditDrugsPage,this.vwdrug);
+        else
+          {
+            console.log("error!!")
+          }
+      
+        
+    } 
 
 }

@@ -41,7 +41,7 @@ getSuggestedDrugs(searchParam: string){
  return new Promise(resolve => {
     var url = "";
     //url=`https://nnuggsvyzb.execute-api.us-west-2.amazonaws.com/Utilities/drugs/suggestion?id=${searchParam}`
-    url = `http://oaayush-aayush.rhcloud.com/api/medicine_suggestions?key=57029cfb1f59ea00d8294c7367a0d5&id=${searchParam}`;
+    url = `http://oaayush-aayush.rhcloud.com/api/medicine_suggestions?key=57029cfb1f59ea00d8294c7367a0d5&limit=150&id=${searchParam}`;
    
 
     console.log(url);

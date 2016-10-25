@@ -111,15 +111,16 @@ this.drugdetailsdata = null;
   
   // function to post a drug item to AWS
   manageDrug(drugitem){
-  
+      console.log(drugitem);
       return new Promise(resolve => {
   
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         //console.log("inside review code");
         //console.log(JSON.stringify(review));
-        this.http.post('https://63hc0yw0n6.execute-api.us-west-2.amazonaws.com/Inventory/drugs', JSON.stringify(drugitem), {headers: headers})
+        this.http.post('https://63hc0yw0n6.execute-api.us-west-2.amazonaws.com/Inventory/drugs', drugitem, {headers: headers})
           .subscribe((data) => {
+            console.log(data);
             resolve(data);
             //console.log("createreview");
             //console.log(data);

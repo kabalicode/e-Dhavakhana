@@ -41,7 +41,7 @@ updatedrugsearch(){
         console.log(fltvar);
 
         // We will only perform the search if we have 3 or more characters
-        if ((fltvar.length == 5) || (fltvar.length >5 && this.bapiinvoked==false)) {
+        if ((fltvar.length >= 3 && this.bapiinvoked==false)) {
                 //this.searching=true;
 
                 let loading = this.loadingCtrl.create({
@@ -57,13 +57,17 @@ updatedrugsearch(){
                 this.modelsearchresults = data;
                 //this.adddrugimages();
                 
+                this.modelsearchresults = this.modelsearchresults.response;
+                this.modelsearchresults = this.modelsearchresults.suggestions;
+
+
                 this.vwsearchresults = this.modelsearchresults;
                 this.bapiinvoked = true;
                 this.utilitydrugsService.suggesteddrugdata=null;
                 
                 
-                this.vwsearchresults = this.vwsearchresults.response;
-                this.vwsearchresults = this.vwsearchresults.suggestions;
+                //this.vwsearchresults = this.vwsearchresults.response;
+                //this.vwsearchresults = this.vwsearchresults.suggestions;
                 this.searchcount = this.vwsearchresults.length;
 
                 loading.dismiss();

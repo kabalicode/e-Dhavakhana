@@ -9,7 +9,7 @@
 		<button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-		<ion-title center>Add New Drug </ion-title>
+		<ion-title center>Edit Drug : {{medicinename}} - {{medicinetype}} </ion-title>
 
 	</ion-navbar>
 </ion-header>
@@ -17,51 +17,38 @@
 <ion-content padding style="overflow-scroll:true">
 
 
-	<form [formGroup]="adddrug" (ngSubmit)="manageDrug()">
+	<form [formGroup]="editdrug" (ngSubmit)="updateDrugItem()">
 
 		<ion-row>
 			<ion-col>
 				<!-- Drug Name -->
 
-				<ion-item [class.error]="!drugname.valid && drugname.touched">
+			    <ion-item>
 					<!-- <ion-label  floating><strong>Drug Name</strong></ion-label> -->
-					<ion-label floating>Drug Name</ion-label>
-					<ion-input type="text" (click)="showSuggestedDrugsModal()" (touchstart)="showSuggestedDrugsModal()" value="" [(ngModel)]="medicinename"
-						name="medicinename" formControlName="drugname" required></ion-input>
+					<ion-label>{{medicinename}} </ion-label>
 				</ion-item>
 
 			</ion-col>
 			<!-- <br>  -->
 
+			<!-- Drug Type -->
 			<ion-col>
-				<ion-item class="for-select">
-					<ion-label floating>Drug Type</ion-label>
-					<ion-select cancelText="Cancel" okText="Ok" formControlName="drugtype" [(ngModel)]="medicinetype" name="medicinetype" placeholder="Select Drug Type">
-						<ion-option value="CAPSULE">CAPSULE</ion-option>
-						<ion-option value="CREAM">CREAM</ion-option>
-						<ion-option value="DROP">DROP</ion-option>
-						<ion-option value="INJECTION">INJECTION</ion-option>
-						<ion-option value="POWDER">POWDER</ion-option>
-						<ion-option value="SYRUP">SYRUP</ion-option>
-						<ion-option value="SUSPENSION">SUSPENSION</ion-option>
-						<ion-option value="TABLET">TABLET</ion-option>
-					</ion-select>
+				<ion-item>
+					<ion-label>{{medicinetype}} </ion-label>
 				</ion-item>
 			</ion-col>
 			<!-- <br>  -->
 
 		</ion-row>
+
 		<ion-row>
 			<ion-col>
 				<!-- MFG Code  -->
-				<ion-item [class.error]="!mfgcode.valid && mfgcode.touched">
-					<ion-label floating>MFG Name (Eg: RANBAXY)</ion-label>
-					<ion-input type="text" value="" formControlName="mfgcode" [(ngModel)]="manufacturer" name="manufacturer"></ion-input>
+				<ion-item>
+					<ion-label>{{manufacturer}} </ion-label>
 				</ion-item>
-
-				<p *ngIf="mfgcode.hasError('required') && mfgcode.touched" danger>*Please provide drug manufacturer name</p>
 			</ion-col>
-			<!-- <br>  -->
+
 			<ion-col>
 				<!-- Schedule Drug  -->
 				<ion-item [class.error]="!scheduledrug.valid && scheduledrug.touched">
@@ -91,7 +78,7 @@
 				<!-- Rack Position -->
 				<ion-item [class.error]="!rackposition.valid && rackposition.touched">
 					<ion-label floating>Rack Position (Eg: A)</ion-label>
-					<ion-input type="text" value="" formControlName="rackposition" [(ngModel)]="medicineposition" name="medicineposition"></ion-input>
+					<ion-input type="text"  formControlName="rackposition" [(ngModel)]="medicineposition" name="medicineposition"></ion-input>
 				</ion-item>
 
 				<p *ngIf="rackposition.hasError('required') && rackposition.touched" danger>*Please specify the rack poistion where drug will be placed in store.</p>
@@ -104,7 +91,7 @@
 				<!-- <br>  -->
 				<ion-item>
 					<ion-label floating>Package Type (Eg:10 TABLETS)</ion-label>
-					<ion-input type="text" value="" formControlName="packtype" [(ngModel)]="packagetype" name="packagetype"></ion-input>
+					<ion-input type="text" formControlName="packtype" [(ngModel)]="packagetype" name="packagetype"></ion-input>
 				</ion-item>
 			</ion-col>
 			<!-- constitunets -->
@@ -112,13 +99,13 @@
 			<ion-col>
 				<ion-item>
 					<ion-label floating>Composition (Eg:Albendazole:400 mg)</ion-label>
-					<ion-input type="text" value="" formControlName="composition" [(ngModel)]="comp" name="comp"></ion-input>
+					<ion-input type="text"  formControlName="composition" [(ngModel)]="comp" name="comp"></ion-input>
 				</ion-item>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col>
-				<button type="submit" [disabled]="!adddrug.valid">Submit</button>
+				<button type="submit" [disabled]="!editdrug.valid">Submit</button>
 			</ion-col>
 		</ion-row>
 	</form>

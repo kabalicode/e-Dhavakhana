@@ -21,7 +21,7 @@ export class DrugsPage {
     bdrugapiinvoked= false;
     drugsearchcount = -1;
     queryText = '';
-    searching: any = false;
+    //searching: any = false;
     segment:any;
     public favlist: any;
 
@@ -108,13 +108,13 @@ export class DrugsPage {
                 this.invtservice.data=null;
                 this.vwdrugs = null;
                 this.modeldrugs = null;
-                this.searching=false;
+                //this.searching=false;
         }else
         {
 
             this.modeldrugs = this.localdrugservice.globaldrugslist;
             var serachData=this.modeldrugs;
-            this.searching=false;
+            //this.searching=false;
             if (typeof serachData !== 'undefined' && serachData !== null)
                 {
                     for (var i = 0; i <serachData.length; i++) {
@@ -124,53 +124,11 @@ export class DrugsPage {
                     if (jsval.indexOf(fltvar) >= 0) 
                         filtervalue.push(serachData[i]);
                     
-                }
-                this.vwdrugs = filtervalue;
-                this.drugsearchcount = filtervalue.length;
+                    }
+                    this.vwdrugs = filtervalue;
+                    this.drugsearchcount = filtervalue.length;
                 }
         }
-/*
-        // We will only perform the search if we have 3 or more characters
-        if ((fltvar.trim().length == 3) || (fltvar.trim().length >3 && this.bdrugapiinvoked==false)) {
-                this.searching=true;
-                this.invtservice.searchInventory(fltvar).then((data) => {
-                //console.log(data);
-                //this.vwdrugs = data;
-                this.modeldrugs = data;
-                //this.adddrugimages();
-                this.vwdrugs = this.modeldrugs;
-                this.bdrugapiinvoked = true;
-                this.invtservice.data=null;
-                this.drugsearchcount = this.vwdrugs.length;
-                this.searching=false;
-                //console.log("drugcount inside if:" + this.drugsearchcount);
-            });
-
-        }else if (fltvar.trim().length == 0){
-                this.bdrugapiinvoked = false;
-                this.drugsearchcount = -1;
-                this.invtservice.data=null;
-                this.vwdrugs = null;
-                this.modeldrugs = null;
-                this.searching=false;
-        }else {
-            var serachData=this.modeldrugs;
-            this.searching=false;
-            if (typeof serachData !== 'undefined' && serachData !== null)
-              {
-                    for (var i = 0; i <serachData.length; i++) {
-
-                    var jsval = (serachData[i].drugname);
-
-                    if (jsval.indexOf(fltvar) >= 0) 
-                        filtervalue.push(serachData[i]);
-                    
-                }
-                this.vwdrugs = filtervalue;
-                this.drugsearchcount = filtervalue.length;
-              }
-
-          }       */ 
     }
   
 

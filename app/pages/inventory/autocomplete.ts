@@ -44,9 +44,9 @@ export class AutocompletePage {
         var fltvar = this.autocomplete.drugquery;
         fltvar = fltvar.toUpperCase();
 
-        // We will only perform the search if we have 3 or more characters
-        if ((this.autocomplete.drugquery.trim().length == 3) || (this.autocomplete.drugquery.trim().length >3 && this.bdrugapiinvoked==false)) {
-                
+        // We will only perform the search if we have 4 or more characters
+        if ((this.autocomplete.drugquery.trim().length >= 3 && this.bdrugapiinvoked==false)) {
+        //if (this.autocomplete.drugquery.trim().length > 3) {        
               let me = this;
 
               let loading = this.loadingCtrl.create({
@@ -85,6 +85,7 @@ export class AutocompletePage {
         }else {
             var serachData=this.vwdrugs;
             let me = this;
+            me.result="";
             me.autocompleteItems=[];
             if (typeof serachData !== 'undefined' && serachData !== null)
               {

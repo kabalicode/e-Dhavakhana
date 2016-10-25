@@ -17,6 +17,14 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title center>Current  Inventory Levels of  :  {{vwdrug.drugname}} </ion-title>
+
+    <ion-buttons end>
+        <button (click)="gotoEditDrug()">
+            <ion-avatar item-left >
+              <img src= "img/edit.png" />
+            </ion-avatar>
+        </button>
+   </ion-buttons>
   
     </ion-navbar>
 </ion-header>

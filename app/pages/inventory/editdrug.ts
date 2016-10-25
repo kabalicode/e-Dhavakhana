@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import { Page,NavController,AlertController,ModalController,LoadingController } from 'ionic-angular';
-import {ViewController} from 'ionic-angular';
+import {ViewController,NavParams} from 'ionic-angular';
 import {Validators, FormBuilder } from '@angular/forms';
 import { AbstractControl} from '@angular/common';
 import {AutocompletePage} from './autocomplete';
@@ -13,10 +13,10 @@ import {UtilitiesService} from '../../providers/data/utilities/utilitiesservice'
 
 
 @Component({
-  templateUrl: 'build/pages/inventory/add.html',
+  templateUrl: 'build/pages/inventory/editdrug.html',
   providers: [InventoryService,UtilitiesService]
 })
-export class AddDrugsPage {
+export class EditDrugsPage {
  
   // form controls
   drugname: AbstractControl;
@@ -29,7 +29,7 @@ export class AddDrugsPage {
   composition:AbstractControl;
 
   // form name  
-  adddrug : any;
+  editdrug : any;
 
 
   // variables to hold data
@@ -43,7 +43,8 @@ export class AddDrugsPage {
   medicineposition:any;
   vwmedicinedetails:any;
   ldrugdetails = 0;
-    
+  drugid:number;
+
   // busy variables
  // searching: any = false;
 
@@ -57,13 +58,11 @@ export class AddDrugsPage {
               public alertCtrl: AlertController,
               private fb: FormBuilder,
               public loadingCtrl:LoadingController,
-              public viewCtrl: ViewController) 
+              public viewCtrl: ViewController,
+              public navParams: NavParams) 
     {
 
-        this.adddrug = fb.group({
-            drugname: ['', Validators.compose([Validators.required])],
-            drugtype: ['',Validators.compose([Validators.required])],
-            mfgcode: ['',Validators.compose([Validators.required,])],
+        this.editdrug = fb.group({
             scheduledrug: ['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 ]*'),Validators.maxLength(2)])],
             rackposition: [''],
             minqty: ['',Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
@@ -71,25 +70,31 @@ export class AddDrugsPage {
             composition: ['']
           });
 
-        this.drugname = this.adddrug.controls['drugname']; 
-        this.drugtype = this.adddrug.controls['drugtype']; 
-        this.mfgcode = this.adddrug.controls['mfgcode'];
-        this.scheduledrug = this.adddrug.controls['scheduledrug'];
-        this.rackposition = this.adddrug.controls['rackposition'];
-        this.minqty = this.adddrug.controls['minqty'];
-        this.packtype = this.adddrug.controls['packtype'];
-        this.composition = this.adddrug.controls['composition'];
+        console.log(navParams.data);
 
+        this.scheduledrug = this.editdrug.controls['scheduledrug'];
+        this.rackposition = this.editdrug.controls['rackposition'];
+        this.minqty = this.editdrug.controls['minqty'];
+        this.packtype = this.editdrug.controls['packtype'];
+        this.composition = this.editdrug.controls['composition'];
 
-
+        this.medicinename = navParams.data.drugname;
+        this.medicinetype = navParams.data.drugtype;
+        this.manufacturer= navParams.data.mfgcode;
+        this.schedulemedicine= navParams.data.scheduledrug;
+        this.medicineposition= navParams.data.rackposition;
+        this.reorderqty = navParams.data.minqty;
+        this.packagetype = navParams.data.packagetype;
+        this.comp = navParams.data.composition;
+        this.drugid = navParams.data.drugid;
     }    
 
- manageDrug(): void {
+ updateDrugItem(): void {
   
    console.log("save!!!!")
     
     let drugitem = {
-        drugid: null,
+        drugid: this.drugid,
         drugname: this.medicinename.toUpperCase(),
         drugtype: this.medicinetype.toUpperCase(),
         mfgcode: this.manufacturer.toUpperCase(),
@@ -100,51 +105,23 @@ export class AddDrugsPage {
         composition: this.comp.toUpperCase()
     };
 
-
- this.localdrugservice.searchDrugByName(drugitem).then((res) => {
-      let responseobject : any;
-      responseobject = res;
-      console.log(responseobject);
-
-       if (typeof responseobject!== 'undefined' && responseobject!== null)
-                {
-                        responseobject = responseobject.res;
-                        responseobject = responseobject.rows[0];
-
-                        if (responseobject.TOTALRECORDS >0)
-                        {
-
-                            let alert = this.alertCtrl.create({
-                            title: "Duplicate Drug",
-                            message: drugitem.drugname + " - "+ drugitem.drugtype + " already exits in the database. Would you like to update with the new information?",
-                            buttons: [
-                              {
-                                text: 'Cancel',
-                                role: 'cancel',
-                                handler: () => {
-                                  //console.log('Cancel clicked');
-                                  // do nothing
-                                }
-                              },
-                              {
-                                text: 'Update',
-                                handler: () => {
-                                  //console.log('Update Clicked');
-                                  this.updatedrugdata(drugitem,"UPDATE");
-                                }
-                              }
-                            ]
-                          });
-                          alert.present();
-                        }else
-                        {
-                          this.updatedrugdata(drugitem,"INSERT");
-                        }
-                         
-                  }
-        });  
+    let JSONPayload : string;
+    JSONPayload = '{"drugid":' + drugitem.drugid + ','
+    JSONPayload = JSONPayload+ '"drugname":"' + drugitem.drugname + '",'
+    JSONPayload = JSONPayload + '"drugtype":"' + drugitem.drugtype + '",'
+    JSONPayload = JSONPayload + '"mfgcode":"' + drugitem.mfgcode + '",'
+    JSONPayload = JSONPayload + '"scheduledrug":"' + drugitem.scheduledrug + '",'
+    JSONPayload = JSONPayload + '"rackposition":"' + drugitem.rackposition + '",'
+    JSONPayload = JSONPayload + '"minqty":' + drugitem.minqty + ','
+    JSONPayload = JSONPayload + '"packagetype" :"' + drugitem.packagetype + '",'
+    JSONPayload = JSONPayload + '"composition":"' + drugitem.composition + '"}'
+    console.log(JSONPayload);
+    
+    this.syncdrugdata_AWS_local(JSONPayload,drugitem);
+ 
 
   } // manage drug
+
 
 
 syncdrugdata_local(item:any, soperation:string){
@@ -165,63 +142,6 @@ syncdrugdata_local(item:any, soperation:string){
           }
    
  }// store drug data to local
-
-
-updatedrugdata(item:any,soperation:string)
- {
-            //this.searching=true;
-            let JSONPayload : string;
-            let response:any;
-
-            JSONPayload ="";
-
-            if (soperation === "UPDATE")
-            {
-                
-                //console.log(response); 
-                this.localdrugservice.getDrugId(item).then((response) => {
-
-                
-                if (typeof response!== 'undefined' && response!== null)
-                  {
-                        response = response.res;
-                        response = response.rows[0];
-                        let drugid = response.drugid;
-                        item.drugid = drugid; //Append supplier id
-
-
-                        JSONPayload = '{"drugid":' + item.drugid + ','
-                        JSONPayload = JSONPayload+ '"drugname":"' + item.drugname + '",'
-                        JSONPayload = JSONPayload + '"drugtype":"' + item.drugtype + '",'
-                        JSONPayload = JSONPayload + '"mfgcode":"' + item.mfgcode + '",'
-                        JSONPayload = JSONPayload + '"scheduledrug":"' + item.scheduledrug + '",'
-                        JSONPayload = JSONPayload + '"rackposition":"' + item.rackposition + '",'
-                        JSONPayload = JSONPayload + '"minqty":' + item.minqty + ','
-                        JSONPayload = JSONPayload + '"packagetype" :"' + item.packagetype + '",'
-                        JSONPayload = JSONPayload + '"composition":"' + item.composition + '"}'
-                        console.log(JSONPayload);
-                        this.syncdrugdata_AWS_local(JSONPayload,item);
-                  }
-                        
-                });
-
-            }else
-            {
-                       
-                        JSONPayload = JSONPayload+ '{"drugname":"' + item.drugname + '",'
-                        JSONPayload = JSONPayload + '"drugtype":"' + item.drugtype + '",'
-                        JSONPayload = JSONPayload + '"mfgcode":"' + item.mfgcode + '",'
-                        JSONPayload = JSONPayload + '"scheduledrug":"' + item.scheduledrug + '",'
-                        JSONPayload = JSONPayload + '"rackposition":"' + item.rackposition + '",'
-                        JSONPayload = JSONPayload + '"minqty":' + item.minqty + ','
-                        JSONPayload = JSONPayload + '"packagetype" :"' + item.packagetype + '",'
-                        JSONPayload = JSONPayload + '"composition":"' + item.composition + '"}'
-                       
-                        this.syncdrugdata_AWS_local(JSONPayload,item);
-                        
-            }
-             
- }
  
 
 syncdrugdata_AWS_local(JSONPayload: string, item: any){
@@ -264,7 +184,8 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                    smessage = this.medicinename + ":" + this.medicinetype +", sucessfully added !";
                     stitle = "Add New Drug : " 
                   }
-                  this.syncdrugdata_local(item,soperation);
+                  
+                  //this.syncdrugdata_local(item,soperation); // not requied to update local since we are not allowing user to change
 
                   loading.onDidDismiss(() => {
                     let alert = this.alertCtrl.create({
@@ -276,15 +197,7 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                           handler: () => {
                             console.log('Ok clicked');
                             //loading.dismiss();
-                            //this.viewCtrl.dismiss();
-                            this.medicinename=null;
-                            this.medicinetype =null;
-                            this.manufacturer="";
-                            this.schedulemedicine="";
-                            this.medicineposition = "";
-                            this.reorderqty ="";
-                            this.packagetype="";
-                            this.comp="";
+                            this.viewCtrl.dismiss();
                           }
                         }
                       ]

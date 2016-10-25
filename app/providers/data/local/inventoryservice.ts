@@ -23,6 +23,10 @@ export class LocalDrugInventory {
 
  }
   
+ getDrugId(item: any){
+     return this.storage.query("SELECT drugid FROM store_drugmaster WHERE drugname = ? AND drugtype=?",[item.drugname,item.drugtype]);
+  }
+
  // returns all drugs in local store 
  /* getAllDrugs(){
         return Promise.resolve(this.storage.query("SELECT drugid,drugname,drugtype FROM store_drugmaster "));
@@ -33,12 +37,17 @@ export class LocalDrugInventory {
      return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_drugmaster WHERE drugid = ?",[item.drugid]);
   }
 
+   // search a supplier in the local store by supplier id
+  searchDrugByName(item: any){
+     return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_drugmaster WHERE drugname = ? AND drugtype=?",[item.drugname,item.drugtype]);
+  }
+
   // add drug to local store
     addDrug(item:any){
         this.storage.query("INSERT INTO store_drugmaster(drugid, drugname, drugtype,mfgcode,scheduledrug) VALUES (?,?,?,?,?)", [item.drugid, item.drugname, item.drugtype,
         item.mfgcode, item.scheduledrug]).then((data) => 
         {
-            this.globaldrugslist.push({drugid: item.drugid, drugname: item.drugname,drugtype: item.drugtype});
+            this.globaldrugslist.push({drugid: item.drugid, drugname: item.drugname,drugtype: item.drugtype,mfgcode:item.mfgcode});
             return Promise.resolve(true);
         }, (error) => {
             return Promise.resolve(false);
@@ -82,7 +91,6 @@ export class LocalDrugInventory {
                 if (responseobject.rows.length >0)
                 {
                         for(var i = 0; i < responseobject.rows.length; i++) {
-
                             this.globaldrugslist.push({drugid: responseobject.rows[i].drugid, drugname: responseobject.rows[i].drugname,drugtype: responseobject.rows[i].drugtype,mfgcode: responseobject.rows[i].mfgcode});
                     }
 

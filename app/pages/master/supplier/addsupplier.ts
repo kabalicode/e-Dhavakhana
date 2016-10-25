@@ -98,16 +98,13 @@ export class AddSupplierPage {
         this.GSTNO=this.addsupplier.controls['GSTNO'];
         this.TINNO=this.addsupplier.controls['TINNO'];
   
-
+    
 
 
     }    
 
 postSupplierInfo(){
   //console.log("i am here");
-
-
-
 
    let supplieritem = {
         supplierid: null,
@@ -243,6 +240,9 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                             
                             // store drug info to local store
                             this.syncdrugdata_local(item,soperation); // store data to local
+
+                            
+
 
                             this.vendorname=null;
                             this.vendoraddress =null;

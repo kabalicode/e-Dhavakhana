@@ -16,7 +16,7 @@
       </ion-segment-button>
     </ion-segment>
 
-      <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="updatedrugsearch()" placeholder="Please enter the drug name for which you would like to find an alternative drug option(s).">
+      <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="updatedrugsearch()" [debounce]="650" placeholder="Please enter the drug name(min 3 char) for which you would like to find an alternative drug option(s).">
       </ion-searchbar>
     </ion-toolbar>
 </ion-header>
