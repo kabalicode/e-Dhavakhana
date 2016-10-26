@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import {Storage, SqlStorage} from 'ionic-angular';
 import 'rxjs/add/operator/map';
+import {SafeHttp} from '../utilities/safehttp';
  
 @Injectable()
 export class InventoryService {
@@ -12,7 +13,7 @@ export class InventoryService {
   drugdetailsdata: any;
 
  
-  constructor(private http: Http) {
+  constructor(private http: SafeHttp) {
     this.data = null;
     this.favlist = [];
     this.drugdetailsdata = null;

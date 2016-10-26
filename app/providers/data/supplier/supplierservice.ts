@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
+import {SafeHttp} from '../utilities/safehttp';
  
 @Injectable()
 export class SupplierAPIService {
@@ -9,7 +10,7 @@ export class SupplierAPIService {
   supplierdetailsdata: any;
 
  
-  constructor(private http: Http) {
+  constructor(private http: SafeHttp) {
     this.data = null;
     this.supplierdetailsdata = null;
     //console.log("inside supplier API service");

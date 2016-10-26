@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
+import {SafeHttp} from '../utilities/safehttp';
  
 @Injectable()
 export class NotificationService {
  
   data: any;
  
-  constructor(private http: Http) {
+  constructor(private http: SafeHttp) {
     this.data = null;
     
   }

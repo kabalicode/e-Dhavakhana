@@ -9,15 +9,18 @@ import {InvoiceAddPage} from './pages/invoice-add/invoice-add';
 import {SearchAlternativePage} from './pages/search-alternative/search-alternative';
 import {MymessagesPage} from './pages/mymessages/mymessages';
 import {SupplierSearchPage} from './pages/master/supplier/search';
-
+import {enableProdMode} from '@angular/core';
 import {DefaultPage} from './pages/default/default';
-
+import { Network } from 'ionic-native';
 //import providers
 import {LocalDrugInventory} from './providers/data/local/inventoryservice';
 import {LocalSupplierMaster} from './providers/data/local/supplierservice';
+import {SafeHttp} from './providers/data/utilities/safehttp';
+
 
 @Component({
-  templateUrl: 'build/app.html'
+  templateUrl: 'build/app.html',
+  providers: [SafeHttp]
 })
 class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -30,7 +33,8 @@ class MyApp {
   constructor(
     public platform: Platform,
     public alertCtrl: AlertController,
-    public menu: MenuController
+    public menu: MenuController,
+    private safeHttp: SafeHttp
   ) {
     this.initializeApp();
 
@@ -59,8 +63,32 @@ class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
 
+      /* Code for listening to network connection */
+      console.log("Network Connection type :" + Network.connection.valueOf());
+      this.safeHttp.connectionType = Network.connection.toString();
+      let disconnectSubscription = Network.onDisconnect().subscribe(() => {
+        this.safeHttp.connection = false;
+        this.showNetworkAlert();
+       });
+
+       let connectSubscription = Network.onConnect().subscribe(() => {
+        this.safeHttp.connection = true;
+        this.safeHttp.connectionType = Network.connection.toString();
+        console.log("Network Connection type:" + Network.connection.toString);
+       });
+       /*Code for listening to network connection */
+
     });
     
+  }
+
+  showNetworkAlert(){
+      let alert = this.alertCtrl.create({
+            title: "Network Error",
+            message: "Internet Connection lost. Please check your connection",
+            buttons: ['OK']
+        });
+        alert.present();
   }
 
   openPage(page) {
@@ -74,5 +102,5 @@ class MyApp {
     p.showchild = !p.showchild;
   }
 }
-
-ionicBootstrap(MyApp,[LocalDrugInventory,LocalSupplierMaster]);
+enableProdMode();
+ionicBootstrap(MyApp,[SafeHttp,LocalDrugInventory,LocalSupplierMaster]);

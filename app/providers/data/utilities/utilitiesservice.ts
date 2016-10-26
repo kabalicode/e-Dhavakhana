@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http,Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
-
+import {SafeHttp} from '../utilities/safehttp';
 
 /*
   Generated class for the Toolservice provider.
@@ -18,7 +18,7 @@ export class UtilitiesService {
   addressdetails:any;
 
 
-  constructor(private http: Http) {
+  constructor(private http: SafeHttp) {
     this.suggesteddrugdata = null;
     this.drugdetails = null;
     this.alternativedrugs=null;

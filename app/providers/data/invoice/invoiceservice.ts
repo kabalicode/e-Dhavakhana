@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import {Storage, SqlStorage} from 'ionic-angular';
 import 'rxjs/add/operator/map';
+import {SafeHttp} from '../utilities/safehttp';
  
 @Injectable()
 export class InvoiceService {
@@ -12,7 +13,7 @@ export class InvoiceService {
   storage: Storage;
   favlist: any;
  
-  constructor(private http: Http) {
+  constructor(private http: SafeHttp) {
     this.data = null;
     this.favlist = [];
     this.storage = new Storage(SqlStorage);

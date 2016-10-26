@@ -237,7 +237,7 @@ export class InvoiceAddPage {
               ]
             });
             alert.present();
-            this.invoiceItems = undefined;
+            this.invoiceItems = [];
             this.clearSupplierName();
             this.invoice.controls['date'].updateValue(" ");
             this.invoice.controls['taxinvoiceno'].updateValue(" ");
@@ -268,7 +268,9 @@ export class InvoiceAddPage {
           invoicevalue = invoicevalue + parseFloat(this.invoiceItems[i].total_price);
           delete this.invoiceItems[i]['sno']; // remove sno attribute before submitting
       }
-      this.invoiceObj.invoicedate = this.datePipe.transform(this.invoice.controls['date'].value,'yyyy-MM-dd');
+      let dateSplitArr = this.invoice.controls['date'].value.split("/");
+      let invoicedt = new Date(dateSplitArr[2], dateSplitArr[1] - 1, dateSplitArr[0]);
+      this.invoiceObj.invoicedate = this.datePipe.transform(invoicedt,'yyyy-MM-dd');
       this.invoiceObj.taxinvoiceno = this.invoice.controls['taxinvoiceno'].value;
       this.invoiceObj.transaction_type = this.invoice.controls['transactionType'].value;
       this.invoiceObj.supplierid = this.selectedsupplierid;

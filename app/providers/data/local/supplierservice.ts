@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
+import {Injectable,Component} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Storage, SqlStorage} from 'ionic-angular';
- 
+import {SafeHttp} from '../utilities/safehttp';
+
 @Injectable()
 export class LocalSupplierMaster {
  
@@ -12,7 +13,7 @@ export class LocalSupplierMaster {
   public globalsupplierlist: Array<Object>;
 
  
-  constructor(private http: Http) {
+  constructor(private http: SafeHttp) {
     this.data = null;
     this.storage = new Storage(SqlStorage);
     
