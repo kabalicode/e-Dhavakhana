@@ -74,11 +74,12 @@ getAlternativeDrugs(searchParam: string){
   
     url = `http://oaayush-aayush.rhcloud.com/api/medicine_alternatives?limit=20&key=57029cfb1f59ea00d8294c7367a0d5&id=${searchParam}`;
     //url=`https://nnuggsvyzb.execute-api.us-west-2.amazonaws.com/Utilities/drugs/alternative?id=${searchParam}`
-
+    //console.log(url);
     this.http.get(url)
         .map(res => res.json())
         .subscribe(data => {
           this.alternativedrugs = data;
+          //console.log(this.alternativedrugs);
           resolve(this.alternativedrugs);
         });
     });    //  API CALL END 
@@ -101,7 +102,7 @@ getDrugDetails(drugname: string){
     url = `http://oaayush-aayush.rhcloud.com/api/medicine_details?key=57029cfb1f59ea00d8294c7367a0d5&id=${drugname}`;
    
 
-    console.log(url);
+    //console.log(url);
 
     //console.log(url);
     this.http.get(url)
@@ -109,7 +110,7 @@ getDrugDetails(drugname: string){
         .subscribe(data => {
           this.drugdetails = data;
           
-          console.log(this.drugdetails);
+          //console.log(this.drugdetails);
           
           resolve(this.drugdetails);
         });

@@ -44,14 +44,23 @@ export class MymessagesPage {
 
           this.vwnotifications = this.vwnotifications.notifications;
 
+          
+
           if (typeof this.vwnotifications[0].rundate!== 'undefined' && this.vwnotifications[0].rundate!== null)
           this.messagesdate = this.vwnotifications[0].rundate;
 
-    
-          console.log(this.messagesdate);  
+          this.vwnotifications.forEach(function(adg) 
+          {
+
+            var smessagetype = adg.messagetype;
+            smessagetype = smessagetype.toUpperCase();
+            adg.messagetype = smessagetype;
+          });  
+          //console.log(this.vwnotifications);
+          //console.log(this.messagesdate);  
       }
 
-      
+
       
     });
 

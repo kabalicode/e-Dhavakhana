@@ -163,8 +163,8 @@ export class SubstitueDrugsModal {
 
             // get detailed drug information
             this.lresultcount = -1;
-           // console.log("ss");
-           // console.log(this.drugname);
+            //console.log("ss");
+            //console.log(this.drugname);
             //get alternative drug information
             this.utilitydrugsService.getAlternativeDrugs(this.drugname).then((data) => {
 
@@ -173,19 +173,29 @@ export class SubstitueDrugsModal {
             this.vwalternativedrugdetails = this.vwalternativedrugdetails.medicine_alternatives;
             
             this.lresultcount = this.vwalternativedrugdetails.length;
-            
+
+            this.vwalternativedrugdetails.forEach(function(adg) 
+            {
+
+                var sdrugtype = adg.category;
+                sdrugtype = sdrugtype.toUpperCase();
+                adg.category = sdrugtype;
+               // console.log(adg.category);
+            })
+            //console.log("this.vwalternativedrugdetail:" + this.vwalternativedrugdetails);
             //console.log("batch count:");
             this.utilitydrugsService.alternativedrugs=null;
 
             });
 
-            // get detailed drug information.
+
+
+             // get detailed drug information.
            
             this.ldrugdetails = 0;
             this.utilitydrugsService.getDrugDetails(this.drugname).then((data) => {
 
                 this.vwmedicinedetails = data;
-                
                  
                 if (typeof this.vwmedicinedetails!== 'undefined' && this.vwmedicinedetails!== null)
                 {
@@ -222,10 +232,12 @@ export class SubstitueDrugsModal {
                         }
                    } 
                 }
+                        loading.dismiss();
 
+            });
 
-            });    
-            loading.dismiss();
+    
+           
             //this.searching=false;
         
     }
