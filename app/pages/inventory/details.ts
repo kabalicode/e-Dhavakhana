@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController,LoadingController } from 'ionic-angular';
 import { NavParams } from 'ionic-angular';
 import {InventoryService} from '../../providers/data/inventory/inventoryservice';
+import {SafeHttp} from '../../providers/data/utilities/safehttp';
 
 // Import the drug model
 import {Drug} from '../../models/drug';
@@ -29,7 +30,8 @@ export class DrugdetailsPage {
   constructor(public navParams: NavParams, 
              private invtdataservice:InventoryService,
              public loadingCtrl:LoadingController,
-             private nav: NavController) {
+             private nav: NavController,
+             private safenetwork: SafeHttp) {
       this.drugid = navParams.data;
 
       //this.searching=true;
@@ -40,32 +42,38 @@ export class DrugdetailsPage {
 
 ionViewWillEnter() {
   console.log("ionviewwillenter");
-  
-   let loading = this.loadingCtrl.create({
+  if (this.safenetwork.connection)
+   {
+        let loading = this.loadingCtrl.create({
                     content: 'Please Wait...'
+        });
+
+        loading.present();
+
+        // get detailed drug information
+        this.lbatchcount = -1;
+
+        this.invtdataservice.getDrugDetails(this.drugid).then((data) => {
+
+        this.vwdrug = data;
+      
+        this.lbatchcount = this.vwdrug.suppliers.length;
+
+        this.invtdataservice.drugdetailsdata=null;
+
+        //this.searching=false;
+
+        loading.dismiss();
+        
+        console.log("new inventory details page");
+  
+        
       });
-
-      loading.present();
-
-      // get detailed drug information
-      this.lbatchcount = -1;
-
-      this.invtdataservice.getDrugDetails(this.drugid).then((data) => {
-
-      this.vwdrug = data;
-     
-      this.lbatchcount = this.vwdrug.suppliers.length;
-
-      this.invtdataservice.drugdetailsdata=null;
-
-      //this.searching=false;
-
-      loading.dismiss();
-      
-      console.log("new inventory details page");
- 
-      
-    });
+  
+   }else
+   {
+     this.safenetwork.showNetworkAlert();
+   }
 
 }
 

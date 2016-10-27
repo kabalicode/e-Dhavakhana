@@ -17,14 +17,15 @@ import {LocalDrugInventory} from './providers/data/local/inventoryservice';
 import {LocalSupplierMaster} from './providers/data/local/supplierservice';
 import {SafeHttp} from './providers/data/utilities/safehttp';
 
+declare var Connection;
 
 @Component({
   templateUrl: 'build/app.html',
-  providers: [SafeHttp]
+  //providers: [SafeHttp]
 })
 class MyApp {
   @ViewChild(Nav) nav: Nav;
-
+  onDevice: boolean;
   // make HomePage the root (or first) page
   rootPage: any = HomePage;
   pages: Array<{title: string, icon:string, component: any, showchild:boolean,
@@ -37,6 +38,7 @@ class MyApp {
     private safeHttp: SafeHttp
   ) {
     this.initializeApp();
+    this.onDevice = this.platform.is('cordova');
 
     // set our app's pages
     this.pages = [
@@ -63,8 +65,21 @@ class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
 
+   
+
+      // check connection and set accordingly
+      if (this.isOnline()) 
+         { 
+           this.safeHttp.connection = true; 
+           
+         }
+      else  
+         {
+           this.showNetworkAlert();
+            this.safeHttp.connection = false;
+         }  
+      
       /* Code for listening to network connection */
-      console.log("Network Connection type :" + Network.connection.valueOf());
       this.safeHttp.connectionType = Network.connection.toString();
       let disconnectSubscription = Network.onDisconnect().subscribe(() => {
         this.safeHttp.connection = false;
@@ -74,7 +89,6 @@ class MyApp {
        let connectSubscription = Network.onConnect().subscribe(() => {
         this.safeHttp.connection = true;
         this.safeHttp.connectionType = Network.connection.toString();
-        console.log("Network Connection type:" + Network.connection.toString);
        });
        /*Code for listening to network connection */
 
@@ -101,6 +115,15 @@ class MyApp {
   toggleMenuItem(p){
     p.showchild = !p.showchild;
   }
+
+    isOnline(): boolean {
+    if(this.onDevice && Network.connection){
+      return Network.connection !== Connection.NONE;
+    } else {
+      return navigator.onLine; 
+    }
+  }
+
 }
 enableProdMode();
 ionicBootstrap(MyApp,[SafeHttp,LocalDrugInventory,LocalSupplierMaster]);

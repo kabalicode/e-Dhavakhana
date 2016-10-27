@@ -9,7 +9,7 @@ import {AutocompletePage} from './autocomplete';
 import {InventoryService} from '../../providers/data/inventory/inventoryservice';
 import {LocalDrugInventory} from '../../providers/data/local/inventoryservice';
 import {UtilitiesService} from '../../providers/data/utilities/utilitiesservice'
-
+import {SafeHttp} from '../../providers/data/utilities/safehttp';
 
 
 @Component({
@@ -57,7 +57,8 @@ export class AddDrugsPage {
               public alertCtrl: AlertController,
               private fb: FormBuilder,
               public loadingCtrl:LoadingController,
-              public viewCtrl: ViewController) 
+              public viewCtrl: ViewController,
+              private safenetwork: SafeHttp) 
     {
 
         this.adddrug = fb.group({
@@ -87,62 +88,67 @@ export class AddDrugsPage {
  manageDrug(): void {
   
    console.log("save!!!!")
-    
-    let drugitem = {
-        drugid: null,
-        drugname: this.medicinename.toUpperCase(),
-        drugtype: this.medicinetype.toUpperCase(),
-        mfgcode: this.manufacturer.toUpperCase(),
-        scheduledrug: this.schedulemedicine.toUpperCase(),
-        rackposition: this.medicineposition.toUpperCase(),
-        minqty : this.reorderqty,
-        packagetype: this.packagetype.toUpperCase(),
-        composition: this.comp.toUpperCase()
-    };
+   if (this.safenetwork.connection)
+   { 
+        let drugitem = {
+            drugid: null,
+            drugname: this.medicinename.toUpperCase(),
+            drugtype: this.medicinetype.toUpperCase(),
+            mfgcode: this.manufacturer.toUpperCase(),
+            scheduledrug: this.schedulemedicine.toUpperCase(),
+            rackposition: this.medicineposition.toUpperCase(),
+            minqty : this.reorderqty,
+            packagetype: this.packagetype.toUpperCase(),
+            composition: this.comp.toUpperCase()
+        };
 
 
- this.localdrugservice.searchDrugByName(drugitem).then((res) => {
-      let responseobject : any;
-      responseobject = res;
-      console.log(responseobject);
+    this.localdrugservice.searchDrugByName(drugitem).then((res) => {
+          let responseobject : any;
+          responseobject = res;
+          console.log(responseobject);
 
-       if (typeof responseobject!== 'undefined' && responseobject!== null)
-                {
-                        responseobject = responseobject.res;
-                        responseobject = responseobject.rows[0];
+          if (typeof responseobject!== 'undefined' && responseobject!== null)
+                    {
+                            responseobject = responseobject.res;
+                            responseobject = responseobject.rows[0];
 
-                        if (responseobject.TOTALRECORDS >0)
-                        {
+                            if (responseobject.TOTALRECORDS >0)
+                            {
 
-                            let alert = this.alertCtrl.create({
-                            title: "Duplicate Drug",
-                            message: drugitem.drugname + " - "+ drugitem.drugtype + " already exits in the database. Would you like to update with the new information?",
-                            buttons: [
-                              {
-                                text: 'Cancel',
-                                role: 'cancel',
-                                handler: () => {
-                                  //console.log('Cancel clicked');
-                                  // do nothing
-                                }
-                              },
-                              {
-                                text: 'Update',
-                                handler: () => {
-                                  //console.log('Update Clicked');
-                                  this.updatedrugdata(drugitem,"UPDATE");
-                                }
-                              }
-                            ]
-                          });
-                          alert.present();
-                        }else
-                        {
-                          this.updatedrugdata(drugitem,"INSERT");
-                        }
-                         
-                  }
-        });  
+                                let alert = this.alertCtrl.create({
+                                title: "Duplicate Drug",
+                                message: drugitem.drugname + " - "+ drugitem.drugtype + " already exits in the database. Would you like to update with the new information?",
+                                buttons: [
+                                  {
+                                    text: 'Cancel',
+                                    role: 'cancel',
+                                    handler: () => {
+                                      //console.log('Cancel clicked');
+                                      // do nothing
+                                    }
+                                  },
+                                  {
+                                    text: 'Update',
+                                    handler: () => {
+                                      //console.log('Update Clicked');
+                                      this.updatedrugdata(drugitem,"UPDATE");
+                                    }
+                                  }
+                                ]
+                              });
+                              alert.present();
+                            }else
+                            {
+                              this.updatedrugdata(drugitem,"INSERT");
+                            }
+                            
+                      }
+            });  
+   }else
+   {
+     this.safenetwork.showNetworkAlert();
+   }
 
   } // manage drug
 

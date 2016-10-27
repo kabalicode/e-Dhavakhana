@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {ViewController,LoadingController} from 'ionic-angular';
 import {UtilitiesService} from '../../providers/data/utilities/utilitiesservice'
+import {SafeHttp} from '../../providers/data/utilities/safehttp';
 
 @Component({
   templateUrl: 'build/pages/inventory/autocomplete.html',
@@ -17,7 +18,8 @@ export class AutocompletePage {
 
   constructor (public viewCtrl: ViewController, 
               private drugutilservice:UtilitiesService,
-              public loadingCtrl:LoadingController) {
+              public loadingCtrl:LoadingController,
+              private safenetwork: SafeHttp) {
     
     this.autocompleteItems = [];
     this.autocomplete = {
@@ -40,7 +42,8 @@ export class AutocompletePage {
   }
   
   updateSearch() {
-
+  if (this.safenetwork.connection)
+   {
         var fltvar = this.autocomplete.drugquery;
         fltvar = fltvar.toUpperCase();
 
@@ -107,5 +110,10 @@ export class AutocompletePage {
               }
         }
 
-  }
-}
+    }else
+    {
+        this.safenetwork.showNetworkAlert();
+    }
+} // end of function
+
+} // end of export class

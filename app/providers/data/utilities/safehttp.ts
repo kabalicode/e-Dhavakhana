@@ -5,7 +5,7 @@ import {AlertController} from 'ionic-angular';
 @Injectable()
 export class SafeHttp {
 
-  public connection: boolean = true;
+  public connection: boolean ;
   public connectionType: string;
 
   constructor(private http: Http, private alertCtrl:AlertController) {
@@ -27,9 +27,11 @@ export class SafeHttp {
   }
 
   public get(url: string, options?: RequestOptionsArgs) {
-    if (!this.connection) {
-      this.showNetworkAlert();
-    } else { return this.http.get(url, options) }
+      if (!this.connection) {
+          this.showNetworkAlert();
+        } else { 
+          return this.http.get(url, options) 
+        }
   }
 
   public post(url: string, body: string, options?: RequestOptionsArgs) {

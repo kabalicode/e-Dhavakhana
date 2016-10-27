@@ -42,14 +42,13 @@ updatedrugsearch(){
 
         // We will only perform the search if we have 3 or more characters
         if ((fltvar.length >= 3 && this.bapiinvoked==false)) {
-                //this.searching=true;
 
                 let loading = this.loadingCtrl.create({
                         content: 'Please Wait...'
                 });
 
                 loading.present();
-
+               
 
                 this.utilitydrugsService.getSuggestedDrugs(fltvar).then((data) => {
                 console.log(data);
@@ -232,7 +231,7 @@ export class SubstitueDrugsModal {
                         }
                    } 
                 }
-                        loading.dismiss();
+                       loading.dismiss();
 
             });
 
