@@ -14,7 +14,7 @@
   <div *ngIf="invoicedtldata">  
   <ion-card>
       <ion-card-header>
-          Supplier Name: {{invoicedtldata.suppliername}}
+          <strong>Supplier Name: {{invoicedtldata.suppliername}}</strong>
       </ion-card-header>
       <ion-card-content>
           <ion-grid>
@@ -31,7 +31,7 @@
   </ion-card>
   <ion-card *ngFor="let invoiceitem of invoicedtldata.invoiceitems">
       <ion-card-header>
-          {{invoiceitem.drugname}}, {{invoiceitem.drugtype}}
+         <strong> {{invoiceitem.drugname}}, {{invoiceitem.drugtype}} </strong>
       </ion-card-header>
         <ion-grid>
             <ion-row>

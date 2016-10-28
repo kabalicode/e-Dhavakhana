@@ -28,7 +28,7 @@ export class InvoiceDetailsPage {
             this.vwsupplierid = supplierId;
 
             this.hidefilter = true;
-            this.invoicesexists = false;
+            this.invoicesexists = true;
             let loadctrl = loadingCtrl.create(
                 {
                     content: "Please wait",
@@ -41,6 +41,8 @@ export class InvoiceDetailsPage {
                 if (typeof this.invoicedata!== 'undefined' && this.invoicedata!== null)
                    {
                        this.invoicesexists = (this.invoicedata.length > 0);
+                   }else{
+                       this.invoicesexists = false;
                    } 
                 loadctrl.dismiss();
             });
