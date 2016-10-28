@@ -42,43 +42,45 @@ export class AutocompletePage {
   }
   
   updateSearch() {
-  if (this.safenetwork.connection)
-   {
+ 
         var fltvar = this.autocomplete.drugquery;
         fltvar = fltvar.toUpperCase();
 
         // We will only perform the search if we have 4 or more characters
         if ((this.autocomplete.drugquery.trim().length >= 3 && this.bdrugapiinvoked==false)) {
-        //if (this.autocomplete.drugquery.trim().length > 3) {        
-              let me = this;
+        //if (this.autocomplete.drugquery.trim().length > 3) { 
+          if (this.safenetwork.connection)
+            {         
+                  let me = this;
 
-              let loading = this.loadingCtrl.create({
-                    content: 'Please Wait...'
-              });
+                  let loading = this.loadingCtrl.create({
+                        content: 'Please Wait...'
+                  });
 
-              loading.present();
-              this.drugutilservice.getSuggestedDrugs(this.autocomplete.drugquery).then((data) => {
+                  loading.present();
+                  this.drugutilservice.getSuggestedDrugs(this.autocomplete.drugquery).then((data) => {
 
-                    this.vwdrugs = data;
-                    this.drugutilservice.suggesteddrugdata=null;
-                    this.autocompleteItems = [];
-                    this.bdrugapiinvoked = true;
-                    me.result="";
-                    loading.dismiss();
-                    this.vwdrugs = this.vwdrugs.response;
-                    this.vwdrugs = this.vwdrugs.suggestions;
-                    if ((this.vwdrugs.length >0))
-                    {
-                            this.vwdrugs.forEach(function (prediction) {
-                            me.autocompleteItems.push(prediction.suggestion);                 
-                        //   this.autocompleteItems.push(prediction.DrugName);
-                        });
-                    }else
-                    {
-                        me.result = "No drug(s) found with matching criteria."
-                        me.autocompleteItems.push(me.autocomplete.drugquery);
-                    }
-              });
+                        this.vwdrugs = data;
+                        this.drugutilservice.suggesteddrugdata=null;
+                        this.autocompleteItems = [];
+                        this.bdrugapiinvoked = true;
+                        me.result="";
+                        loading.dismiss();
+                        this.vwdrugs = this.vwdrugs.response;
+                        this.vwdrugs = this.vwdrugs.suggestions;
+                        if ((this.vwdrugs.length >0))
+                        {
+                                this.vwdrugs.forEach(function (prediction) {
+                                me.autocompleteItems.push(prediction.suggestion);                 
+                            //   this.autocompleteItems.push(prediction.DrugName);
+                            });
+                        }else
+                        {
+                            me.result = "No drug(s) found with matching criteria."
+                            me.autocompleteItems.push(me.autocomplete.drugquery);
+                        }
+                  });
+            }else {this.safenetwork.showNetworkAlert();}    
 
         }else if (fltvar == ""){
                 this.bdrugapiinvoked = false;
@@ -110,10 +112,7 @@ export class AutocompletePage {
               }
         }
 
-    }else
-    {
-        this.safenetwork.showNetworkAlert();
-    }
+
 } // end of function
 
 } // end of export class

@@ -16,19 +16,29 @@
 
 ion-title{
     text-align: center;
+   
 }
 ion-icon{
     padding-right: 5px;   
 }
 ion-card ion-card-header{
-    background-color: brown;
+    background-color:   lightseagreen;
     color: white;
 }
+
 
 
 .autocomplete {
   display     : block;
   overflow    : hidden;
+}
+
+.autocomplete ion-list .item{
+     background-color: white;
+}
+
+ion-list .item-radio{
+    background-color: white;
 }
 
 .autocomplete ion-spinner {
@@ -53,7 +63,7 @@ ion-card ion-card-header{
 }
 
 .grid-header{
-  background-color: brown;
+  background-color: lightseagreen;
   color: white;
   font-weight: bold;
   text-align: center;

@@ -109,7 +109,7 @@ export class DrugsPage {
                 this.vwdrugs = null;
                 this.modeldrugs = null;
                 //this.searching=false;
-        }else
+        }else if (fltvar.trim().length > 1)
         {
 
             this.modeldrugs = this.localdrugservice.globaldrugslist;

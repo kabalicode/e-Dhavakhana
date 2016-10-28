@@ -42,20 +42,24 @@ class MyApp {
 
     // set our app's pages
     this.pages = [
-      { title: 'Dashboard', icon:'add', component: HomePage , showchild:false ,child: null},
+      { title: 'Home', icon:'home', component: HomePage , showchild:false ,child: null},
       { title: 'Sales', icon:'pricetags', component: DefaultPage, showchild:false , child: null  },
-      { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:[
-          { title: 'New Invoice', icon:'add', component: InvoiceAddPage}] },
-      { title: 'Inventory', icon:'home', showchild:false , child: null, component: DrugsPage},
-      { title: 'Master Data', icon:'build', component: DrugsPage, showchild:false , child:[
-          { title: 'Supplier', icon:'contact', component: SupplierSearchPage}]  },
-      { title: 'Analytics', icon:'stats', component: DefaultPage, showchild:false , child: null },
-      { title: 'Notifications', icon:'chatboxes', component: MymessagesPage, showchild:false , child: null },
+      { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:null },
+      { title: 'Inventory', icon:'flask', showchild:false , child: null, component: DrugsPage},
+      { title: 'Master', icon:'build', component: DrugsPage, showchild:false , child:[
+          { title: 'Supplier', icon:'people', component: SupplierSearchPage},
+          { title: 'Customer', icon:'contacts', component: DefaultPage},
+          { title: 'Doctor', icon:'medkit', component: DefaultPage}]  },
+      { title: 'Reports', icon:'stats', component: DefaultPage, showchild:false , child: null },
+      { title: 'Notifications', icon:'notifications', component: MymessagesPage, showchild:false , child: null },
       { title: 'Tools', icon:'hammer', showchild:false , component: HomePage,
         child:[
-          { title: 'Substitutes', icon:'search', component: SearchAlternativePage}]},
-      { title: 'Books', icon:'logo-usd', component: DefaultPage, showchild:false , child: null  },
-      { title: 'MyAccount', icon:'person', component: DefaultPage, showchild:false , child: null },
+              { title: 'Order Management', icon:'cart', component: DefaultPage},
+              { title: 'Substitutes', icon:'search', component: SearchAlternativePage}]},
+      { title: 'Finance', icon:'logo-usd', component: DefaultPage, showchild:false , child: null  },
+      { title: 'CRM', icon:'person', component: DefaultPage, showchild:false , child: null },
+      { title: 'Settings', icon:'settings', component: DefaultPage, showchild:false , child: null },
+      { title: 'Logout', icon:'log-out', component: DefaultPage, showchild:false , child: null },
     ];
   }
 
