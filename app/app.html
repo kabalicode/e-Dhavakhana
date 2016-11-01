@@ -1,16 +1,17 @@
 <ion-menu [content]="content">
 
-  <ion-toolbar>
-      <button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-item class="menuitem menutext menutitle sidemenu-header">
-        <h4><ion-icon name="contact"></ion-icon>Welcome Giridhar</h4><p></p>
-         <h5> App Mode: {{networkstatus}}  </h5><p></p>
-      </ion-item>
+  <ion-toolbar avatar>
+    <div class="sidemenu-header">
+        <img class="avatarstyle" src="img/avatar.png"/>
+        
+    </div>
   </ion-toolbar>
 
-  <ion-content> 
+  <ion-content class="menuhome"> 
+    <div class="userinfo">
+        <strong>Welcome Giridhar</strong>
+        <h5> App Mode: {{networkstatus}}  </h5><p></p>
+    </div>
     <ion-list>
       <ion-item class="menuitem" *ngFor="let p of pages">
           <a class="menutitle" ion-button icon-left (click)="openPage(p)">

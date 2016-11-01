@@ -7,7 +7,10 @@
     top:15px
 }
 .sidemenu-header{
-    height:30px;max-height:30px
+    height: 180px;
+    max-height: 180px;
+    image-rendering: auto;
+    background-color: darkslategray;
 }
 .menuitem{
     //background-color: #CDE0AF;
