@@ -108,14 +108,15 @@ this.data = null;
    
     url = `https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/MasterData/supplier/${supplierid}`;
     
-   // console.log(url);
+  // console.log(url);
     this.http.get(url)
     
         .map(res => res.json())
         .subscribe(data => {
           
           this.data =data;
-         //console.log("inside getsupplierdetails api");
+       // console.log("inside getsupplierdetails api" + data);
+      //  console.log(data);
         
           resolve(this.data);
         });

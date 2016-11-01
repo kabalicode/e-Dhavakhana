@@ -21,11 +21,10 @@ import { EditDrugsPage } from '../../pages/inventory/editdrug';
 export class DrugdetailsPage {
   drugparams: any;
   drugid: number;
-  //searching: any = false;
+  drugname : string;
   vwdrug: Drug = new Drug;
   lbatchcount = -1;
-  //vwsuppliers: supplier = new supplier;
-  //vwbatches : any;
+  ERROR = false;
 
   constructor(public navParams: NavParams, 
              private invtdataservice:InventoryService,
@@ -50,14 +49,30 @@ ionViewWillEnter() {
 
         loading.present();
 
+        this.ERROR = false;
+        
+
         // get detailed drug information
         this.lbatchcount = -1;
 
         this.invtdataservice.getDrugDetails(this.drugid).then((data) => {
 
         this.vwdrug = data;
-      
-        this.lbatchcount = this.vwdrug.suppliers.length;
+    
+        if ((typeof this.vwdrug === 'undefined') || (this.vwdrug === null))
+          {
+            this.ERROR = true;
+            this.drugname = "";
+            this.lbatchcount = -1;
+          }
+        else
+        {
+          this.ERROR = false;
+          this.drugname = this.vwdrug.drugname;
+          this.lbatchcount = this.vwdrug.suppliers.length;
+        }  
+
+        //console.log(this.errormessage);  
 
         this.invtdataservice.drugdetailsdata=null;
 

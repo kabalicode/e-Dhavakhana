@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {ionicBootstrap, Platform, MenuController, Nav, AlertController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
+import {ToolsPage} from './pages/tools/tools';
 import {DrugsPage} from './pages/inventory/search';
 //import {AddDrugsPage} from './pages/inventory/add';
 import {InvoicePage} from './pages/invoice/invoice';
@@ -31,6 +32,8 @@ class MyApp {
   pages: Array<{title: string, icon:string, component: any, showchild:boolean,
     child: Array<{title:string, icon:string, component: any}>}>;
 
+  networkstatus: string;  
+
   constructor(
     public platform: Platform,
     public alertCtrl: AlertController,
@@ -42,7 +45,6 @@ class MyApp {
 
     // set our app's pages
     this.pages = [
-      { title: 'Home', icon:'home', component: HomePage , showchild:false ,child: null},
       { title: 'Sales', icon:'pricetags', component: DefaultPage, showchild:false , child: null  },
       { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:null },
       { title: 'Inventory', icon:'flask', showchild:false , child: null, component: DrugsPage},
@@ -52,8 +54,8 @@ class MyApp {
           { title: 'Doctor', icon:'medkit', component: DefaultPage}]  },
       { title: 'Reports', icon:'stats', component: DefaultPage, showchild:false , child: null },
       { title: 'Notifications', icon:'notifications', component: MymessagesPage, showchild:false , child: null },
-      { title: 'Tools', icon:'hammer', showchild:false , component: HomePage,
-        child:[
+      { title: 'Tools', icon:'hammer', showchild:false , component: ToolsPage, 
+         child:[
               { title: 'Order Management', icon:'cart', component: DefaultPage},
               { title: 'Substitutes', icon:'search', component: SearchAlternativePage}]},
       { title: 'Finance', icon:'logo-usd', component: DefaultPage, showchild:false , child: null  },
@@ -62,6 +64,12 @@ class MyApp {
       { title: 'Logout', icon:'log-out', component: DefaultPage, showchild:false , child: null },
     ];
   }
+
+/*
+        child:[
+              { title: 'Order Management', icon:'cart', component: DefaultPage},
+              { title: 'Substitutes', icon:'search', component: SearchAlternativePage}]},
+*/
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -75,23 +83,27 @@ class MyApp {
       if (this.isOnline()) 
          { 
            this.safeHttp.connection = true; 
+           this.networkstatus = "Online";
            
          }
       else  
          {
            this.showNetworkAlert();
             this.safeHttp.connection = false;
+            this.networkstatus = "Offline";
          }  
       
       /* Code for listening to network connection */
       this.safeHttp.connectionType = Network.connection.toString();
       let disconnectSubscription = Network.onDisconnect().subscribe(() => {
         this.safeHttp.connection = false;
+        this.networkstatus = "Offline";
         this.showNetworkAlert();
        });
 
        let connectSubscription = Network.onConnect().subscribe(() => {
         this.safeHttp.connection = true;
+         this.networkstatus = "Online";
         this.safeHttp.connectionType = Network.connection.toString();
        });
        /*Code for listening to network connection */

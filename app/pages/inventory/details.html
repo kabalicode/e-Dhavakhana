@@ -16,7 +16,7 @@
     <button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title center>Current  Inventory Levels of  :  {{vwdrug.drugname}} </ion-title>
+    <ion-title center>Current  Inventory Levels of  :  {{drugname}} </ion-title>
 
       <ion-buttons end>
         <button ion-button (click)="gotoEditDrug()">
@@ -35,6 +35,13 @@
   </div>
 -->
 
+<div *ngIf="ERROR == true">
+    <ion-item>
+     <strong> No data exists for the drug you are looking. Please connect with support, if some thing gone wrong. </strong>.
+    </ion-item>
+  </div>
+
+<div *ngIf="ERROR == false">
 <ion-card>
 
   <ion-card-header class="bar">
@@ -105,7 +112,7 @@
 
   </ion-card-content>
  </ion-card>
-
+</div>
 
 
 </ion-content>

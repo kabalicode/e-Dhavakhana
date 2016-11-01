@@ -1,10 +1,13 @@
 <ion-menu [content]="content">
 
   <ion-toolbar>
-
-    <div class="sidemenu-header">
-        <img src="img/banner.png" height="155px"/>
-    </div>
+      <button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-item class="menuitem menutext menutitle sidemenu-header">
+        <h4><ion-icon name="contact"></ion-icon>Welcome Giridhar</h4><p></p>
+         <h5> App Mode: {{networkstatus}}  </h5><p></p>
+      </ion-item>
   </ion-toolbar>
 
   <ion-content> 

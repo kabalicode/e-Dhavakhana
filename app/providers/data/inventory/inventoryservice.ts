@@ -79,7 +79,7 @@ export class InventoryService {
   getDrugDetails(drugid: number){
 
     if (this.drugdetailsdata) {
-      //console.log("inside if");
+     //console.log("inside if");
       return Promise.resolve(this.drugdetailsdata);
     }
     

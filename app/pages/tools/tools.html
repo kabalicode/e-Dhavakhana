@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar primary>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Tools</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="drugshome">
+
+  <ion-card>
+    <ion-card-header class="bar">
+    </ion-card-header>
+    
+    <ion-card-content>
+
+  <ion-list>
+        <ion-item-sliding>
+
+            <button ion-item (click)="gotoSupplierDetails(supplier.supplierid)">
+              <ion-avatar item-left>
+                 <img src= "img/supplierpharmacy.png" />
+              </ion-avatar>
+               <h2><strong> test 1</strong></h2> 
+          </button>
+
+      </ion-item-sliding>
+
+      <ion-item-sliding>
+
+            <button ion-item (click)="gotoSupplierDetails(supplier.supplierid)">
+              <ion-avatar item-left>
+                 <img src= "img/supplierpharmacy.png" />
+              </ion-avatar>
+               <h2><strong> test2 </strong></h2> 
+          </button>
+
+      </ion-item-sliding>
+  </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+
+
+ 
+</ion-content>
