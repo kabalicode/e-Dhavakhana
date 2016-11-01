@@ -1,13 +1,17 @@
 <ion-menu [content]="content">
 
-  <ion-toolbar>
+  <ion-toolbar avatar>
 
     <div class="sidemenu-header">
-        <img src="img/banner.png" height="155px"/>
+        <img class="avatarstyle" src="img/avatar.png"/>
     </div>
+
   </ion-toolbar>
 
-  <ion-content> 
+  <ion-content class="menuhome"> 
+    <div class="userinfo">
+        <strong>Welcome Giridhar</strong>
+    </div>
     <ion-list>
       <ion-item class="menuitem" *ngFor="let p of pages">
           <a class="menutitle" ion-button icon-left (click)="openPage(p)">
