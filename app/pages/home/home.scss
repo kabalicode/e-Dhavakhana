@@ -7,8 +7,8 @@
     top:15px
 }
 .sidemenu-header{
-    height: 180px;
-    max-height: 180px;
+    height: 80px;
+    max-height: 80px;
     image-rendering: auto;
     background-color: darkslategray;
 }
@@ -30,6 +30,8 @@ ion-list .menuitem .item-inner {
 .menutitle {
     //color:#000;
     color:floralwhite;
+    display: inline-block;
+    width: 90%;
 }
 
 .menutext{

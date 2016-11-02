@@ -1,17 +1,36 @@
 <ion-menu [content]="content">
 
   <ion-toolbar avatar>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-10>
     <div class="sidemenu-header">
         <img class="avatarstyle" src="img/avatar.png"/>
         
     </div>
+        </ion-col>
+        <ion-col>
+          <div class="userinfo">
+        <strong>Welcome Giridhar</strong><p></p>
+        <strong> 
+         <span *ngIf="networkstatus === 'Online'" >
+          <img src="img/active.png"/>
+         </span>
+         <span *ngIf="networkstatus === 'Offline'" >
+          <img src="img/inactive.png"/>
+         </span>
+           {{networkstatus}}  </strong> 
+    </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 
   <ion-content class="menuhome"> 
-    <div class="userinfo">
+    <!--<div class="userinfo">
         <strong>Welcome Giridhar</strong>
         <h5> App Mode: {{networkstatus}}  </h5><p></p>
-    </div>
+    </div>-->
     <ion-list>
       <ion-item class="menuitem" *ngFor="let p of pages">
           <a class="menutitle" ion-button icon-left (click)="openPage(p)">
