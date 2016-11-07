@@ -106,7 +106,7 @@ export class AddSupplierPage {
 postSupplierInfo(){
   //console.log("i am here");
 
-   let supplieritem = {
+let supplieritem = {
         supplierid: null,
         suppliername: this.vendorname.toUpperCase(),
         address: this.vendoraddress.toUpperCase(),
@@ -241,7 +241,7 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                             // store drug info to local store
                             this.syncdrugdata_local(item,soperation); // store data to local
 
-                            
+
 
 
                             this.vendorname=null;

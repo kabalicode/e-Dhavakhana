@@ -4,6 +4,8 @@ import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 import {ToolsPage} from './pages/tools/tools';
 import {DrugsPage} from './pages/inventory/search';
+
+import {MasterPage} from './pages/master/master';
 //import {AddDrugsPage} from './pages/inventory/add';
 import {InvoicePage} from './pages/invoice/invoice';
 import {InvoiceAddPage} from './pages/invoice-add/invoice-add';
@@ -48,16 +50,10 @@ class MyApp {
       { title: 'Sales', icon:'pricetags', component: DefaultPage, showchild:false , child: null  },
       { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:null },
       { title: 'Inventory', icon:'flask', showchild:false , child: null, component: DrugsPage},
-      { title: 'Master', icon:'build', component: DrugsPage, showchild:false , child:[
-          { title: 'Supplier', icon:'people', component: SupplierSearchPage},
-          { title: 'Customer', icon:'contacts', component: DefaultPage},
-          { title: 'Doctor', icon:'medkit', component: DefaultPage}]  },
+      { title: 'Master', icon:'build', component: MasterPage, showchild:false , child:null},
       { title: 'Reports', icon:'stats', component: DefaultPage, showchild:false , child: null },
       { title: 'Notifications', icon:'notifications', component: MymessagesPage, showchild:false , child: null },
-      { title: 'Tools', icon:'hammer', showchild:false , component: ToolsPage, 
-         child:[
-              { title: 'Order Management', icon:'cart', component: DefaultPage},
-              { title: 'Substitutes', icon:'search', component: SearchAlternativePage}]},
+      { title: 'Tools', icon:'hammer', showchild:false , component: ToolsPage,child:null}, 
       { title: 'Finance', icon:'logo-usd', component: DefaultPage, showchild:false , child: null  },
       { title: 'CRM', icon:'person', component: DefaultPage, showchild:false , child: null },
       { title: 'Settings', icon:'settings', component: DefaultPage, showchild:false , child: null },
