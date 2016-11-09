@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController,AlertController,ModalController,ItemSliding, ViewController, NavParams, LoadingController } from 'ionic-angular';
-import {UtilitiesService} from '../../providers/data/utilities/utilitiesservice';
+import {UtilitiesService} from '../../../providers/data/utilities/utilitiesservice';
 //import { ResultsAlternativePage } from '../results-alternative/results-alternative';
 
 /*
@@ -10,10 +10,10 @@ import {UtilitiesService} from '../../providers/data/utilities/utilitiesservice'
   Ionic pages and navigation.
 */
 @Component({
-  templateUrl: 'build/pages/search-alternative/search-alternative.html',
+  templateUrl: 'build/pages/tools/drugdictonary/search.html',
   providers: [UtilitiesService]
 })
-export class SearchAlternativePage {
+export class SearchDrugDictonaryPage {
 
     vwsearchresults: any;
     modelsearchresults:any;
@@ -38,7 +38,7 @@ updatedrugsearch(){
         
         var fltvar = this.queryText;
         fltvar = fltvar.toUpperCase();
-        console.log(fltvar);
+      //  console.log(fltvar);
 
         // We will only perform the search if we have 3 or more characters
         if ((fltvar.length >= 3 && this.bapiinvoked==false)) {
@@ -51,7 +51,7 @@ updatedrugsearch(){
                
 
                 this.utilitydrugsService.getSuggestedDrugs(fltvar).then((data) => {
-                console.log(data);
+               // console.log(data);
                 //this.vwdrugs = data;
                 this.modelsearchresults = data;
                 //this.adddrugimages();
@@ -116,7 +116,7 @@ updatedrugsearch(){
         //let DrugsModal = this.modalCtrl.create(SubstitueDrugsModal, {drugname:drugname});
        // DrugsModal.present();
 
-        this.navCtrl.push(SubstitueDrugsModal, drugname);
+       this.navCtrl.push(DetailDrugDictonaryModal, drugname);
         
     } 
 
@@ -126,11 +126,11 @@ updatedrugsearch(){
 // <<<<<<<<<<<<<<<<<<<<<<< Class to display substitue results >>>>>>>>>>>>>>
 
 @Component({
-  templateUrl: 'build/pages/search-alternative/substituteresultsmodal.html',
+  templateUrl: 'build/pages/tools/drugdictonary/details.html',
   providers: [UtilitiesService]
 })
 
-export class SubstitueDrugsModal {
+export class DetailDrugDictonaryModal {
 
     drugparams: any;
     drugname: any;
@@ -142,6 +142,7 @@ export class SubstitueDrugsModal {
     ldrugdetails = 0;
     composition: string;
     packagetype:string
+    category:string;
 
     constructor(public navParams: NavParams,
                private navCtrl: NavController, 
@@ -162,30 +163,7 @@ export class SubstitueDrugsModal {
 
             // get detailed drug information
             this.lresultcount = -1;
-            //console.log("ss");
-            //console.log(this.drugname);
-            //get alternative drug information
-            this.utilitydrugsService.getAlternativeDrugs(this.drugname).then((data) => {
-
-            this.vwalternativedrugdetails = data;
-            this.vwalternativedrugdetails = this.vwalternativedrugdetails.response;
-            this.vwalternativedrugdetails = this.vwalternativedrugdetails.medicine_alternatives;
-            
-            this.lresultcount = this.vwalternativedrugdetails.length;
-
-            this.vwalternativedrugdetails.forEach(function(adg) 
-            {
-
-                var sdrugtype = adg.category;
-                sdrugtype = sdrugtype.toUpperCase();
-                adg.category = sdrugtype;
-               // console.log(adg.category);
-            })
-            //console.log("this.vwalternativedrugdetail:" + this.vwalternativedrugdetails);
-            //console.log("batch count:");
-            this.utilitydrugsService.alternativedrugs=null;
-
-            });
+  
 
 
 
@@ -198,7 +176,6 @@ export class SubstitueDrugsModal {
                  
                 if (typeof this.vwmedicinedetails!== 'undefined' && this.vwmedicinedetails!== null)
                 {
-                    this.ldrugdetails = 1;
                     this.vwmedicinedetails = this.vwmedicinedetails.response;
 
                     if (typeof this.vwmedicinedetails.constituents !== 'undefined' && this.vwmedicinedetails.constituents!==null)
@@ -223,12 +200,16 @@ export class SubstitueDrugsModal {
                             let packageqty = this.vwmedicinedetails.package_qty ;
                             packageqty = parseInt(packageqty, 10)
 
-                            console.log("packageqty:" + packageqty);
+                           // console.log("packageqty:" + packageqty);
 
                             this.packagetype = packageqty + " " + this.vwmedicinedetails.package_type;
                             this.packagetype = this.packagetype.toUpperCase();
 
                         }
+                        this.category = this.vwmedicinedetails.category;
+                        this.category = this.category.toUpperCase();
+                        this.ldrugdetails = 1;
+                       // console.log(this.vwmedicinedetails);
                    } 
                 }
                        loading.dismiss();
@@ -247,3 +228,5 @@ export class SubstitueDrugsModal {
 
    
 }
+
+

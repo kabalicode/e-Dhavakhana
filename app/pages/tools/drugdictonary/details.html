@@ -1,0 +1,72 @@
+
+<ion-header>
+  <ion-toolbar dark>
+    <ion-title>
+       Details of : {{drugname}}
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-close" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding class="substitute-home" style="overflow-scroll:true">
+
+  <div *ngIf="lresultcount == 0">
+     <ion-card>
+              <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                              No alternative drug(s) found in internet for the drug name : <strong> {{drugname}} </strong> . Please do you own research to find alternatives.
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+              </ion-card-content> 
+     </ion-card>     
+  </div>
+
+
+      <div *ngIf="ldrugdetails > 0">
+
+            <ion-item style="text-align:center">
+                <strong>  *** !! Warning !! **** </strong><br> 
+                <b>Below data is based on internet results !!</b>
+          </ion-item>
+
+        <ion-card>
+            <ion-card-header>
+                  {{vwmedicinedetails.brand}} : {{vwmedicinedetails.category}}
+            </ion-card-header>
+          <ion-card-content>
+          <ion-grid>
+              <ion-row>
+                  
+                 <ion-col width-20 style="text-align:left">
+                    <img src= "img/{{category}}.png" alt="Poster" class="customized-image">
+                  </ion-col> 
+                  
+                  <ion-col width-80 style="text-align:left">
+                      <p><i>Manufacturer: &nbsp; {{vwmedicinedetails.manufacturer}}</i></p><br>&nbsp;
+                      <p><i>Composition: &nbsp; {{composition}}</i></p><br>&nbsp;
+                      <p><i>Package Type: &nbsp;{{packagetype}}</i></p><br>&nbsp;
+                      <p><i>Unit Type: &nbsp;{{vwmedicinedetails.unit_type}}</i></p><br>&nbsp;
+                      <p><i>Package Price: &nbsp;{{vwmedicinedetails.package_price}} RS</i></p><br>
+                  </ion-col>
+                  
+              </ion-row>
+          </ion-grid>       
+        </ion-card-content>
+      </ion-card>
+
+    </div>
+
+     <div *ngIf="ldrugdetails == 0">
+          <ion-item style="text-align:center">
+                <b>No data found , please try searching on internet for more information !!</b>
+          </ion-item>
+     </div> 
+</ion-content>

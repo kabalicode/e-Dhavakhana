@@ -2,13 +2,13 @@ import { Component, Pipe } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ViewController, ModalController, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import {Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import {InvoiceService} from '../../providers/data/invoice/invoiceservice';
-import {InventoryService} from '../../providers/data/inventory/inventoryservice';
-import {LocalDrugInventory} from '../../providers/data/local/inventoryservice';
-import {LocalSupplierMaster} from '../../providers/data/local/supplierservice';
+import {InvoiceService} from '../../../providers/data/invoice/invoiceservice';
+import {InventoryService} from '../../../providers/data/inventory/inventoryservice';
+import {LocalDrugInventory} from '../../../providers/data/local/inventoryservice';
+import {LocalSupplierMaster} from '../../../providers/data/local/supplierservice';
 import {DatePicker} from 'ionic-native';
-import {DrugsFilterPipe} from '../../filters/drugs-filter';
-import {Invoice} from '../../models/invoice';
+import {DrugsFilterPipe} from '../../../filters/drugs-filter';
+import {Invoice} from '../../../models/invoice';
 
 /*
   Generated class for the InvoiceAddPage page.
@@ -17,7 +17,7 @@ import {Invoice} from '../../models/invoice';
   Ionic pages and navigation.
 */
 @Component({
-  templateUrl: 'build/pages/invoice-add/invoice-add.html',
+  templateUrl: 'build/pages/invoice/invoice-add/invoice-add.html',
   providers: [InvoiceService]
 })
 export class InvoiceAddPage {
@@ -282,7 +282,7 @@ export class InvoiceAddPage {
 }
 
 @Component({
-  templateUrl: 'build/pages/invoice-add/invoiceitemmodal.html',
+  templateUrl: 'build/pages/invoice/invoice-add/invoiceitemmodal.html',
   pipes: [DrugsFilterPipe],
   providers: [InvoiceService,InventoryService]
 })

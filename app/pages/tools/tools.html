@@ -29,18 +29,15 @@
             </ion-col> 
             
             <ion-col width-50 style="text-align:left">
-              <ion-item class="item-thumbnail-left item-text-wrap">
-                  <p><i>This module will help to search other brand substitues for any given drug (E.g. If one searches for Calpol(250 mg) this module will give search resuts as Dolopar (250 mg) and other brands).</i></p><br>
-                  <p><i> <b>Please note that this module purely works based on internet data and retailers are advised to verify before presecribing to customers.</b></i></p><br> 
-                  <p><i><b> e-Dhavakhana will not take any liability on integrity of data.</b></i></p><br>
-
+              <ion-item class="item-thumbnail-left item-text-wrap" (click)="gotoDrugAlternativePage()">
+                  <p>This module will help to search other brand substitues for any given drug (E.g. If one searches for Calpol(250 mg) this module will give search resuts as Dolopar (250 mg) and other brands).</p><br>
+                  <p><i> Please note that this module purely works based on internet data and retailers are advised to verify before presecribing to customers.</i></p><br> 
+                  <p><i><b> e-Dhavakhana will not take any liability on integrity of data.</b></i></p>
               </ion-item>
             </ion-col>
 
-
           <ion-col width-20 style="text-align:left">
               <ion-item class="item-thumbnail-left item-text-wrap">
-
               </ion-item>
             </ion-col>
  
@@ -53,7 +50,68 @@
           </ion-col>
         </ion-row>
         
-       
+          <ion-row responsive-sm>
+            
+            <ion-col width-30 style="text-align:left">
+         
+              
+                <button ion-item (click)="gotoDrugDictonaryPage()">
+                        <ion-avatar item-left>
+                           <img src= "img/drugdictonary.png" alt="Poster" class="customized-image">
+                        </ion-avatar>
+                </button>
+            </ion-col> 
+            
+            <ion-col width-50 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap" (click)="gotoDrugDictonaryPage()">
+                  <p>This module will help to get complete details of a particular drug.</p><br>
+                  <p><i> Please note that this module purely works based on internet data and retailers are advised to verify before presecribing to customers.</i></p><br> 
+                  <p><i><b> e-Dhavakhana will not take any liability on integrity of data.</b></i></p>
+
+              </ion-item>
+            </ion-col>
+
+
+            <ion-col width-20 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap">
+
+              </ion-item>
+            </ion-col>
+ 
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <hr>
+          </ion-col>
+        </ion-row>
+
+        <ion-row responsive-sm>
+            <ion-col width-30 style="text-align:center">
+                <button ion-item (click)="gotoOrderWantingPage()">
+                        <ion-avatar item-center>
+                           <img src= "img/orderwanting.png" alt="Poster" class="customized-image">
+                      
+                        </ion-avatar>
+                </button>
+            </ion-col> 
+            
+            <ion-col width-50 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap" (click)="gotoOrderWantingPage()">
+                  <p><b>Order Wanting module</b> will help retailer to capture  day to day (ad-hoc) wantings in an order book .</p><br>
+                  <p><i> <b>Please note ad-hoc orders entered here will appear automatically in the order management module.</b></i></p><br>
+              </ion-item>
+            </ion-col>
+
+            <ion-col width-20 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap">
+
+              </ion-item>
+            </ion-col>
+ 
+        </ion-row>
+
+ 
      </ion-grid>  
 
 

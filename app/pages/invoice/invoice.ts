@@ -4,7 +4,7 @@ import { UserData } from '../../providers/data/user-data';
 import {InvoiceService} from '../../providers/data/invoice/invoiceservice';
 import {SQLite, Toast} from "ionic-native";
 import {InvoiceDetailsPage} from '../invoice/invoicedetails';
-import {InvoiceAddPage} from '../invoice-add/invoice-add';
+import {InvoiceAddPage} from '../invoice/invoice-add/invoice-add';
 import {LocalSupplierMaster} from '../../providers/data/local/supplierservice';
 
 @Component({

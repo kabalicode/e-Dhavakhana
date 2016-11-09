@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>Order Wanting Book (Open Orders)</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="gotoAddOrder()">
+        <ion-icon ios="ios-add" md="md-add"></ion-icon>
+      </button>
+    </ion-buttons>
+
+
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="drugshome">
+  <div>
+
+
+  <ion-list no-lines>
+
+    <ion-item-sliding *ngFor="let drug of vwdrugs" >
+
+      <button ion-item >
+              <ion-avatar item-left>
+                  <img src= "img/{{drug.drugtype}}.png" />
+              </ion-avatar>
+              <h2><strong> {{drug.drugname}} </strong></h2>
+              <h4><strong>{{drug.mfgcode}}</strong></h4>
+              <p><h4>Qty:<strong>{{drug.qty}} - {{drug.drugtype}}(s)</strong></h4>
+      </button>
+
+      <ion-item-options>
+        <button danger (click)="removeOrder(slidingItem, drug)">
+            Remove
+          </button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+  </ion-list>
+  
+  
+  </div>
+
+</ion-content>

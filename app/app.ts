@@ -8,17 +8,19 @@ import {DrugsPage} from './pages/inventory/search';
 import {MasterPage} from './pages/master/master';
 //import {AddDrugsPage} from './pages/inventory/add';
 import {InvoicePage} from './pages/invoice/invoice';
-import {InvoiceAddPage} from './pages/invoice-add/invoice-add';
-import {SearchAlternativePage} from './pages/search-alternative/search-alternative';
+import {InvoiceAddPage} from './pages/invoice/invoice-add/invoice-add';
+import {SearchAlternativePage} from './pages/tools/search-alternative/search-alternative';
 import {MymessagesPage} from './pages/mymessages/mymessages';
 import {SupplierSearchPage} from './pages/master/supplier/search';
 import {enableProdMode} from '@angular/core';
 import {DefaultPage} from './pages/default/default';
 import { Network } from 'ionic-native';
+
 //import providers
 import {LocalDrugInventory} from './providers/data/local/inventoryservice';
 import {LocalSupplierMaster} from './providers/data/local/supplierservice';
 import {SafeHttp} from './providers/data/utilities/safehttp';
+import {LocalOrderBookService} from './providers/data/local/orderservice';
 
 declare var Connection;
 
@@ -138,4 +140,4 @@ class MyApp {
 
 }
 enableProdMode();
-ionicBootstrap(MyApp,[SafeHttp,LocalDrugInventory,LocalSupplierMaster]);
+ionicBootstrap(MyApp,[SafeHttp,LocalDrugInventory,LocalSupplierMaster,LocalOrderBookService]);

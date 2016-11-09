@@ -17,9 +17,14 @@ export class LocalSupplierMaster {
     this.data = null;
     this.storage = new Storage(SqlStorage);
     
-    this.storage.query("CREATE TABLE IF NOT EXISTS store_suppliermaster (supplierid TEXT, suppliername TEXT, suppliercity TEXT)");
+    this.storage.query("CREATE TABLE IF NOT EXISTS store_suppliermaster(supplierid TEXT, suppliername TEXT, suppliercity TEXT)");
   
     console.log("store_suppliermaster table created");
+
+    //this.storage.query("DROP TABLE IF EXISTS store_suppliermaster");
+
+    //console.log("store_suppliermaster table deleted");
+
     //console.log("getalldrugs");
     this.getlocalsupplieritems();
 
