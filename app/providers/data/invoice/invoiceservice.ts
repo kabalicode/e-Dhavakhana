@@ -1,9 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import {Http,Response, Headers} from '@angular/http';
 import {Storage, SqlStorage} from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import {SafeHttp} from '../utilities/safehttp';
- 
+import {Observable} from 'rxjs/Rx';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+
 @Injectable()
 export class InvoiceService {
  
@@ -17,32 +20,48 @@ export class InvoiceService {
     this.data = null;
     this.favlist = [];
     this.storage = new Storage(SqlStorage);
-    this.storage.query("CREATE TABLE IF NOT EXISTS SUPPLIER_FAVORITES (id INTEGER, name TEXT, streetname TEXT, city TEXT )");
-    console.log("Table SUPPLIER_FAVORITES Created");
+    this.storage.query("CREATE TABLE IF NOT EXISTS SUPPLIER_FAVORITES (id INTEGER, name TEXT, city TEXT )")
+    .then(res => 
+      console.log("Table SUPPLIER_FAVORITES Created")
+    )
+    .catch(error=> 
+      console.log("Error occurred during table creation in local storage:" + error.err.message)
+    );
   }
  
 
   getFavSuppliers(){
-        return this.storage.query("SELECT * FROM SUPPLIER_FAVORITES");
+      return  this.storage.query("SELECT * FROM SUPPLIER_FAVORITES")
+        .then(res => {
+          console.log("Fav suppliler list:" + res);
+          return res;
+        })
+        .catch(error=> {
+          console.log("Error occurred while retrieving favorite suppliers:" + error);
+          console.log("error:" + error.err.message);
+          error = new Error(error.err.message || 'Server error');
+          return error;
+        });
   }
 
   addFavSupplier(item:any){
-        this.storage.query("INSERT INTO SUPPLIER_FAVORITES (id, name, streetname, city) VALUES (?,?,?,?)", [item.supplierid, item.suppliername, item.address.streetname, item.address.city]).then((data) => {
+        return this.storage.query("INSERT INTO SUPPLIER_FAVORITES (id, name, city) VALUES (?,?,?)", [item.supplierid, item.suppliername, item.suppliercity]).then((data) => {
             console.log("INSERTED fav supplier into fav table: " + JSON.stringify(data));
+            return 1;
         }, (error) => {
-            console.log("ERROR: during inserting supplier into fav table" + JSON.stringify(error.err));
+            console.log("ERROR: during inserting supplier into fav table:" + error.err.message);
+            return -1;
         });
-        return 1;
   }
 
   removeFavSupplier(item:any){
-    this.storage.query("DELETE FROM SUPPLIER_FAVORITES WHERE ID = ?", [item.id]).then((data) => {
+    return this.storage.query("DELETE FROM SUPPLIER_FAVORITES WHERE ID = ?", [item.id]).then((data) => {
           console.log("Deleted fav supplier from fav table: " + JSON.stringify(data));
+          return 1;
       }, (error) => {
-          console.log("ERROR: during deleting supplier from fav table" + JSON.stringify(error.err));
+          console.log("ERROR: during deleting supplier from fav table:" + error.err.message);
           return -1;
       });
-      return 1;
   }
 
   getInvoiceDetails(invoiceId: string){
@@ -70,12 +89,13 @@ export class InvoiceService {
     url = 'https://qshc2lp143.execute-api.us-west-2.amazonaws.com/invoice/invoice/' + invoiceId;
     //console.log(url);
     this.http.get(url)
-    
         .map(res => res.json())
         .subscribe(data => {
-          this.data = data;
-         // console.log(this.data);
-          resolve(this.data);
+          resolve(data);
+        }, 
+        err=>{
+          console.log("Error occurred while retrieving invoice details:" + err);
+          resolve(new Error(err || " - Service Error"));
         });
     });    //  API CALL END 
   }

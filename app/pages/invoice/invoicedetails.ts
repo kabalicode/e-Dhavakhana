@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController, ViewController, NavParams, AlertController,ModalController,LoadingController} from 'ionic-angular';
+import {NavController,ToastController, ViewController, NavParams, AlertController,ModalController,LoadingController} from 'ionic-angular';
 import {InvoiceService} from '../../providers/data/invoice/invoiceservice';
 import {SQLite, Toast} from "ionic-native";
 
@@ -20,6 +20,7 @@ export class InvoiceDetailsPage {
                 public modalCtrl: ModalController,
                 public navParams: NavParams, 
                 private invoiceService:InvoiceService,
+                private toastCtrl: ToastController,
                 public alertCtrl: AlertController, public loadingCtrl:LoadingController) {
             var supplierId = navParams.data.id;
             this.vwsuppliername = navParams.data.name
@@ -62,9 +63,18 @@ export class InvoiceDetailsPage {
                 });
         loadctrl.present();
         
-        this.invoiceService.getInvoiceDetails(invoiceId).then((data) => {
-                console.log("invoice detailsresult:" + data);
-                
+        this.invoiceService.getInvoiceDetails(invoiceId).then((data:any) => {
+
+                if(data.name == "Error"){
+                    console.log("Error:" + data.message);
+
+                    loadctrl.onDidDismiss(() => {
+                        this.showToast("Error occurred while retrieving invoice details:" + data.message, "middle");
+                    });
+
+                    loadctrl.dismiss();
+                    return;
+                }                
 
                 loadctrl.onDidDismiss(() => {
                     let invoicedetailsModal = this.modalCtrl.create(InvoiceDetailsModal, {invoicedtlsdata:data});
@@ -74,6 +84,15 @@ export class InvoiceDetailsPage {
                 loadctrl.dismiss();
                 
               }); 
+    }
+
+    showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
     }
 
 }

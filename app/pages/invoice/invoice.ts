@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController, AlertController,ModalController,ItemSliding,LoadingController} from 'ionic-angular';
+import {NavController, ToastController, AlertController,ModalController,ItemSliding,LoadingController} from 'ionic-angular';
 import { UserData } from '../../providers/data/user-data';
 import {InvoiceService} from '../../providers/data/invoice/invoiceservice';
 import {SQLite, Toast} from "ionic-native";
@@ -28,12 +28,17 @@ export class InvoicePage {
                 private invoiceService:InvoiceService,
                 private user: UserData,
                 private localSupplierMaster: LocalSupplierMaster,
+                private toastCtrl: ToastController,
                 public alertCtrl: AlertController, public loadingCtrl:LoadingController) {
               //set the default to Drugs Inventory tab segment
               this.segment = "invt";
 
               //retrieve the drug favorites if any
               this.invoiceService.getFavSuppliers().then((data) => {
+                  if(data.name == "Error"){
+                      this.showToast("Error Occurred while retrieving favorites:" + data.message, "middle");
+                      return;
+                  }
                     this.favlist = [];
                     console.log("number of fav:" + data.res.rows.length);
                     if(data.res.rows.length > 0) {
@@ -45,11 +50,12 @@ export class InvoicePage {
     }
  
     showToast(message, position) {
-        Toast.show(message, "short", position).subscribe(
-            toast => {
-                console.log(toast);
-            }
-        );
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
     }
 
     public addFavorite(item) {
@@ -61,15 +67,23 @@ export class InvoicePage {
             }
         }
 
-      let result = this.invoiceService.addFavSupplier(item);
-      this.refresh();
-      if( result == 1){
-        this.showToast("Favorite added successfully","bottom");
-      }
+      this.invoiceService.addFavSupplier(item).then(result => {
+        this.refresh();
+        if( result == 1){
+            this.showToast("Favorite added successfully","bottom");
+        }else{
+            this.showToast("Error occurred while adding Favorite","bottom"); 
+        }
+      });
     }
  
     public refresh() {
         this.invoiceService.getFavSuppliers().then((data) => {
+            if(data.name == "Error"){
+                this.showToast("Error Occurred while retrieving favorites:" + data.message, "middle");
+                return;
+            }
+
             this.favlist = [];
                     console.log("number of fav:" + data.res.rows.length);
                     if(data.res.rows.length > 0) {
@@ -186,21 +200,21 @@ export class InvoicePage {
         {
           text: 'Remove',
           handler: () => {
-            let navTransition = alert.dismiss();  
-
-            let result = this.invoiceService.removeFavSupplier(item);
+            
+            this.invoiceService.removeFavSupplier(item).then(result => {
             this.refresh();
 
-            if(result == 1){
-                this.showToast("Favorite removed","bottom");
-            }
-
-            navTransition.then(() => {
-                this.nav.pop();
-                });
-           
+            alert.dismiss().then(res =>  
+                {    
+                if(result == 1){
+                    this.showToast("Favorite removed","bottom");
+                }else{
+                    this.showToast("Error Occured while removing Favorite","bottom");
+                }});
+            });
+ 
             // close the sliding item and hide the option buttons
-            slidingItem.close();
+            //slidingItem.close();
             return false;
           }
         }
