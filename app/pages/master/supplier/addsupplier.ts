@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import { Page,NavController,AlertController,ModalController , LoadingController} from 'ionic-angular';
+import { Page,NavController,AlertController,ModalController , LoadingController,ToastController} from 'ionic-angular';
 import {ViewController} from 'ionic-angular';
 import {Validators, FormBuilder } from '@angular/forms';
 import { AbstractControl} from '@angular/common';
@@ -67,7 +67,8 @@ export class AddSupplierPage {
               private utildrugservice: UtilitiesService,
               public alertCtrl: AlertController,
               private fb: FormBuilder,
-              public loadingCtrl:LoadingController) 
+              public loadingCtrl:LoadingController,
+              private toastCtrl: ToastController) 
     {
 
         this.addsupplier = fb.group({
@@ -123,8 +124,16 @@ let supplieritem = {
     };
 
     this.localsupplierservice.searchSupplierByName(supplieritem).then((res) => {
+      
       let responseobject : any;
       responseobject = res;
+      
+      if(responseobject.name == "Error")
+        {
+            console.log("Error:" + responseobject.message);
+            this.showToast("Error occurred while searching supplier name in local store:" + responseobject.message, "middle");
+            return;
+        } // Error handling loop
 
        if (typeof responseobject!== 'undefined' && responseobject!== null)
                 {
@@ -174,13 +183,23 @@ syncdrugdata_local(item:any, soperation:string){
           {
 
             this.localsupplierservice.updateSupplier(item).then((res) => {
-              //console.log("UPDATE RECORD TO LOCAL STORE");
-              return res;
+                if(res.name == "Error")
+                {
+                  console.log("Error:" + res.message);
+                  this.showToast("Error occurred while updating supplier name in local store:" + res.message, "middle");
+                  return;
+                } // Error handling loop
+                return res;
             });
           }else
           {
               this.localsupplierservice.addSupplier(item).then((res) => {
-              //console.log("INSERT NEW RECORDS TO LOCAL STORE");
+                if(res.name == "Error")
+                {
+                  console.log("Error:" + res.message);
+                  this.showToast("Error occurred while adding supplier name in local store:" + res.message, "middle");
+                  return;
+                } // Error handling loop
               return  res;
               });
           }
@@ -202,80 +221,76 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
           let responseobject : any;
           responseobject = res;
 
-          if (typeof responseobject!== 'undefined' && responseobject!== null)
+          if(responseobject.name == "Error")
           {
-              if (responseobject.status==200)
+            console.log("Error:" + responseobject.message);
+            loading.onDidDismiss(() => {
+                this.showToast("Error occurred while updating supplier to AWS:" + responseobject.message, "middle");
+            });
+            loading.dismiss();
+            return;
+          } // Error handling loop
+
+          loading.onDidDismiss(() => 
+          {
+
+              if (typeof responseobject!== 'undefined' && responseobject!== null)
               {
-                let sjsonresponse = responseobject._body;
-                responseobject = JSON.parse(sjsonresponse);
-
-                if (responseobject.response == "SUCESS")
-                {
-                  let ssupplierid = responseobject.supplierid;
-                  item.supplierid = ssupplierid; //Append supplier id
-
-                  let soperation = responseobject.operation;
-                  let smessage = "";
-                  let stitle = "";
-
-                  if (soperation == "UPDATE")
+                  if (responseobject.status==200)
                   {
-                    smessage = this.vendorname + " has been  updated  sucessfully !";
-                    stitle = "Update Supplier : "
-                  }else if (soperation == "CREATE")
-                  {
-                    smessage = this.vendorname + " has been added sucessfully !";
-                    stitle = "Add New Supplier : " 
-                  }
+                    let sjsonresponse = responseobject._body;
+                    responseobject = JSON.parse(sjsonresponse);
 
-                    let alert = this.alertCtrl.create({
-                      title: stitle,
-                      message: smessage,
-                      buttons: [
-                        {
-                          text: 'Ok',
-                          handler: () => {
-                            //console.log('Ok clicked');
-                            loading.dismiss();
-                            
-                            // store drug info to local store
-                            this.syncdrugdata_local(item,soperation); // store data to local
+                    if (responseobject.response == "SUCESS")
+                    {
+                      let ssupplierid = responseobject.supplierid;
+                      item.supplierid = ssupplierid; //Append supplier id
 
+                      let soperation = responseobject.operation;
+                      let smessage = "";
+                      let stitle = "";
 
+                      if (soperation == "UPDATE")
+                      {
+                        smessage = this.vendorname + " has been  updated  sucessfully !";
+                        stitle = "Update Supplier : "
+                      }else if (soperation == "CREATE")
+                      {
+                        smessage = this.vendorname + " has been added sucessfully !";
+                        stitle = "Add New Supplier : " 
+                      }
+                        // store drug info to local store
+                        this.syncdrugdata_local(item,soperation); // store data to local
 
-
-                            this.vendorname=null;
-                            this.vendoraddress =null;
-                            this.vendorcity="";
-                            this.vendorstate="";
-                            this.vendorcountry = "";
-                            this.vendorpin ="";
-                            this.vendorcontactname="";
-                            this.vendorlandlineno="";
-                            this.vendormobileno="";
-                            this.vendorGST="";
-                            this.vendorTIN="";
-                            //this.addsupplier.valid=false;
-
-                          }
-                        }
-                      ]
-                    });
-                    loading.dismiss();
-                    alert.present();
-
-                }
-                  //console.log("new code");
-
-              }
-          }
-
-
-
-      }, (err) => {
-          console.log(err);
-        
-      });
+                        let alert = this.alertCtrl.create({
+                          title: stitle,
+                          message: smessage,
+                          buttons: [
+                            {
+                              text: 'Ok',
+                              handler: () => {
+                                this.vendorname=null;
+                                this.vendoraddress =null;
+                                this.vendorcity="";
+                                this.vendorstate="";
+                                this.vendorcountry = "";
+                                this.vendorpin ="";
+                                this.vendorcontactname="";
+                                this.vendorlandlineno="";
+                                this.vendormobileno="";
+                                this.vendorGST="";
+                                this.vendorTIN="";
+                              }
+                            }
+                          ]
+                        });
+                        alert.present();
+                    } // success if loop
+                  } // staus = 200
+              } // if loop
+          }); // on dismiss loop
+          loading.dismiss();
+      }); // manageSupplier loop
      
 }
 
@@ -294,6 +309,12 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                 //console.log(response); 
                 this.localsupplierservice.getSupplierId(item).then((response) => {
 
+                if(response.name == "Error")
+                {
+                  console.log("Error:" + response.message);
+                  this.showToast("Error occurred while searching supplier name in local store:" + response.message, "middle");
+                  return;
+                } // Error handling loop
                 
                 if (typeof response!== 'undefined' && response!== null)
                   {
@@ -344,12 +365,6 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
       
       modal.onDidDismiss(data => {
 
-      //this.address.place = data;
-      //console.log(data);
-      //this.vendorname = data;
-      //this.vendorname = this.vendorname.toUpperCase();
-
-     // this.ldrugdetails = 0;
        if (typeof data!== 'undefined' && data!== null)
         {
           this.vendoraddress = data.Address;
@@ -364,6 +379,13 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
 
   }
 
-
+  showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
+    } 
 
 } // add drugs page

@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-angular';
+import {NavController, AlertController,ModalController,ItemSliding,ToastController} from 'ionic-angular';
 
 import { DrugdetailsPage } from '../inventory/details';
 import { AddDrugsPage } from '../inventory/add';
@@ -31,7 +31,8 @@ export class DrugsPage {
                 private modalCtrl: ModalController,
                 private invtservice:InventoryService,
                 private localdrugservice : LocalDrugInventory,
-                public alertCtrl: AlertController) {
+                public alertCtrl: AlertController,
+                private toastCtrl: ToastController) {
         
         //set the default to Drugs Inventory tab segment
         this.segment = "invt";
@@ -52,13 +53,14 @@ export class DrugsPage {
     }
     
  
-    showToast(message, position) {
-        Toast.show(message, "short", position).subscribe(
-            toast => {
-                console.log(toast);
-            }
-        );
-    }
+     showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
+    } 
 
     public addFavorite(item) {
 
@@ -69,12 +71,16 @@ export class DrugsPage {
                 return;
             }
         }
+      //  console.log("Favorite");
+      this.invtservice.addFavDrug(item).then(result => {
+        this.refresh();
+        if( result == 1){
+            this.showToast("Favorite added successfully","bottom");
+        }else{
+            this.showToast("Error occurred while adding Favorite","bottom"); 
+        }
+      });
 
-      let result = this.invtservice.addFavDrug(item);
-      this.refresh();
-      if( result == 1){
-        this.showToast("Favorite added successfully","bottom");
-      }
     }
  
     public refresh() {
@@ -149,12 +155,14 @@ export class DrugsPage {
           handler: () => {
             let navTransition = alert.dismiss();  
 
-            let result = this.invtservice.removeFavDrug(item);
-            this.refresh();
-
-            if(result == 1){
-                this.showToast("Favorite removed","bottom");
-            }
+            this.invtservice.removeFavDrug(item).then(result => {
+                this.refresh();
+            if( result == 1){
+                this.showToast("Favorite removed successfully","bottom");
+            }else{
+                this.showToast("Error occurred while removing Favorite","bottom"); 
+             }
+            });
 
             navTransition.then(() => {
                 this.nav.pop();

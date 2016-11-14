@@ -17,7 +17,13 @@ export class LocalOrderBookService {
     this.data = null;
     this.storage = new Storage(SqlStorage);
     
-    this.storage.query("CREATE TABLE IF NOT EXISTS store_orderbook(drugname TEXT, drugtype TEXT, mfgcode TEXT,qty INTEGER, status TEXT )");
+    this.storage.query("CREATE TABLE IF NOT EXISTS store_orderbook(drugname TEXT, drugtype TEXT, mfgcode TEXT,qty INTEGER, status TEXT )")
+    .then(res => 
+      console.log("Table store_orderbook Created")
+    )
+    .catch(error=> 
+      console.log("Error occurred during table creation in local storage:" + error.err.message)
+    );
   
     console.log("store_orderbook table created");
 
@@ -31,37 +37,51 @@ export class LocalOrderBookService {
  }
 
    removeOrder(item:any){
-    this.storage.query("DELETE FROM store_orderbook WHERE drugname = ? AND drugtype=?", [item.drugname, item.drugtype]).then((data) => {
-        this.getlocalorderbookitems();
+       console.log("remove order")
+    return this.storage.query("DELETE FROM store_orderbook WHERE drugname = ? AND drugtype=?", [item.drugname, item.drugtype])
+        .then(data => {
+          this.getlocalorderbookitems();
           console.log("Deleted drug fom the orderbook: " + JSON.stringify(data));
-      }, (error) => {
+          return data;
+        },
+        (error)=> {
           console.log("ERROR: during deleting drug from orderbook table" + JSON.stringify(error.err));
-          return -1;
-      });
-      return 1;
+          console.log("error:" + error.err.message);
+          error = new Error(error.err.message || 'Server error');
+          return error;
+        });
   }
 
   
   // add drug to local store
     addOrder(item:any){
-        this.storage.query("INSERT INTO store_orderbook(drugname, drugtype,mfgcode,qty,status) VALUES (?,?,?,?,?)", [item.drugname, item.drugtype,item.mfgcode,item.qty,item.status]).then((data) => 
+       return this.storage.query("INSERT INTO store_orderbook(drugname, drugtype,mfgcode,qty,status) VALUES (?,?,?,?,?)", [item.drugname, item.drugtype,item.mfgcode,item.qty,item.status]).then((data) => 
         {
             this.globalorderbooklist.push({drugname: item.drugname, drugtype: item.drugtype, mfgcode: item.mfgcode, qty: item.qty, status: item.status });
-            return Promise.resolve(true);
+            return true;
+           //return 1
         }, (error) => {
-            return Promise.resolve(false);
+            error = new Error(error.err.message || 'Server error');
+            return error;
+            //return Promise.resolve(false);
         });
-        return Promise.resolve(true);
+        //return Promise.resolve(true);
     }
 
 
   // get all orders from local store
   getAllOrders(){
-      
-      return  this.storage.query("SELECT drugname, drugtype,mfgcode,qty,status FROM store_orderbook");
-      //console.log("getalldrugs" + this.alldrugdataobject);
-      //return this.alldrugdataobject;
-
+        return  this.storage.query("SELECT drugname, drugtype,mfgcode,qty,status FROM store_orderbook")
+        .then(res => {
+          console.log("get all orders:" + res);
+          return res;
+        })
+        .catch(error=> {
+          console.log("Error occurred while retrieving orders:" + error);
+          console.log("error:" + error.err.message);
+          error = new Error(error.err.message || 'Server error');
+          return error;
+        });
   }
 
    getlocalorderbookitems() 
@@ -94,7 +114,8 @@ export class LocalOrderBookService {
 
             }, (error) => {
                 console.log("ERROR: " + JSON.stringify(error));
-            
+                error = new Error(error.err.message || 'Server error');
+                return error;
             });
 
     }

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ViewController,LoadingController} from 'ionic-angular';
+import {ViewController,LoadingController,ToastController} from 'ionic-angular';
 import {UtilitiesService} from '../../providers/data/utilities/utilitiesservice'
 import {SafeHttp} from '../../providers/data/utilities/safehttp';
 
@@ -19,7 +19,8 @@ export class AutocompletePage {
   constructor (public viewCtrl: ViewController, 
               private drugutilservice:UtilitiesService,
               public loadingCtrl:LoadingController,
-              private safenetwork: SafeHttp) {
+              private safenetwork: SafeHttp,
+              private toastCtrl: ToastController) {
     
     this.autocompleteItems = [];
     this.autocomplete = {
@@ -58,28 +59,45 @@ export class AutocompletePage {
                   });
 
                   loading.present();
+                  
                   this.drugutilservice.getSuggestedDrugs(this.autocomplete.drugquery).then((data) => {
-
-                        this.vwdrugs = data;
-                        this.drugutilservice.suggesteddrugdata=null;
-                        this.autocompleteItems = [];
-                        this.bdrugapiinvoked = true;
-                        me.result="";
-                        loading.dismiss();
-                        this.vwdrugs = this.vwdrugs.response;
-                        this.vwdrugs = this.vwdrugs.suggestions;
-                        if ((this.vwdrugs.length >0))
+                        
+                        console.log(data.name);
+                        console.log("data.name");
+                        if(data.name == "Error")
                         {
-                                this.vwdrugs.forEach(function (prediction) {
-                                me.autocompleteItems.push(prediction.suggestion);                 
-                            //   this.autocompleteItems.push(prediction.DrugName);
+                            console.log("Error:" + data.message);
+                            loading.onDidDismiss(() => {
+                                this.showToast("Error occurred while retrieving suggested drugs:" + data.message, "middle");
                             });
-                        }else
+                            loading.dismiss();
+                            return;
+                        } // Error handling loop
+
+                        loading.onDidDismiss(() => 
                         {
-                            me.result = "No drug(s) found with matching criteria."
-                            me.autocompleteItems.push(me.autocomplete.drugquery);
-                        }
-                  });
+                            this.vwdrugs = data;
+                            this.drugutilservice.suggesteddrugdata=null;
+                            this.autocompleteItems = [];
+                            this.bdrugapiinvoked = true;
+                            me.result="";
+                            this.vwdrugs = this.vwdrugs.response;
+                            this.vwdrugs = this.vwdrugs.suggestions;
+                            if ((this.vwdrugs.length >0))
+                            {
+                                    this.vwdrugs.forEach(function (prediction) {
+                                    me.autocompleteItems.push(prediction.suggestion);                 
+                                //   this.autocompleteItems.push(prediction.DrugName);
+                                });
+                            }else
+                            {
+                                me.result = "No drug(s) found with matching criteria."
+                                me.autocompleteItems.push(me.autocomplete.drugquery);
+                            }
+                        }); //loading onDidDismiss loop 
+
+                        loading.dismiss();
+                  }); //get suggested drugs loop
             }else {this.safenetwork.showNetworkAlert();}    
 
         }else if (fltvar == ""){
@@ -114,5 +132,14 @@ export class AutocompletePage {
 
 
 } // end of function
+
+  showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
+    }
 
 } // end of export class

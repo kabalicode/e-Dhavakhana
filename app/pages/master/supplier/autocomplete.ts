@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ViewController,LoadingController} from 'ionic-angular';
+import {ViewController,LoadingController,ToastController} from 'ionic-angular';
 import {UtilitiesService} from '../../../providers/data/utilities/utilitiesservice'
 
 @Component({
@@ -15,7 +15,10 @@ export class AutocompleteAddressPage {
   //searching: any = false;
   //service = new google.maps.places.AutocompleteService();
 
-  constructor (public viewCtrl: ViewController, private drugutilservice:UtilitiesService,public loadingCtrl:LoadingController) {
+  constructor (public viewCtrl: ViewController, 
+               private drugutilservice:UtilitiesService,
+               public loadingCtrl:LoadingController,
+               private toastCtrl: ToastController) {
    // this.autocompleteItems = [];
     this.autocomplete = {
       pinquery: ''
@@ -53,22 +56,36 @@ export class AutocompleteAddressPage {
         
         this.drugutilservice.findAddress(this.autocomplete.pinquery).then((data) => {
 
-                    //this.searching=false;
-                    this.vwaddress = data;
-                    this.drugutilservice.addressdetails=null;
-                    //this.autocompleteItems = [];
-                    me.result="";
-                    loading.dismiss();
-                    
-                    this.vwaddress = this.vwaddress.Data;
-                    console.log(this.vwaddress);
-                    if ((this.vwaddress.length <=0))
-                    {
-                         
-                        me.result = "No address found for supplied pin no."
-                        //me.autocompleteItems.push(me.autocomplete.pinquery);
-                    }
 
+                    if(data.name == "Error")
+                    {
+                      console.log("Error:" + data.message);
+                      loading.onDidDismiss(() => {
+                          this.showToast("Error occurred while searching address:" + data.message, "middle");
+                      });
+                      loading.dismiss();
+                      return;
+                    } // Error handling loop
+
+                    loading.onDidDismiss(() => 
+                    {
+
+                        this.vwaddress = data;
+                        this.drugutilservice.addressdetails=null;
+
+                        me.result="";
+                        
+                        
+                        this.vwaddress = this.vwaddress.Data;
+                        console.log(this.vwaddress);
+                        if ((this.vwaddress.length <=0))
+                        {
+                            
+                            me.result = "No address found for supplied pin no."
+                            //me.autocompleteItems.push(me.autocomplete.pinquery);
+                        }
+                  }); // on dismiss loop
+                  loading.dismiss();
             });
 
     }else if ((this.autocomplete.pinquery.trim().length < 6))
@@ -79,4 +96,14 @@ export class AutocompleteAddressPage {
 
    
   }
+
+    showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
+    } 
+
 }

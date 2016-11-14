@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,AlertController,ModalController,ItemSliding, ViewController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController,AlertController,ModalController,ItemSliding, ViewController, NavParams, LoadingController,ToastController} from 'ionic-angular';
 import {UtilitiesService} from '../../../providers/data/utilities/utilitiesservice';
 //import { ResultsAlternativePage } from '../results-alternative/results-alternative';
 
@@ -26,6 +26,7 @@ export class SearchDrugDictonaryPage {
   constructor(private navCtrl: NavController, 
              private utilitydrugsService:UtilitiesService,  
              public modalCtrl: ModalController,
+             private toastCtrl: ToastController,
              public loadingCtrl:LoadingController) {
 
   }
@@ -51,28 +52,32 @@ updatedrugsearch(){
                
 
                 this.utilitydrugsService.getSuggestedDrugs(fltvar).then((data) => {
-               // console.log(data);
-                //this.vwdrugs = data;
-                this.modelsearchresults = data;
-                //this.adddrugimages();
-                
-                this.modelsearchresults = this.modelsearchresults.response;
-                this.modelsearchresults = this.modelsearchresults.suggestions;
+
+                    if(data.name == "Error"){
+                        console.log("Error:" + data.message);
+                        loading.onDidDismiss(() => {
+                            this.showToast("Error occurred while retrieving suggested drug details:" + data.message, "middle");
+                        });
+
+                        loading.dismiss();
+                        return;
+                    } 
+
+                    loading.onDidDismiss(() => {
+                        this.modelsearchresults = data;
+                        
+                        this.modelsearchresults = this.modelsearchresults.response;
+                        this.modelsearchresults = this.modelsearchresults.suggestions;
 
 
-                this.vwsearchresults = this.modelsearchresults;
-                this.bapiinvoked = true;
-                this.utilitydrugsService.suggesteddrugdata=null;
-                
-                
-                //this.vwsearchresults = this.vwsearchresults.response;
-                //this.vwsearchresults = this.vwsearchresults.suggestions;
-                this.searchcount = this.vwsearchresults.length;
-
-                loading.dismiss();
-               
-                //this.searching=false;
-                //console.log("drugcount inside if:" + this.drugsearchcount);
+                        this.vwsearchresults = this.modelsearchresults;
+                        this.bapiinvoked = true;
+                        this.utilitydrugsService.suggesteddrugdata=null;
+                        
+                        
+                        this.searchcount = this.vwsearchresults.length;
+                    });    
+                    loading.dismiss();
             });
 
         }else if (fltvar.trim().length == 0){
@@ -120,6 +125,14 @@ updatedrugsearch(){
         
     } 
 
+    showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
+    }
 }
 
 
@@ -148,6 +161,7 @@ export class DetailDrugDictonaryModal {
                private navCtrl: NavController, 
                private utilitydrugsService:UtilitiesService,
                public viewCtrl: ViewController,
+               private toastCtrl: ToastController,
                public loadingCtrl:LoadingController) {
            // console.log(navParams.data);
             //this.drugname = navParams.data.drugname;
@@ -172,58 +186,75 @@ export class DetailDrugDictonaryModal {
             this.ldrugdetails = 0;
             this.utilitydrugsService.getDrugDetails(this.drugname).then((data) => {
 
-                this.vwmedicinedetails = data;
-                 
-                if (typeof this.vwmedicinedetails!== 'undefined' && this.vwmedicinedetails!== null)
-                {
-                    this.vwmedicinedetails = this.vwmedicinedetails.response;
+                if(data.name == "Error"){
+                    console.log("Error:" + data.message);
 
-                    if (typeof this.vwmedicinedetails.constituents !== 'undefined' && this.vwmedicinedetails.constituents!==null)
-                    {
-                        var mixture="";
-                        for (var index=0 ; index < this.vwmedicinedetails.constituents.length; index++)
+                    loading.onDidDismiss(() => {
+                        this.showToast("Error occurred while retrieving suggested drug details:" + data.message, "middle");
+                    });
+
+                    loading.dismiss();
+                    return;
+                } // Error handling loop
+
+                loading.onDidDismiss(() => {
+
+                        this.vwmedicinedetails = data;
+                        
+                        if (typeof this.vwmedicinedetails!== 'undefined' && this.vwmedicinedetails!== null)
                         {
-                            mixture = mixture + this.vwmedicinedetails.constituents[index].name + "-" + this.vwmedicinedetails.constituents[index].strength + ";" ;
-                            mixture = mixture.replace("\r","");
+                            this.vwmedicinedetails = this.vwmedicinedetails.response;
+
+                            if (typeof this.vwmedicinedetails.constituents !== 'undefined' && this.vwmedicinedetails.constituents!==null)
+                            {
+                                var mixture="";
+                                for (var index=0 ; index < this.vwmedicinedetails.constituents.length; index++)
+                                {
+                                    mixture = mixture + this.vwmedicinedetails.constituents[index].name + "-" + this.vwmedicinedetails.constituents[index].strength + ";" ;
+                                    mixture = mixture.replace("\r","");
+                                }
+                                this.composition = mixture.toUpperCase();
+                            }
+                        
+                            if(this.vwmedicinedetails) this.vwmedicinedetails = this.vwmedicinedetails.medicine;
+
+                            if(this.vwmedicinedetails) 
+                            {
+
+                                if ( (typeof this.vwmedicinedetails.package_type !== 'undefined' && this.vwmedicinedetails.package_type!==null)  &&
+                                    (typeof this.vwmedicinedetails.package_qty !== 'undefined' && this.vwmedicinedetails.package_qty!==null) )
+                                {     
+                                    let packageqty = this.vwmedicinedetails.package_qty ;
+                                    packageqty = parseInt(packageqty, 10)
+
+                                // console.log("packageqty:" + packageqty);
+
+                                    this.packagetype = packageqty + " " + this.vwmedicinedetails.package_type;
+                                    this.packagetype = this.packagetype.toUpperCase();
+
+                                }
+                                this.category = this.vwmedicinedetails.category;
+                                this.category = this.category.toUpperCase();
+                                this.ldrugdetails = 1;
+                            // console.log(this.vwmedicinedetails);
+                            } 
                         }
-                        this.composition = mixture.toUpperCase();
-                    }
-                   
-                    if(this.vwmedicinedetails) this.vwmedicinedetails = this.vwmedicinedetails.medicine;
-
-                    if(this.vwmedicinedetails) 
-                    {
-
-                        if ( (typeof this.vwmedicinedetails.package_type !== 'undefined' && this.vwmedicinedetails.package_type!==null)  &&
-                            (typeof this.vwmedicinedetails.package_qty !== 'undefined' && this.vwmedicinedetails.package_qty!==null) )
-                        {     
-                            let packageqty = this.vwmedicinedetails.package_qty ;
-                            packageqty = parseInt(packageqty, 10)
-
-                           // console.log("packageqty:" + packageqty);
-
-                            this.packagetype = packageqty + " " + this.vwmedicinedetails.package_type;
-                            this.packagetype = this.packagetype.toUpperCase();
-
-                        }
-                        this.category = this.vwmedicinedetails.category;
-                        this.category = this.category.toUpperCase();
-                        this.ldrugdetails = 1;
-                       // console.log(this.vwmedicinedetails);
-                   } 
-                }
-                       loading.dismiss();
-
-            });
-
-    
-           
-            //this.searching=false;
-        
+                    }); // on dismiss lop
+                    loading.dismiss();
+                });
     }
 
     dismiss(){
         this.viewCtrl.dismiss();
+    }
+
+    showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
     }
 
    

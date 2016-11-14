@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
-import {NavController, AlertController,ModalController,ItemSliding} from 'ionic-angular';
-import {Toast} from "ionic-native";
+import {NavController, AlertController,ModalController,ItemSliding,ToastController} from 'ionic-angular';
+//import {Toast} from "ionic-native";
 import { AddOrderPage } from '../../tools/orderwanting/addorder';
 
 // providers
@@ -22,7 +22,8 @@ export class OrderWantingsPage {
     constructor(private nav: NavController, 
                 private modalCtrl: ModalController,
                 private localorderbookservice : LocalOrderBookService,
-                public alertCtrl: AlertController) {
+                public alertCtrl: AlertController,
+                private toastCtrl: ToastController) {
         
         //set the default to Drugs Inventory tab segment
       // this.segment = "invt";
@@ -56,6 +57,8 @@ removeOrder(slidingItem: ItemSliding, item) {
           role: 'cancel',
           handler: data => {
            // console.log('Cancel clicked');
+            alert.dismiss();
+            return true;
           }
         },
         {
@@ -63,22 +66,22 @@ removeOrder(slidingItem: ItemSliding, item) {
           handler: () => {
             let navTransition = alert.dismiss();  
 
-            let result = this.localorderbookservice.removeOrder(item);
+            this.localorderbookservice.removeOrder(item).then((data) => {
+              console.log(data.name);
+              console.log("ss");
+              if(data.name === "Error"){
+                this.showToast("Error Occurred while retrieving favorites:" + data.message, "middle");
+                return false;
+              }
+            });
+
             this.vwdrugs = this.localorderbookservice.globalorderbooklist;
-
-            //if(result == 1){
-               // this.showToast("Sucessfully removed from the order book","bottom");
-           // }
-
             navTransition.then(() => {
-                this.nav.pop();
-               });
-            
-           
-            // close the sliding item and hide the option buttons
-            //slidingItem.close();
+              this.nav.pop();
+            });
             alert.dismiss();
             return false;
+
           }
         }
       ]
@@ -87,12 +90,12 @@ removeOrder(slidingItem: ItemSliding, item) {
     alert.present();
   }
  
-     showToast(message, position) {
-        Toast.show(message, "short", position).subscribe(
-            toast => {
-                //console.log(toast);
-            }
-        );
+  showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
     }
- 
 }

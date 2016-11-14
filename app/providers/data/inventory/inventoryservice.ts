@@ -18,46 +18,62 @@ export class InventoryService {
     this.favlist = [];
     this.drugdetailsdata = null;
     this.storage = new Storage(SqlStorage);
-    console.log("inside inventory API service");
-    this.storage.query("CREATE TABLE IF NOT EXISTS DRUG_FAVORITES (id INTEGER, name TEXT, type TEXT )");
+    
+    this.storage.query("CREATE TABLE IF NOT EXISTS DRUG_FAVORITES (id INTEGER, name TEXT, type TEXT )")
+    .then(res => 
+      console.log("DRUG_FAVORITES table created")
+    )
+    .catch(error=> 
+      console.log("Error occurred during table creation in local storage:" + error.err.message)
+    );    
     //console.log("Table DRUG_FAVORITES Created");
   }
 
   getFavDrugs(){
-        return this.storage.query("SELECT * FROM DRUG_FAVORITES");
+        return this.storage.query("SELECT * FROM DRUG_FAVORITES")
+        .then(res => {
+        console.log("drug favorites:" + res);
+        return res;
+    })
+    .catch(error=> {
+        console.log("Error occurred while retrieving favourite drugs:" + error);
+        console.log("error:" + error.err.message);
+        error = new Error(error.err.message || 'Server error');
+        return error;
+    });
   }
 
   addFavDrug(item:any){
-        this.storage.query("INSERT INTO DRUG_FAVORITES (id, name, type) VALUES (?,?,?)", [item.drugid, item.drugname, item.drugtype]).then((data) => {
+        return this.storage.query("INSERT INTO DRUG_FAVORITES (id, name, type) VALUES (?,?,?)", [item.drugid, item.drugname, item.drugtype])
+        .then((data) => {
             console.log("INSERTED fav drug into fav table: " + JSON.stringify(data));
+            return 1;
         }, (error) => {
             console.log("ERROR: during inserting drug into fav table" + JSON.stringify(error.err));
+            //error = new Error(error.err.message || 'Server error');
+            return -1;
         });
-        return 1;
+        //return 1;
   }
 
   removeFavDrug(item:any){
-    this.storage.query("DELETE FROM DRUG_FAVORITES WHERE ID = ?", [item.id]).then((data) => {
+    return this.storage.query("DELETE FROM DRUG_FAVORITES WHERE ID = ?", [item.id]).then((data) => {
           console.log("Deleted fav drug from fav table: " + JSON.stringify(data));
+          return 1;
       }, (error) => {
           console.log("ERROR: during deleting drug from fav table" + JSON.stringify(error.err));
+         // error = new Error(error.err.message || 'Server error');
           return -1;
       });
-      return 1;
+      //return 1;
   }
 
   searchInventory(searchParam: string){
-// console.log("Drugs here..")
     if (this.data) {
-      //console.log("inside if");
       return Promise.resolve(this.data);
     }
  
-    // Stub data during unit testing
-     
- // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
-
  return new Promise(resolve => {
     var url = "";
     url = `https://63hc0yw0n6.execute-api.us-west-2.amazonaws.com/Inventory/drugs?drugname=${searchParam}`;
@@ -69,6 +85,10 @@ export class InventoryService {
           this.data = data;
          // console.log(this.data);
           resolve(this.data);
+        },
+        err=>{   
+          console.log("Error occurred while searching drug" + err);
+          resolve(new Error(err || " - Service Error"));  
         });
     });    //  API CALL END 
     
@@ -76,30 +96,30 @@ export class InventoryService {
 
   // retrieve drug details from store inventory based on the supplied drug id
 // the api that's invoked is store drug inventory (get by drugid)
-  getDrugDetails(drugid: number){
+getDrugDetails(drugid: number){
 
     if (this.drugdetailsdata) {
-     //console.log("inside if");
+     console.log("inside if");
       return Promise.resolve(this.drugdetailsdata);
     }
-    
-   
- // Actual API CALL to AWS.....UNCOMMENT ONCE THE FUNCTIONALITY IS WORKING
  // API CALL START
-
+console.log("drugdetails");
 this.drugdetailsdata = null;
  return new Promise(resolve => {
     var url = "";
     url = `https://63hc0yw0n6.execute-api.us-west-2.amazonaws.com/Inventory/drugs/${drugid}`;
-    //console.log(url);
+    console.log(url);
     this.http.get(url)
     
         .map(res => res.json())
         .subscribe(drugdetailsdata => {
           this.drugdetailsdata = drugdetailsdata;
-          //console.log("inside provider data...s");
-          //console.log(this.drugdetailsdata);
+          console.log(this.drugdetailsdata);
           resolve(this.drugdetailsdata);
+        },
+          err=>{   
+            console.log("Error occurred while retrieving drug details:" + err);
+            resolve(new Error(err || " - Service Error"));  
         });
     });    //  API CALL END 
  
@@ -113,16 +133,17 @@ this.drugdetailsdata = null;
   
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        //console.log("inside review code");
         //console.log(JSON.stringify(review));
         this.http.post('https://63hc0yw0n6.execute-api.us-west-2.amazonaws.com/Inventory/drugs', drugitem, {headers: headers})
           .subscribe((data) => {
             console.log(data);
             resolve(data);
-            //console.log("createreview");
             //console.log(data);
+          },
+           err=>{   
+            console.log("Error occurred while updating drug details:" + err);
+            resolve(new Error(err || " - Service Error"));  
           });
-  
       });
 
     }

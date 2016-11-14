@@ -16,63 +16,106 @@ export class LocalDrugInventory {
   constructor(private http: SafeHttp) {
     this.data = null;
     this.storage = new Storage(SqlStorage);
-    this.storage.query("CREATE TABLE IF NOT EXISTS store_drugmaster (drugid INTEGER, drugname TEXT, drugtype TEXT, mfgcode TEXT ,scheduledrug TEXT )");
+    this.storage.query("CREATE TABLE IF NOT EXISTS store_drugmaster (drugid INTEGER, drugname TEXT, drugtype TEXT, mfgcode TEXT ,scheduledrug TEXT )")
+    .then(res => 
+      console.log("store_drugmaster table created")
+    )
+    .catch(error=> 
+      console.log("Error occurred during table creation in local storage store_drugmaster:" + error.err.message)
+    );
   
-    console.log("store_drugmaster table created");
+    
     console.log("getalldrugs");
     this.getlocaldrugitems();
 
  }
   
  getDrugId(item: any){
-     return this.storage.query("SELECT drugid FROM store_drugmaster WHERE drugname = ? AND drugtype=?",[item.drugname,item.drugtype]);
+     return this.storage.query("SELECT drugid FROM store_drugmaster WHERE drugname = ? AND drugtype=?",[item.drugname,item.drugtype])
+     .then(res => {
+        console.log("drugid:" + res);
+        return res;
+    })
+    .catch(error=> {
+        console.log("Error occurred while retrieving drug id from drug master:" + error);
+        console.log("error:" + error.err.message);
+        error = new Error(error.err.message || 'Server error');
+        return error;
+    });
   }
 
  // returns all drugs in local store 
- /* getAllDrugs(){
-        return Promise.resolve(this.storage.query("SELECT drugid,drugname,drugtype FROM store_drugmaster "));
-  }*/
-
   // search a drug in the local store by drug id
   searchDrug(item: any){
-     return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_drugmaster WHERE drugid = ?",[item.drugid]);
+     return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_drugmaster WHERE drugid = ?",[item.drugid])
+    .then(res => {
+        console.log("TOTALRECORDS" + res);
+        return res;
+    })
+    .catch(error=> {
+        console.log("Error occurred while retrieving TOTAL RECORDS FROM drug master:" + error);
+        console.log("error:" + error.err.message);
+        error = new Error(error.err.message || 'Server error');
+        return error;
+    });
   }
 
    // search a supplier in the local store by supplier id
   searchDrugByName(item: any){
-     return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_drugmaster WHERE drugname = ? AND drugtype=?",[item.drugname,item.drugtype]);
+     return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_drugmaster WHERE drugname = ? AND drugtype=?",[item.drugname,item.drugtype])
+    .then(res => {
+        console.log("TOTALRECORDS" + res);
+        return res;
+    })
+    .catch(error=> {
+        console.log("Error occurred while retrieving TOTAL RECORDS FROM drug master:" + error);
+        console.log("error:" + error.err.message);
+        error = new Error(error.err.message || 'Server error');
+        return error;
+    });
   }
 
   // add drug to local store
     addDrug(item:any){
-        this.storage.query("INSERT INTO store_drugmaster(drugid, drugname, drugtype,mfgcode,scheduledrug) VALUES (?,?,?,?,?)", [item.drugid, item.drugname, item.drugtype,
-        item.mfgcode, item.scheduledrug]).then((data) => 
+        return this.storage.query("INSERT INTO store_drugmaster(drugid, drugname, drugtype,mfgcode,scheduledrug) VALUES (?,?,?,?,?)", [item.drugid, item.drugname, item.drugtype,
+        item.mfgcode, item.scheduledrug])
+        .then((data) => 
         {
             this.globaldrugslist.push({drugid: item.drugid, drugname: item.drugname,drugtype: item.drugtype,mfgcode:item.mfgcode});
-            return Promise.resolve(true);
+            return true;
         }, (error) => {
-            return Promise.resolve(false);
+            error = new Error(error.err.message || 'Server error');
+            return error;
         });
-        return Promise.resolve(true);
+       // return Promise.resolve(true);
     }
 
     // update a drug in local store
     updateDrug(item:any){
-      this.storage.query("UPDATE store_drugmaster SET drugname =?, drugtype=?, mfgcode=?, scheduledrug=? WHERE drugid = ?", [item.drugname, item.drugtype,item.mfgcode, 
+      return this.storage.query("UPDATE store_drugmaster SET drugname =?, drugtype=?, mfgcode=?, scheduledrug=? WHERE drugid = ?", [item.drugname, item.drugtype,item.mfgcode, 
       item.scheduledrug,item.drugid]).then((data) => {
-          return Promise.resolve(true);
+          return true;
       }, (error) => {
-           return Promise.resolve(false);
+        error = new Error(error.err.message || 'Server error');
+        return error;
       });
-      return Promise.resolve(true);
+      //return Promise.resolve(true);
   }
 
   // search drugs in local store
   getAllDrugs(){
       
-      return  this.storage.query("SELECT drugid,drugname,drugtype,mfgcode FROM store_drugmaster");
-      //console.log("getalldrugs" + this.alldrugdataobject);
-      //return this.alldrugdataobject;
+      return  this.storage.query("SELECT drugid,drugname,drugtype,mfgcode FROM store_drugmaster")
+       .then(res => {
+          console.log("get all drugs:" + res);
+          return res;
+        })
+        .catch(error=> {
+          console.log("Error occurred while retrieving all drugs:" + error);
+          console.log("error:" + error.err.message);
+          error = new Error(error.err.message || 'Server error');
+          return error;
+        });
 
   }
 
@@ -102,6 +145,8 @@ export class LocalDrugInventory {
 
             }, (error) => {
                 console.log("ERROR: " + JSON.stringify(error));
+                error = new Error(error.err.message || 'Server error');
+                return error;
             
             });
 

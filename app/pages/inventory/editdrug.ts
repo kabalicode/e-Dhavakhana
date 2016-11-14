@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import { Page,NavController,AlertController,ModalController,LoadingController } from 'ionic-angular';
+import { Page,NavController,AlertController,ModalController,LoadingController,ToastController } from 'ionic-angular';
 import {ViewController,NavParams} from 'ionic-angular';
 import {Validators, FormBuilder } from '@angular/forms';
 import { AbstractControl} from '@angular/common';
@@ -59,7 +59,8 @@ export class EditDrugsPage {
               private fb: FormBuilder,
               public loadingCtrl:LoadingController,
               public viewCtrl: ViewController,
-              public navParams: NavParams) 
+              public navParams: NavParams,
+              private toastCtrl: ToastController) 
     {
 
         this.editdrug = fb.group({
@@ -130,14 +131,24 @@ syncdrugdata_local(item:any, soperation:string){
           if (soperation == "UPDATE")
           {
             this.localdrugservice.updateDrug(item).then((res) => {
-              //console.log("UPDATE RECORD TO LOCAL STORE");
-              return true;
+              if(res.name == "Error")
+                {
+                  console.log("Error:" + res.message);
+                  this.showToast("Error occurred while updating drug in local store:" + res.message, "middle");
+                  return;
+                } // Error handling loop
+              return res;
             });
           }else
           {
              this.localdrugservice.addDrug(item).then((res) => {
-              //console.log("INSERT NEW RECORDS TO LOCAL STORE");
-              return  true;
+              if(res.name == "Error")
+                {
+                  console.log("Error:" + res.message);
+                  this.showToast("Error occurred while adding drug in local store:" + res.message, "middle");
+                  return;
+                } // Error handling loop
+              return  res;
               });
           }
    
@@ -159,71 +170,73 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
           let responseobject : any;
           responseobject = res;
 
-          if (typeof responseobject!== 'undefined' && responseobject!== null)
+          if(responseobject.name == "Error")
           {
-              if (responseobject.status==200)
+            console.log("Error:" + responseobject.message);
+            loading.onDidDismiss(() => {
+                this.showToast("Error occurred while updating drug to AWS:" + responseobject.message, "middle");
+            });
+            loading.dismiss();
+            return;
+          } // Error handling loop
+
+          loading.onDidDismiss(() => 
+          {
+
+              if (typeof responseobject!== 'undefined' && responseobject!== null)
               {
-                let sjsonresponse = responseobject._body;
-                responseobject = JSON.parse(sjsonresponse);
-
-                if (responseobject.response == "SUCESS")
-                {
-                  let drugid = responseobject.drugid;
-                  item.drugid = drugid; //Append supplier id
-
-                  let soperation = responseobject.operation;
-                  let smessage = "";
-                  let stitle = "";
-
-                  if (soperation == "UPDATE")
+                  if (responseobject.status==200)
                   {
-                    smessage = this.medicinename + ":" + this.medicinetype +", sucessfully updated !";
-                    stitle = "Update Drug : "
-                  }else if (soperation == "CREATE")
-                  {
-                   smessage = this.medicinename + ":" + this.medicinetype +", sucessfully added !";
-                    stitle = "Add New Drug : " 
-                  }
+                    let sjsonresponse = responseobject._body;
+                    responseobject = JSON.parse(sjsonresponse);
+
+                    if (responseobject.response == "SUCESS")
+                    {
+                      let drugid = responseobject.drugid;
+                      item.drugid = drugid; //Append supplier id
+
+                      let soperation = responseobject.operation;
+                      let smessage = "";
+                      let stitle = "";
+
+                      if (soperation == "UPDATE")
+                      {
+                        smessage = this.medicinename + ":" + this.medicinetype +", sucessfully updated !";
+                        stitle = "Update Drug : "
+                      }else if (soperation == "CREATE")
+                      {
+                      smessage = this.medicinename + ":" + this.medicinetype +", sucessfully added !";
+                        stitle = "Add New Drug : " 
+                      }
+                      
+                        let alert = this.alertCtrl.create({
+                          title: stitle,
+                          message: smessage,
+                          buttons: [
+                            {
+                              text: 'Ok',
+                              handler: () => {
+                                console.log('Ok clicked');
+                                //loading.dismiss();
+                                this.viewCtrl.dismiss();
+                              }
+                            }
+                          ]
+                        });
+                        alert.present();
+                  } // sucess if loop
                   
-                  //this.syncdrugdata_local(item,soperation); // not requied to update local since we are not allowing user to change
+              } // status : 200
+          } // if loop
 
-                  loading.onDidDismiss(() => {
-                    let alert = this.alertCtrl.create({
-                      title: stitle,
-                      message: smessage,
-                      buttons: [
-                        {
-                          text: 'Ok',
-                          handler: () => {
-                            console.log('Ok clicked');
-                            //loading.dismiss();
-                            this.viewCtrl.dismiss();
-                          }
-                        }
-                      ]
-                    });
-                    //loading.dismiss();
-                    alert.present();
-                  });
-
-                }
-                  loading.dismiss();
-                  //console.log("new code");
-
-              }
-          }
-
-
-
-      }, (err) => {
-          console.log(err);
-        
-      });
+      }); //loading dismiss loop  
+      loading.dismiss();
+    }); // manage drug loop
      
 }
 
 
-
+/*
  showSuggestedDrugsModal () {
       let modal = this.modalCtrl.create(AutocompletePage);
       let me = this;
@@ -250,6 +263,13 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
             // get detailed drug information.
     
             this.utildrugservice.getDrugDetails(this.medicinename).then((data) => {
+
+                if(data.name == "Error")
+                {
+                  console.log("Error:" + data.message);
+                  this.showToast("Error occurred while retriving drug details:" + data.message, "middle");
+                  return;
+                } // Error handling loop
 
                 this.vwmedicinedetails = data;
                  
@@ -312,6 +332,15 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
    
     modal.present();
 
-  }
+  }*/
+
+    showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
+    } 
 
 } // add drugs page

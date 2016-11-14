@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import { Page,NavController,AlertController,ModalController , LoadingController,NavParams} from 'ionic-angular';
+import { Page,NavController,AlertController,ModalController , LoadingController,NavParams,ToastController} from 'ionic-angular';
 import {ViewController} from 'ionic-angular';
 import {Validators, FormBuilder } from '@angular/forms';
 import { AbstractControl} from '@angular/common';
@@ -10,20 +10,14 @@ import {SupplierAPIService} from '../../../providers/data/supplier/supplierservi
 import {LocalSupplierMaster} from '../../../providers/data/local/supplierservice';
 import {UtilitiesService} from '../../../providers/data/utilities/utilitiesservice'
 
-//page
-//import { SupplierDetailsPage } from '../../master/supplier/details';
-
 @Component({
   templateUrl: 'build/pages/master/supplier/editsupplier.html',
   providers: [SupplierAPIService,UtilitiesService]
 })
 export class EditSupplierPage {
  
-  // form controls
- // suppliername: AbstractControl;
   
   address:AbstractControl;
-//  city:AbstractControl;
   state:AbstractControl;
   country:AbstractControl;
   pin:AbstractControl;
@@ -56,11 +50,6 @@ export class EditSupplierPage {
   vwmedicinedetails:any;
   supplierid: string;
     
-  // busy variables
-  //searching: any = false;
-
-  
-
   constructor(private nav: NavController, 
               private modalCtrl: ModalController,
               private supplierapiservice:SupplierAPIService,
@@ -70,13 +59,12 @@ export class EditSupplierPage {
               private fb: FormBuilder,
               public loadingCtrl:LoadingController,
               public navParams: NavParams,
-              public viewCtrl: ViewController) 
+              public viewCtrl: ViewController,
+              private toastCtrl: ToastController) 
     {
 
         this.editsupplier = fb.group({
-          //  suppliername: ['', Validators.compose([Validators.required])],
             address: ['',Validators.compose([Validators.required,])],
-           // city: ['',],
             state: [''],
             country: [''],
             pin: [''],
@@ -91,7 +79,6 @@ export class EditSupplierPage {
 
        // this.suppliername = this.editsupplier.controls['suppliername'];
         this.address = this.editsupplier.controls['address'];
-       // this.city = this.editsupplier.controls['city'];
         this.state = this.editsupplier.controls['state'];
         this.country = this.editsupplier.controls['country'];
         this.pin = this.editsupplier.controls['pin'];
@@ -133,8 +120,6 @@ export class EditSupplierPage {
 
 
 postSupplierInfo(){
-  //console.log("i am here");
- 
 
    let supplieritem = {
         supplierid: this.supplierid,
@@ -168,15 +153,11 @@ postSupplierInfo(){
     JSONPayload = JSONPayload + '"GST":"' + supplieritem.GST + '"}}'
     
     this.syncdrugdata_AWS(JSONPayload,supplieritem);
-
- 
 }
 
 
 
 syncdrugdata_AWS(JSONPayload: string, item: any){
-
-//console.log(JSONPayload);  
        
   let loading = this.loadingCtrl.create({
           content: 'Please Wait...'
@@ -185,84 +166,87 @@ syncdrugdata_AWS(JSONPayload: string, item: any){
   loading.present();
 
   this.supplierapiservice.manageSupplier(JSONPayload).then((res) => {
-
           let responseobject : any;
           responseobject = res;
-          
-     
 
-          if (typeof responseobject!== 'undefined' && responseobject!== null)
+          if(responseobject.name == "Error")
           {
-              if (responseobject.status==200)
-              {
-               
-                let sjsonresponse = responseobject._body;
-                responseobject = JSON.parse(sjsonresponse);
+            console.log("Error:" + responseobject.message);
+            loading.onDidDismiss(() => {
+                this.showToast("Error occurred while updating supplier to AWS:" + responseobject.message, "middle");
+            });
+            loading.dismiss();
+            return;
+          } // Error handling loop
+          
+          loading.onDidDismiss(() => 
+          {
 
-                if (responseobject.response == "SUCESS")
+                if (typeof responseobject!== 'undefined' && responseobject!== null)
                 {
-                  
-                  let ssupplierid = responseobject.supplierid;
-                  item.supplierid = ssupplierid; //Append supplier id
+                    if (responseobject.status==200)
+                    {
 
-                  let soperation = responseobject.operation;
+                      let sjsonresponse = responseobject._body;
+                      responseobject = JSON.parse(sjsonresponse);
 
+                      if (responseobject.response == "SUCESS")
+                      {
+                        let ssupplierid = responseobject.supplierid;
+                        item.supplierid = ssupplierid; //Append supplier id
 
+                        let soperation = responseobject.operation;
 
-                  let smessage = "";
-                  let stitle = "";
+                        let smessage = "";
+                        let stitle = "";
 
-                  if (soperation == "UPDATE")
-                  {
-                    smessage = this.vendorname + " has been  updated  sucessfully !";
-                    stitle = "Update Supplier : "
-                  }else if (soperation == "CREATE")
-                  {
-                    smessage = this.vendorname + " has been added sucessfully !";
-                    stitle = "Add New Supplier : " 
-                  }
-                  
-                  loading.onDidDismiss(() => {
-                    let alert = this.alertCtrl.create({
-                      title: stitle,
-                      message: smessage,
-                      buttons: [
+                        if (soperation == "UPDATE")
                         {
-                          text: 'Ok',
-                          handler: () => {
-                            console.log('Ok clicked');
-                            //loading.dismiss();
-                            this.viewCtrl.dismiss();
-                          }
+                          smessage = this.vendorname + " has been  updated  sucessfully !";
+                          stitle = "Update Supplier : "
+                        }else if (soperation == "CREATE")
+                        {
+                          smessage = this.vendorname + " has been added sucessfully !";
+                          stitle = "Add New Supplier : " 
                         }
-                      ]
-                    });
-                    //loading.dismiss();
-                    alert.present();
-                  });
+                        
+                      // loading.onDidDismiss(() => {
+                          let alert = this.alertCtrl.create({
+                            title: stitle,
+                            message: smessage,
+                            buttons: [
+                              {
+                                text: 'Ok',
+                                handler: () => {
+                                  console.log('Ok clicked');
+                                  //loading.dismiss();
+                                  this.viewCtrl.dismiss();
+                                }
+                              }
+                            ]
+                          });
+                          alert.present();
+                        //});
 
-                }
-                  loading.dismiss();
-                  //console.log("new code");
-
-              }
-          }
-
-
-
-      }, (err) => {
-          console.log(err);
-        
-      });
+                      } // sucess if loop
+                    } // status == 200
+                } // if loop
+        }); // loading dismiss loop
+        loading.dismiss();
+      }); // manage supplier loop
      
 }
-
-
-
     dismiss(){
         this.viewCtrl.dismiss();
     }
 
-
+    showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
+    } 
 
 } // add drugs page

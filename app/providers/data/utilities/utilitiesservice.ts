@@ -49,6 +49,10 @@ getSuggestedDrugs(searchParam: string){
               console.log(data);
               this.suggesteddrugdata = data;
               resolve(this.suggesteddrugdata);
+            },
+              err=>{
+                    console.log("Error occurred while retrieving suggested drug details:" + err);
+                    resolve(new Error(err || " - Service Error"));
             });
         });    
     //  API CALL END 
@@ -76,7 +80,12 @@ getAlternativeDrugs(searchParam: string){
           this.alternativedrugs = data;
           //console.log(this.alternativedrugs);
           resolve(this.alternativedrugs);
-        });
+        },
+          err=>{
+                    console.log("Error occurred while retrieving alternative drug details:" + err);
+                    resolve(new Error(err || " - Service Error"));
+            });
+
     });    //  API CALL END 
 
 }
@@ -107,7 +116,12 @@ getDrugDetails(drugname: string){
           //console.log(this.drugdetails);
           
           resolve(this.drugdetails);
+        },
+        err=>{
+          console.log("Error occurred while retrieving drug details:" + err);
+          resolve(new Error(err || " - Service Error"));
         });
+
     });    //  API CALL END 
     
   }
@@ -129,7 +143,12 @@ findAddress(pinno: string){
         .subscribe(data => {
           this.addressdetails = data;
           resolve(this.addressdetails);
+        },
+        err=>{
+          console.log("Error occurred while retrieving address details:" + err);
+          resolve(new Error(err || " - Service Error"));
         });
+        
     });    //  API CALL END 
    
   }

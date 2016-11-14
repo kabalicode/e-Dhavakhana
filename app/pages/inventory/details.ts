@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,LoadingController } from 'ionic-angular';
+import { NavController,LoadingController,ToastController } from 'ionic-angular';
 import { NavParams } from 'ionic-angular';
 import {InventoryService} from '../../providers/data/inventory/inventoryservice';
 import {SafeHttp} from '../../providers/data/utilities/safehttp';
@@ -30,7 +30,8 @@ export class DrugdetailsPage {
              private invtdataservice:InventoryService,
              public loadingCtrl:LoadingController,
              private nav: NavController,
-             private safenetwork: SafeHttp) {
+             private safenetwork: SafeHttp,
+             private toastCtrl: ToastController) {
       this.drugid = navParams.data;
 
       //this.searching=true;
@@ -57,33 +58,47 @@ ionViewWillEnter() {
 
         this.invtdataservice.getDrugDetails(this.drugid).then((data) => {
 
-        this.vwdrug = data;
-    
-        if ((typeof this.vwdrug === 'undefined') || (this.vwdrug === null))
-          {
-            this.ERROR = true;
-            this.drugname = "";
-            this.lbatchcount = -1;
-          }
-        else
-        {
-          this.ERROR = false;
-          this.drugname = this.vwdrug.drugname;
-          this.lbatchcount = this.vwdrug.suppliers.length;
-        }  
+            if (data === null)
+            {
+                this.ERROR = true;
+                this.drugname = "";
+                this.lbatchcount = -1;
+            }else if(data.name == "Error")
+            {
+                console.log("Error:" + data.message);
+                loading.onDidDismiss(() => {
+                    this.showToast("Error occurred while retrieving suggested drug details:" + data.message, "middle");
+                });
+                loading.dismiss();
+                return;
+            } // Error handling loop
 
-        //console.log(this.errormessage);  
+            loading.onDidDismiss(() => 
+            {
+              
+                this.vwdrug = data;
+        
+                if ((typeof this.vwdrug === 'undefined') || (this.vwdrug === null))
+                  {
+                    this.ERROR = true;
+                    this.drugname = "";
+                    this.lbatchcount = -1;
+                  }
+                else
+                {
+                  this.ERROR = false;
+                  this.drugname = this.vwdrug.drugname;
+                  this.lbatchcount = this.vwdrug.suppliers.length;
+                }  
 
-        this.invtdataservice.drugdetailsdata=null;
+                //console.log(this.errormessage);  
 
-        //this.searching=false;
+                this.invtdataservice.drugdetailsdata=null;
+            }); // loading on dismiss loop
 
         loading.dismiss();
-        
         console.log("new inventory details page");
-  
-        
-      });
+      }); //get drug details loop
   
    }else
    {
@@ -107,5 +122,14 @@ ionViewWillEnter() {
       
         
     } 
+
+    showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
+    }
 
 }
