@@ -1,6 +1,6 @@
 import { Component, Pipe } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { ViewController, ModalController, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { ViewController, ToastController, ModalController, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import {Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import {InvoiceService} from '../../../providers/data/invoice/invoiceservice';
 import {InventoryService} from '../../../providers/data/inventory/inventoryservice';
@@ -40,6 +40,7 @@ export class InvoiceAddPage {
               private alertCtrl: AlertController,
               private loadCtrl: LoadingController,
               private navCtrl: NavController,
+              private toastCtrl: ToastController,
               private localSupplierMaster: LocalSupplierMaster,
               private invoiceService:InvoiceService, private formBuilder: FormBuilder) {
     this.selectedsupplierid = undefined;
@@ -222,6 +223,16 @@ export class InvoiceAddPage {
        loading.present();
        this.invoiceService.addInvoice(this.invoiceObj).then((data:any) => {
          console.log("result:" +  JSON.stringify(data));
+         if(data.name == "Error"){
+            console.log("Error:" + data.message);
+
+            loading.onDidDismiss(() => {
+                this.showToast("Error occurred while adding invoice details:" + data.message, "middle");
+            });
+
+            loading.dismiss();
+            return;
+          } 
          loading.dismiss();
          if(data.response == "SUCESS"){
            let alert = this.alertCtrl.create({
@@ -260,6 +271,15 @@ export class InvoiceAddPage {
          }
        });
 
+    }
+
+    showToast(message, position) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: position
+        });
+        toast.present();
     }
 
     prepareInvoiceObj(){

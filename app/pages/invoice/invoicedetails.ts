@@ -36,7 +36,17 @@ export class InvoiceDetailsPage {
                 });
             loadctrl.present();
             //retrieve the invoices for a suppliers if any
-            this.invoiceService.getSupplierInvoices(supplierId).then((data) => {
+            this.invoiceService.getSupplierInvoices(supplierId).then((data:any) => {
+                if(data.name == "Error"){
+                    console.log("Error:" + data.message);
+
+                    loadctrl.onDidDismiss(() => {
+                        this.showToast("Error occurred while retrieving invoices for a given supplier:" + data.message, "middle");
+                    });
+
+                    loadctrl.dismiss();
+                    return;
+                } 
                 this.invoicedata = data;
                 this.period = 6;
                 if (typeof this.invoicedata!== 'undefined' && this.invoicedata!== null)

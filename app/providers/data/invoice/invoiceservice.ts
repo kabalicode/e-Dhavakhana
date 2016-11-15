@@ -32,11 +32,10 @@ export class InvoiceService {
 
   getFavSuppliers(){
       return  this.storage.query("SELECT * FROM SUPPLIER_FAVORITES")
-        .then(res => {
+        .then((res) => {
           console.log("Fav suppliler list:" + res);
           return res;
-        })
-        .catch(error=> {
+        },(error)=> {
           console.log("Error occurred while retrieving favorite suppliers:" + error);
           console.log("error:" + error.err.message);
           error = new Error(error.err.message || 'Server error');
@@ -47,10 +46,11 @@ export class InvoiceService {
   addFavSupplier(item:any){
         return this.storage.query("INSERT INTO SUPPLIER_FAVORITES (id, name, city) VALUES (?,?,?)", [item.supplierid, item.suppliername, item.suppliercity]).then((data) => {
             console.log("INSERTED fav supplier into fav table: " + JSON.stringify(data));
-            return 1;
+            return data;
         }, (error) => {
             console.log("ERROR: during inserting supplier into fav table:" + error.err.message);
-            return -1;
+            error = new Error(error.err.message || 'Server error');
+            return error;
         });
   }
 
@@ -121,6 +121,10 @@ export class InvoiceService {
           this.data = data;
           if (this.data == "") this.data = null;
           resolve(this.data);
+        }, 
+        err=>{
+          console.log("Error occurred while retrieving supplier invoices for a given supplier:" + err);
+          resolve(new Error(err || " - Service Error"));
         });
     });    //  API CALL END 
     
@@ -141,7 +145,11 @@ export class InvoiceService {
                 this.data = data;
                 console.log(this.data);
                 resolve(this.data);
-              });
+              }, 
+            err=>{
+              console.log("Error occurred while adding invoice:" + err);
+              resolve(new Error(err || " - Service Error"));
+            });
           }); 
     }
   }
