@@ -62,9 +62,9 @@ export class LocalDrugInventory {
 
    // search a supplier in the local store by supplier id
   searchDrugByName(item: any){
-     return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_drugmaster WHERE drugname = ? AND drugtype=?",[item.drugname,item.drugtype])
+     return this.storage.query("SELECT drugid FROM store_drugmaster WHERE drugname = ? AND drugtype=?",[item.drugname,item.drugtype])
     .then(res => {
-        console.log("TOTALRECORDS" + res);
+        console.log("drugid" + res);
         return res;
     })
     .catch(error=> {
@@ -135,7 +135,8 @@ export class LocalDrugInventory {
                 if (responseobject.rows.length >0)
                 {
                         for(var i = 0; i < responseobject.rows.length; i++) {
-                            this.globaldrugslist.push({drugid: responseobject.rows[i].drugid, drugname: responseobject.rows[i].drugname,drugtype: responseobject.rows[i].drugtype,mfgcode: responseobject.rows[i].mfgcode});
+                           // this.globaldrugslist.push({drugid: responseobject.rows[i].drugid, drugname: responseobject.rows[i].drugname,drugtype: responseobject.rows[i].drugtype,mfgcode: responseobject.rows[i].mfgcode});
+                            this.globaldrugslist.push({drugid: responseobject.rows.item(i).drugid, drugname: responseobject.rows.item(i).drugname,drugtype: responseobject.rows.item(i).drugtype,mfgcode: responseobject.rows.item(i).mfgcode});
                     }
 
                 }

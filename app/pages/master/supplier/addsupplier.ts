@@ -138,9 +138,10 @@ let supplieritem = {
        if (typeof responseobject!== 'undefined' && responseobject!== null)
                 {
                         responseobject = responseobject.res;
-                        responseobject = responseobject.rows[0];
+                        //responseobject = responseobject.rows[0];
+                        responseobject = responseobject.rows;
 
-                        if (responseobject.TOTALRECORDS >0)
+                        if (responseobject.length >0)
                         {
 
                             let alert = this.alertCtrl.create({
@@ -319,7 +320,9 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                 if (typeof response!== 'undefined' && response!== null)
                   {
                         response = response.res;
-                        response = response.rows[0];
+                        //response = response.rows[0];
+                        response = response.rows.item(0);
+
                         let supplierid = response.supplierid;
                         item.supplierid = supplierid; //Append supplier id
 
@@ -330,10 +333,11 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                         JSONPayload = JSONPayload + '"address": {"areaname":"' + item.address + '",'
                         JSONPayload = JSONPayload + '"suppliercity":"' + item.suppliercity + '",'
                         JSONPayload = JSONPayload + '"state":"' + item.state + '",'
+                        JSONPayload = JSONPayload + '"country":"' + item.country + '",'
                         JSONPayload = JSONPayload + '"pin" :"' + item.pin + '"},'
                         JSONPayload = JSONPayload + '"contactinfo": {"contactname":"' + item.contactname + '",'
-                        JSONPayload = JSONPayload + '"landlineno" :' + item.landline + ','
-                        JSONPayload = JSONPayload + '"mobileno": ' + item.mobileno + '},'
+                        JSONPayload = JSONPayload + '"landlineno" :"' + item.landline + '",'
+                        JSONPayload = JSONPayload + '"mobileno": "' + item.mobileno + '"},'
                         JSONPayload = JSONPayload + '"taxdetails": {"TIN":"' + item.TIN + '",'
                         JSONPayload = JSONPayload + '"GST":"' + item.GST + '"}}'
                         this.syncdrugdata_AWS_local(JSONPayload,item);
@@ -347,10 +351,11 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                         JSONPayload = JSONPayload + '"address": {"areaname":"' + item.address + '",'
                         JSONPayload = JSONPayload + '"suppliercity":"' + item.suppliercity + '",'
                         JSONPayload = JSONPayload + '"state":"' + item.state + '",'
+                        JSONPayload = JSONPayload + '"country":"' + item.country + '",'
                         JSONPayload = JSONPayload + '"pin" :"' + item.pin + '"},'
                         JSONPayload = JSONPayload + '"contactinfo": {"contactname":"' + item.contactname + '",'
-                        JSONPayload = JSONPayload + '"landlineno" :' + item.landline + ','
-                        JSONPayload = JSONPayload + '"mobileno": ' + item.mobileno + '},'
+                        JSONPayload = JSONPayload + '"landlineno" :"' + item.landline + '",'
+                        JSONPayload = JSONPayload + '"mobileno": "' + item.mobileno + '"},'
                         JSONPayload = JSONPayload + '"taxdetails": {"TIN":"' + item.TIN + '",'
                         JSONPayload = JSONPayload + '"GST":"' + item.GST + '"}}'
                         this.syncdrugdata_AWS_local(JSONPayload,item);

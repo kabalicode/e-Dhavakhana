@@ -119,9 +119,10 @@ export class AddDrugsPage {
           if (typeof responseobject!== 'undefined' && responseobject!== null)
                     {
                             responseobject = responseobject.res;
-                            responseobject = responseobject.rows[0];
+                            //responseobject = responseobject.rows[0];
+                            responseobject = responseobject.rows
 
-                            if (responseobject.TOTALRECORDS >0)
+                            if (responseobject.length >0)
                             {
 
                                 let alert = this.alertCtrl.create({
@@ -217,7 +218,9 @@ updatedrugdata(item:any,soperation:string)
                 if (typeof response!== 'undefined' && response!== null)
                   {
                         response = response.res;
-                        response = response.rows[0];
+                        //response = response.rows[0];
+                        response = response.rows.item(0);
+                        
                         let drugid = response.drugid;
                         item.drugid = drugid; //Append drug id
 

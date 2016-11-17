@@ -147,8 +147,8 @@ postSupplierInfo(){
     JSONPayload = JSONPayload + '"country":"' + supplieritem.country + '",'
     JSONPayload = JSONPayload + '"pin" :"' + supplieritem.pin + '"},'
     JSONPayload = JSONPayload + '"contactinfo": {"contactname":"' + supplieritem.contactname + '",'
-    JSONPayload = JSONPayload + '"landlineno" :' + supplieritem.landline + ','
-    JSONPayload = JSONPayload + '"mobileno": ' + supplieritem.mobileno + '},'
+    JSONPayload = JSONPayload + '"landlineno" :"' + supplieritem.landline + '",'
+    JSONPayload = JSONPayload + '"mobileno": "' + supplieritem.mobileno + '"},'
     JSONPayload = JSONPayload + '"taxdetails": {"TIN":"' + supplieritem.TIN + '",'
     JSONPayload = JSONPayload + '"GST":"' + supplieritem.GST + '"}}'
     

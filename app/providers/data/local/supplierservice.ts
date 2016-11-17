@@ -24,13 +24,13 @@ export class LocalSupplierMaster {
     .catch(error=> 
       console.log("Error occurred during table creation in local storage:" + error.err.message)
     );    
-
+    console.log("con")
     this.getlocalsupplieritems();
     
 
-    //this.storage.query("DROP TABLE IF EXISTS store_suppliermaster");
+   // this.storage.query("DROP TABLE IF EXISTS store_suppliermaster");
 
-    //console.log("store_suppliermaster table deleted");
+   // console.log("store_suppliermaster table deleted");
 
     //console.log("getalldrugs");
     
@@ -60,9 +60,11 @@ export class LocalSupplierMaster {
 
   // search a supplier in the local store by supplier id
   searchSupplierByName(item: any){
-     return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_suppliermaster WHERE suppliername = ? AND suppliercity=?",[item.suppliername,item.suppliercity])
+     //return this.storage.query("SELECT COUNT(*) AS TOTALRECORDS FROM store_suppliermaster WHERE suppliername = ? AND suppliercity=?",[item.suppliername,item.suppliercity])
+     return this.storage.query("SELECT supplierid FROM store_suppliermaster WHERE suppliername = ? AND suppliercity=?",[item.suppliername,item.suppliercity])
      .then(res => {
-          console.log("TOTALRECORDS" + res);
+          console.log("supplierid:" + res);
+         // res = null;
           return res;
         })
         .catch(error=> {
@@ -133,7 +135,8 @@ export class LocalSupplierMaster {
                 if (responseobject.rows.length >0)
                 {
                         for(var i = 0; i < responseobject.rows.length; i++) {
-                            this.globalsupplierlist.push({supplierid: responseobject.rows[i].supplierid, suppliername: responseobject.rows[i].suppliername,suppliercity: responseobject.rows[i].suppliercity});
+                            //this.globalsupplierlist.push({supplierid: responseobject.rows[i].supplierid, suppliername: responseobject.rows[i].suppliername,suppliercity: responseobject.rows[i].suppliercity});
+                            this.globalsupplierlist.push({supplierid: responseobject.rows.item(i).supplierid, suppliername: responseobject.rows.item(i).suppliername,suppliercity: responseobject.rows.item(i).suppliercity});
                     }
 
                 }

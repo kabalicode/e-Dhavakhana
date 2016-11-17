@@ -100,11 +100,11 @@ export class LocalOrderBookService {
                 if (responseobject.rows.length >0)
                 {
                         for(var i = 0; i < responseobject.rows.length; i++) {
-                            this.globalorderbooklist.push({drugname: responseobject.rows[i].drugname, 
-                                drugtype: responseobject.rows[i].drugtype,
-                                mfgcode: responseobject.rows[i].mfgcode,
-                                qty: responseobject.rows[i].qty,
-                                status: responseobject.rows[i].status});
+                            this.globalorderbooklist.push({drugname: responseobject.rows.item(i).drugname, 
+                                drugtype: responseobject.rows.item(i).drugtype,
+                                mfgcode: responseobject.rows.item(i).mfgcode,
+                                qty: responseobject.rows.item(i).qty,
+                                status: responseobject.rows.item(i).status});
                     }
 
                 }
