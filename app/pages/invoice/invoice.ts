@@ -35,7 +35,7 @@ export class InvoicePage {
 
               //retrieve the drug favorites if any
               this.invoiceService.getFavSuppliers().then((data) => {
-                  if(data.name == "Error"){
+                  if(data!=null && data.name == "Error"){
                       this.showToast("Error Occurred while retrieving favorites:" + data.message, "middle");
                       return;
                   }
@@ -79,7 +79,7 @@ export class InvoicePage {
  
     public refresh() {
         this.invoiceService.getFavSuppliers().then((data) => {
-            if(data.name == "Error"){
+            if(data!=null && data.name == "Error"){
                 this.showToast("Error Occurred while retrieving favorites:" + data.message, "middle");
                 return;
             }

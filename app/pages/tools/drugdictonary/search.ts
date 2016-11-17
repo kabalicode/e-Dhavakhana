@@ -53,7 +53,7 @@ updatedrugsearch(){
 
                 this.utilitydrugsService.getSuggestedDrugs(fltvar).then((data) => {
 
-                    if(data.name == "Error"){
+                    if(data!=null && data.name == "Error"){
                         console.log("Error:" + data.message);
                         loading.onDidDismiss(() => {
                             this.showToast("Error occurred while retrieving suggested drug details:" + data.message, "middle");
@@ -186,7 +186,7 @@ export class DetailDrugDictonaryModal {
             this.ldrugdetails = 0;
             this.utilitydrugsService.getDrugDetails(this.drugname).then((data) => {
 
-                if(data.name == "Error"){
+                if(data!=null && data.name == "Error"){
                     console.log("Error:" + data.message);
 
                     loading.onDidDismiss(() => {

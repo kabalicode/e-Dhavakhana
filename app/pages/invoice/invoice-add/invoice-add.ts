@@ -1,5 +1,5 @@
 import { Component, Pipe } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DateFormat } from '../../../filters/dateformatter';
 import { ViewController, ToastController, ModalController, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import {Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import {InvoiceService} from '../../../providers/data/invoice/invoiceservice';
@@ -32,7 +32,7 @@ export class InvoiceAddPage {
   selectedsuppliername:any;
   invoiceItems: any;
   invoiceObj = new Invoice();
-  datePipe = new DatePipe();
+  datePipe = new DateFormat();
   searchkey:string;
 
   constructor(private viewCtrl: ViewController,
@@ -111,7 +111,7 @@ export class InvoiceAddPage {
         date: new Date(),
         mode: 'date'
       }).then(
-        date => {console.log("Got date: ", date); this.invoice.controls["date"].updateValue(this.datePipe.transform(date,"dd/MM/yyyy"))},
+        date => {console.log("Got date: ", date); this.invoice.controls["date"].updateValue(this.datePipe.transform(date,["dd/MM/yyyy"]))},
         err => console.log("Error occurred while getting date:", err)
       );
    }
@@ -122,10 +122,10 @@ export class InvoiceAddPage {
         invoiceItemModal.onDidDismiss((data: any) => {
           if (data) {
             console.log("expirydate:" + data.expirydate);
-            data.expirydate = "01/" + data.expirydate;
-            var dt = new Date(data.expirydate);
+            let splitArr = data.expirydate.split("/");
+            var dt = new Date(splitArr[1], splitArr[0]-1,1);
             console.log("date object:" + dt);
-            data.expirydate = this.datePipe.transform(dt, 'yyyy-MM-dd');
+            data.expirydate = this.datePipe.transform(dt, ['yyyy-MM-dd']);
             console.log("transformed expirydate:" + data.expirydate);
             console.log("data from popup:" + JSON.stringify(data));
             var noofitems = this.invoiceItems.length;
@@ -149,10 +149,10 @@ export class InvoiceAddPage {
         invoiceItemModal.onDidDismiss((data: any) => {
           if (data) {
             console.log("expirydate:" + data.expirydate);
-            data.expirydate = "01/" + data.expirydate;
-            var dt = new Date(data.expirydate);
+            let splitArr = data.expirydate.split("/");
+            var dt = new Date(splitArr[1], splitArr[0]-1,1);
             console.log("date object:" + dt);
-            data.expirydate = this.datePipe.transform(dt, 'yyyy-MM-dd');
+            data.expirydate = this.datePipe.transform(dt, ['yyyy-MM-dd']);
             console.log("transformed expirydate:" + data.expirydate);
             console.log("data from popup:" + JSON.stringify(data));
             console.log("index:" + data.sno);
@@ -223,7 +223,7 @@ export class InvoiceAddPage {
        loading.present();
        this.invoiceService.addInvoice(this.invoiceObj).then((data:any) => {
          console.log("result:" +  JSON.stringify(data));
-         if(data.name == "Error"){
+         if(data!=null && data.name == "Error"){
             console.log("Error:" + data.message);
 
             loading.onDidDismiss(() => {
@@ -290,7 +290,7 @@ export class InvoiceAddPage {
       }
       let dateSplitArr = this.invoice.controls['date'].value.split("/");
       let invoicedt = new Date(dateSplitArr[2], dateSplitArr[1] - 1, dateSplitArr[0]);
-      this.invoiceObj.invoicedate = this.datePipe.transform(invoicedt,'yyyy-MM-dd');
+      this.invoiceObj.invoicedate = this.datePipe.transform(invoicedt,['yyyy-MM-dd']);
       this.invoiceObj.taxinvoiceno = this.invoice.controls['taxinvoiceno'].value;
       this.invoiceObj.transaction_type = this.invoice.controls['transactionType'].value;
       this.invoiceObj.supplierid = this.selectedsupplierid;
@@ -322,7 +322,7 @@ export class InvoiceItemModal {
     edit:boolean = false;
     invoiceItemParam:any;
     year:number;
-    datePipe = new DatePipe();
+    datePipe = new DateFormat();
     zerovalue = 0;
     searchkey:string;
     
@@ -346,7 +346,7 @@ export class InvoiceItemModal {
               this.selecteddrugname = navParams.data.invoiceItem.drugname;
               this.selecteddrugtype = navParams.data.invoiceItem.drugtype;
               this.selecteddrugmfgcode = navParams.data.invoiceItem.mfgcode;
-              this.invoiceItemParam.expirydate = this.datePipe.transform(navParams.data.invoiceItem.expirydate, 'MM/yyyy');
+              this.invoiceItemParam.expirydate = this.datePipe.transform(navParams.data.invoiceItem.expirydate, ['MM/yyyy']);
           }
     }
 

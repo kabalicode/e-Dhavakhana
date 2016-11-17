@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, ExceptionHandler, provide} from '@angular/core';
 import {ionicBootstrap, Platform, MenuController, Nav, AlertController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
@@ -22,7 +22,11 @@ import {LocalSupplierMaster} from './providers/data/local/supplierservice';
 import {SafeHttp} from './providers/data/utilities/safehttp';
 import {LocalOrderBookService} from './providers/data/local/orderservice';
 
+import {MyCustomExceptionHandler} from './providers/data/utilities/customexceptionhandler';
+
 declare var Connection;
+
+
 
 @Component({
   templateUrl: 'build/app.html',
@@ -140,4 +144,4 @@ class MyApp {
 
 }
 enableProdMode();
-ionicBootstrap(MyApp,[SafeHttp,LocalDrugInventory,LocalSupplierMaster,LocalOrderBookService]);
+ionicBootstrap(MyApp,[provide(ExceptionHandler, {useClass: MyCustomExceptionHandler}),SafeHttp,LocalDrugInventory,LocalSupplierMaster,LocalOrderBookService]);

@@ -380,7 +380,7 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
             this.utildrugservice.getDrugDetails(this.medicinename).then((data) => {
 
 
-                if(data.name == "Error")
+                if(data!=null && data.name == "Error")
                 {
                   console.log("Error:" + data.message);
                   this.showToast("Error occurred while retriving drug details:" + data.message, "middle");

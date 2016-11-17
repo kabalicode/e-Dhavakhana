@@ -54,7 +54,7 @@ updatedrugsearch(){
                 this.utilitydrugsService.getSuggestedDrugs(fltvar).then((data) => {
                 console.log(data);
 
-                if(data.name == "Error"){
+                if(data!=null && data.name == "Error"){
                     console.log("Error:" + data.message);
 
                     loading.onDidDismiss(() => {
@@ -185,7 +185,7 @@ export class SubstitueDrugsModal {
             //get alternative drug information
             this.utilitydrugsService.getAlternativeDrugs(this.drugname).then((data) => {
 
-                if(data.name == "Error"){
+                if(data!=null && data.name == "Error"){
                         console.log("Error:" + data.message);
 
                         loading.onDidDismiss(() => {
@@ -229,7 +229,7 @@ export class SubstitueDrugsModal {
             this.ldrugdetails = 0;
             this.utilitydrugsService.getDrugDetails(this.drugname).then((data) => {
 
-                if(data.name == "Error"){
+                if(data!=null && data.name == "Error"){
                     console.log("Error:" + data.message);
 
                     loading.onDidDismiss(() => {

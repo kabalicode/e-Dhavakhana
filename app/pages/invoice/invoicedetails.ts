@@ -37,7 +37,7 @@ export class InvoiceDetailsPage {
             loadctrl.present();
             //retrieve the invoices for a suppliers if any
             this.invoiceService.getSupplierInvoices(supplierId).then((data:any) => {
-                if(data.name == "Error"){
+                if(data!=null && data.name == "Error"){
                     console.log("Error:" + data.message);
 
                     loadctrl.onDidDismiss(() => {
@@ -75,7 +75,7 @@ export class InvoiceDetailsPage {
         
         this.invoiceService.getInvoiceDetails(invoiceId).then((data:any) => {
 
-                if(data.name == "Error"){
+                if(data!=null && data.name == "Error"){
                     console.log("Error:" + data.message);
 
                     loadctrl.onDidDismiss(() => {

@@ -62,9 +62,7 @@ export class AutocompletePage {
                   
                   this.drugutilservice.getSuggestedDrugs(this.autocomplete.drugquery).then((data) => {
                         
-                        console.log(data.name);
-                        console.log("data.name");
-                        if(data.name == "Error")
+                        if(data!=null && data.name == "Error")
                         {
                             console.log("Error:" + data.message);
                             loading.onDidDismiss(() => {

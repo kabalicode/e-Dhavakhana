@@ -76,7 +76,7 @@ export class SupplierDetailsPage {
 
       this.supplierservice.getSupplierDetails(this.supplierid).then((data) => {
 
-        if(data.name == "Error")
+        if(data!=null && data.name == "Error")
         {
             console.log("Error:" + data.message);
             

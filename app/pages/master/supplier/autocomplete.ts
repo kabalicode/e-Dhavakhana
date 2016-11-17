@@ -57,7 +57,7 @@ export class AutocompleteAddressPage {
         this.drugutilservice.findAddress(this.autocomplete.pinquery).then((data) => {
 
 
-                    if(data.name == "Error")
+                    if(data!=null && data.name == "Error")
                     {
                       console.log("Error:" + data.message);
                       loading.onDidDismiss(() => {
