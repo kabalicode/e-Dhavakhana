@@ -2,6 +2,7 @@ import {Component, ViewChild, ExceptionHandler, provide} from '@angular/core';
 import {ionicBootstrap, Platform, MenuController, Nav, AlertController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
+import {LoginComponent,LogoutComponent} from './pages/security/auth';
 import {ToolsPage} from './pages/tools/tools';
 import {DrugsPage} from './pages/inventory/search';
 
@@ -23,6 +24,18 @@ import {SafeHttp} from './providers/data/utilities/safehttp';
 import {LocalOrderBookService} from './providers/data/local/orderservice';
 
 import {MyCustomExceptionHandler} from './providers/data/utilities/customexceptionhandler';
+import {AwsUtil} from './providers/auth/aws.service'
+
+import {
+  CognitoUtil,
+  UserLoginService,
+  UserParametersService,
+  UserRegistrationService
+} from "./providers/auth/cognito.service";
+
+import {
+  EventsService
+} from "./providers/auth/events.service";
 
 declare var Connection;
 
@@ -36,7 +49,8 @@ class MyApp {
   @ViewChild(Nav) nav: Nav;
   onDevice: boolean;
   // make HomePage the root (or first) page
-  rootPage: any = HomePage;
+  //rootPage: any = HomePage;
+  rootPage:any = LoginComponent;
   pages: Array<{title: string, icon:string, component: any, showchild:boolean,
     child: Array<{title:string, icon:string, component: any}>}>;
 
@@ -46,7 +60,10 @@ class MyApp {
     public platform: Platform,
     public alertCtrl: AlertController,
     public menu: MenuController,
-    private safeHttp: SafeHttp
+    private safeHttp: SafeHttp,
+    private awsUtil: AwsUtil,
+    private userLoginService: UserLoginService,
+    private eventsService: EventsService
   ) {
     this.initializeApp();
     this.onDevice = this.platform.is('cordova');
@@ -63,7 +80,7 @@ class MyApp {
       { title: 'Finance', icon:'logo-usd', component: DefaultPage, showchild:false , child: null  },
       { title: 'CRM', icon:'person', component: DefaultPage, showchild:false , child: null },
       { title: 'Settings', icon:'settings', component: DefaultPage, showchild:false , child: null },
-      { title: 'Logout', icon:'log-out', component: DefaultPage, showchild:false , child: null },
+      { title: 'Logout', icon:'log-out', component: LogoutComponent, showchild:false , child: null },
     ];
   }
 
@@ -80,6 +97,7 @@ class MyApp {
       StatusBar.styleDefault();
 
    
+      this.awsUtil.initAwsService();
 
       // check connection and set accordingly
       if (this.isOnline()) 
@@ -144,4 +162,9 @@ class MyApp {
 
 }
 enableProdMode();
-ionicBootstrap(MyApp,[provide(ExceptionHandler, {useClass: MyCustomExceptionHandler}),SafeHttp,LocalDrugInventory,LocalSupplierMaster,LocalOrderBookService]);
+ionicBootstrap(MyApp,[provide(ExceptionHandler, {useClass: MyCustomExceptionHandler}),CognitoUtil,
+    AwsUtil,
+    UserLoginService,
+    UserParametersService,
+    EventsService,
+UserRegistrationService,SafeHttp,LocalDrugInventory,LocalSupplierMaster,LocalOrderBookService]);
