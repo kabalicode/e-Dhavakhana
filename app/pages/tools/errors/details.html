@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>System Errors</ion-title>
+  
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="drugshome">
+
+
+  <div *ngIf="searchcount == 0">
+    <ion-item>
+      No errors in the database. All is well :)
+    </ion-item>
+  </div>
+
+
+
+  <ion-list no-lines>
+
+    <ion-item-sliding *ngFor="let error of vwerrors" [hidden]="error.hide">
+
+      <button ion-item>
+              <h2><strong>logged time:</strong> {{error.loggedtime}}</h2>
+              <h4><strong>error message:</strong> {{error.message}}</h4>
+              <h4><strong>reason:</strong> {{error.reason}}</h4>
+              <h4><strong>stack trace:</strong> {{error.stacktrace}}</h4>
+      </button>
+
+    </ion-item-sliding>
+
+  </ion-list>
+
+
+
+</ion-content>

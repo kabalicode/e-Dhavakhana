@@ -111,10 +111,34 @@
  
         </ion-row>
 
- 
-     </ion-grid>  
 
+        <ion-row>
+          <ion-col>
+            <hr>
+          </ion-col>
+        </ion-row>
 
+        <ion-row responsive-sm>
+            <ion-col width-30 style="text-align:center">
+                <button ion-item (click)="gotoSystemErrors()">
+                        <ion-avatar item-center>
+                           <img src= "img/error.png" alt="Poster" class="customized-image">
+                        </ion-avatar>
+                </button>
+            </ion-col> 
+            
+            <ion-col width-50 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap" (click)="gotoSystemErrors()">
+                  <p>This module will help to track app errors.</p><br>
+              </ion-item>
+            </ion-col>
+
+            <ion-col width-20 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap">
+              </ion-item>
+            </ion-col>
+        </ion-row>
+     </ion-grid>
 
   </ion-card-content>
 

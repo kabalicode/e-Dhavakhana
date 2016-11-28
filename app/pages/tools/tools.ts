@@ -5,15 +5,26 @@ import { SearchAlternativePage } from '../tools/search-alternative/search-altern
 import { SearchDrugDictonaryPage } from '../tools/drugdictonary/search';
 import {OrderWantingsPage} from '../tools/orderwanting/wanting';
 import {LocalOrderBookService} from '../../providers/data/local/orderservice';
+import {ErrorDetailsPage} from '../tools/errors/details';
+import {MyCustomExceptionHandler} from  '../../providers/data/utilities/customexceptionhandler';
 
 @Component({
-  templateUrl: 'build/pages/tools/tools.html'
+  templateUrl: 'build/pages/tools/tools.html',
+  providers : [MyCustomExceptionHandler],
+  //{useClass: MyCustomExceptionHandler}
 })
 export class ToolsPage {
     
-    constructor(private navCtrl: NavController, private localorderbookservice : LocalOrderBookService) {
+    private objerrorslist : any;
+
+    constructor(private navCtrl: NavController, private localorderbookservice : LocalOrderBookService, private localerrors: MyCustomExceptionHandler) {
         
+
   }
+
+ionViewWillEnter() {
+    this.localerrors.getLocalErrors()
+}
 
 gotoDrugAlternativePage(){
     // go to the drug details page
@@ -28,10 +39,14 @@ gotoDrugDictonaryPage(){
 } 
 
 gotoOrderWantingPage(){
-    // go to the drug details page
-        // and pass in the drug data
-      //  this.vwdrugs = this.localorderbookservice.globalorderbooklist;
+    // go to the order wanting page
         this.navCtrl.push(OrderWantingsPage);
 } 
+
+gotoSystemErrors(){
+    // go to the system errors page
+     this.objerrorslist = this.localerrors.globalerrors
+     this.navCtrl.push(ErrorDetailsPage, this.objerrorslist)
+}
 
 }
