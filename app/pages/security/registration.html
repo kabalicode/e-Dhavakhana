@@ -1,67 +1,106 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar primary>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>
-      Registration
+    <ion-title center>
+      Sign-Up for My e-Davakaana
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
+<ion-content class="drugshome">
+ 
+<form [formGroup]="registeruser">
+  <ion-row>
 
-    <ion-item>
-      <ion-label floating>Username</ion-label>
-      <ion-input [(ngModel)]="registrationUser.email" type="email"></ion-input>
-    </ion-item>
+    <ion-col>
+        <ion-item [class.error]="!useremail.valid && useremail.touched">
+          <ion-label floating>Email Id</ion-label>
+          <ion-input [(ngModel)]="registrationUser.email" name="registrationUser.email"  formControlName="useremail" type="email" required></ion-input>
+        </ion-item>
+        <p *ngIf="useremail.hasError('required') && useremail.touched" danger>*Please provide valid email id</p>
+    </ion-col>
+  </ion-row>
 
-    <ion-item>
+<ion-row>
+  <ion-col>
+    <ion-item [class.error]="!userpassword.valid && userpassword.touched">
       <ion-label floating>Password</ion-label>
-      <ion-input [(ngModel)]="registrationUser.password" type="password"></ion-input>
+      <ion-input [(ngModel)]="registrationUser.password" name="registrationUser.password" formControlName="userpassword" type="password" required></ion-input>
     </ion-item>
+    <p *ngIf="userpassword.hasError('required') && userpassword.touched" danger>*Password cannot be blank, please provide valid password.</p>
+  </ion-col>
+</ion-row>
 
-    <ion-item>
+<ion-row>
+  <ion-col>
+    <ion-item [class.error]="!userfirstname.valid && userfirstname.touched">
       <ion-label floating>First Name</ion-label>
-      <ion-input [(ngModel)]="registrationUser.firstname" type="text"></ion-input>
+      <ion-input [(ngModel)]="registrationUser.firstname" name="registrationUser.firstname" formControlName="userfirstname" type="text" required></ion-input>
     </ion-item>
+    <p *ngIf="userfirstname.hasError('required') && userfirstname.touched" danger>*First Name cannot be blank, please provide First Name.</p>
+  </ion-col>
+  
+</ion-row>
 
-    <ion-item>
+<ion-row>
+  
+  <ion-col>
+    <ion-item [class.error]="!userlastname.valid && userlastname.touched">
       <ion-label floating>Last Name</ion-label>
-      <ion-input [(ngModel)]="registrationUser.lastname" type="text"></ion-input>
+      <ion-input [(ngModel)]="registrationUser.lastname" name="registrationUser.lastname" formControlName="userlastname" type="text" required></ion-input>
     </ion-item>
+    <p *ngIf="userlastname.hasError('required') && userlastname.touched" danger>*Last Name cannot be blank, please provide Last Name.</p>
+  </ion-col>
+  
+</ion-row>
 
-    <ion-item>
-      <ion-label floating>Phone Number</ion-label>
-      <ion-input [(ngModel)]="registrationUser.phone" type="tel"></ion-input>
+<ion-row>
+  
+  <ion-col>
+    <ion-item [class.error]="!storeaccountno.valid && storeaccountno.touched">
+      <ion-label floating>Account Number</ion-label>
+      <ion-input [(ngModel)]="registrationUser.storeaccountno" name="registrationUser.storeaccountno" formControlName="storeaccountno" type="number" required></ion-input>
     </ion-item>
+    <p *ngIf="storeaccountno.hasError('required') && storeaccountno.touched" danger>*Store Account No cannot be blank, please provide valid Store Account No.</p>
+  </ion-col>
+  
+</ion-row>
 
-    <ion-item>
-      <ion-label floating>Mobile Number</ion-label>
-      <ion-input [(ngModel)]="registrationUser.mobile" type="tel"></ion-input>
-    </ion-item>
-
-    <ion-item>
+<ion-row>
+  
+  <ion-col>
+    <ion-item [class.error]="!storename.valid && storename.touched">
       <ion-label floating>Store Name</ion-label>
-      <ion-input [(ngModel)]="registrationUser.store" type="text"></ion-input>
-    </ion-item>
+      <ion-input [(ngModel)]="registrationUser.storename" name="registrationUser.storename" formControlName="storename" type="text" required></ion-input>
+    </ion-item> 
+    <p *ngIf="storename.hasError('required') && storename.touched" danger>*Store Name cannot be blank, please provide your Store Name.</p>
+  </ion-col>
+  
+</ion-row>
 
-    <ion-item>
-      <button ion-button block outline large (click)="onRegister()">Sign up</button>
-    </ion-item>
-
-  </ion-list>
-
-  <ion-grid>
     <ion-row>
-      <ion-col width-50>
-        <button ion-button clear small (click)="navToResendCode()">Resend Code</button>
+      <ion-col>
+              <button class="button button-full button-positive" [disabled]="!registeruser.valid" (click)="onRegister()">Register </button>
       </ion-col>
-      <ion-col width-50>
-        <button ion-button clear small (click)="navToLogin()">Login</button>
-      </ion-col>
+           
     </ion-row>
-  </ion-grid>
 
+ 
+  <ion-row>
+       <ion-col width-45>
+       </ion-col>
+
+        <ion-col width-10>
+          <button class="button button-clear button-positive" (click)="navToResendCode()">
+              Resend Code
+          </button>
+        </ion-col>
+
+        <ion-col width-45>
+       </ion-col>
+
+  </ion-row>
+</form>
 </ion-content>

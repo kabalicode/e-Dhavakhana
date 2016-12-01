@@ -6,9 +6,12 @@ declare let AWS:any;
 declare let AWSCognito:any;
 
 export class RegistrationUser {
-  name:string;
+  firstname:string;
+  lastname:string;
   email:string;
   password:string;
+  storename:string;
+  storeaccountno:string;
 }
 
 export interface CognitoCallback {
@@ -106,20 +109,33 @@ export class UserRegistrationService {
   }
 
   register(user:RegistrationUser, callback:CognitoCallback):void {
-    console.log("user: " + user);
 
     let attributeList = [];
+
+    let dataStoreName = {
+      Name: 'custom:storename',
+      Value: user.storename
+    };
 
     let dataEmail = {
       Name: 'email',
       Value: user.email
     };
-    let dataNickname = {
-      Name: 'nickname',
-      Value: user.name
+    
+    let dataname = {
+      Name: 'name',
+      Value: user.firstname + " " + user.lastname
     };
+
+    let dataaccountno = {
+      Name: 'custom:accountno',
+      Value: user.storeaccountno
+    };
+
     attributeList.push(new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail));
-    attributeList.push(new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataNickname));
+    attributeList.push(new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataname));
+    attributeList.push(new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataStoreName));
+    attributeList.push(new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataaccountno));
 
     this.cUtil.getUserPool().signUp(user.email, user.password, attributeList, null, function (err, result) {
       if (err) {

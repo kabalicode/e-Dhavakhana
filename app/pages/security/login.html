@@ -1,38 +1,76 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Login
+  <ion-navbar primary>
+    <ion-title center>
+      My e-Davakanna
     </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
-  <ion-list>
+<ion-content class="drugshome">
 
-    <ion-item>
-      <ion-label floating>Username</ion-label>
-      <ion-input [(ngModel)]="email" type="email"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating>Password</ion-label>
-      <ion-input [(ngModel)]="password" type="password"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <button ion-button block outline large (click)="signMeIn()">Sign in</button>
-    </ion-item>
-
-  </ion-list>
-
+<form [formGroup]="loginuser">
+ 
+<ion-list >
   <ion-grid>
+    
     <ion-row>
-      <ion-col width-50>
-        <button ion-button clear small (click)="navToForgotPassword()">Forgot Password</button>
-      </ion-col>
-      <ion-col width-50>
-        <button ion-button clear small (click)="navToRegister()">Register</button>
+        <ion-col width-100>
+            <center><h3> <font color="darkgreen">Please sign-in</font></h3></center>
+        </ion-col>  
+    </ion-row>
+
+
+
+    <ion-row>
+        <ion-col width-100>
+          <label><h5>My e-Davakaana Username</h5></label>
+          <ion-item [class.error]="!useremail.valid && useremail.touched">
+              <ion-input [(ngModel)]="email"  name="email" formControlName="useremail" type="email" placeholder="Username/Email"></ion-input>
+          </ion-item>
+           <p *ngIf="useremail.hasError('required') && useremail.touched" danger>*Username cannot be blank, please provide your registered e-Davakaana email id</p>
+        </ion-col>  
+    </ion-row>
+
+    <ion-row>
+        <ion-col width-100>
+          <label><h5>My e-Davakaana Password</h5></label>
+          <ion-item [class.error]="!userpassword.valid && userpassword.touched">
+              <ion-input [(ngModel)]="password" type="password"  formControlName="userpassword" placeholder="Password"></ion-input>
+          </ion-item>
+           <p *ngIf="userpassword.hasError('required') && userpassword.touched" danger>*Password cannot be blank, please provide valid password to signin into your e-Dhavakaana account.</p>
+        </ion-col>  
+    </ion-row>
+
+    <ion-row>
+      <ion-col width-100>
+              <button class="button button-full button-positive" [disabled]="!loginuser.valid" (click)="signMeIn()">Login</button>
       </ion-col>
     </ion-row>
+
+   <ion-row>
+
+      <ion-col width-40>
+
+      </ion-col> 
+      
+        <ion-col width-10>
+          <button class="button button-clear button-positive" (click)="navToForgotPassword()">
+              Forgot ?
+          </button>
+        </ion-col>
+
+        <ion-col width-10>
+          <button class="button button-clear button-positive" (click)="navToRegister()">
+              REGISTER
+          </button>
+        </ion-col>
+
+      <ion-col width-40>
+
+      </ion-col> 
+    </ion-row>
+
   </ion-grid>
+</ion-list>
+</form>
 
 </ion-content>

@@ -1,5 +1,7 @@
 import {Component} from "@angular/core";
 import {NavController,MenuController, NavParams, AlertController} from "ionic-angular";
+import {Validators, FormBuilder } from '@angular/forms';
+import { AbstractControl} from '@angular/common';
 import {
   UserRegistrationService,
   CognitoCallback,
@@ -18,17 +20,33 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
   email:string;
   password:string;
 
+    // form name  
+  loginuser : any;
+
+  // form controls
+  useremail: AbstractControl;
+  userpassword: AbstractControl;
+
+
   constructor(public nav:NavController,
               public navParam:NavParams,
               public alertCtrl:AlertController,
               public userService:UserLoginService,
               public eventService:EventsService,
-              public menuCtrl:MenuController) {
+              public menuCtrl:MenuController,
+              private fb: FormBuilder) {
     console.log("LoginComponent constructor");
     //Disable Menu
     this.menuCtrl.enable(false);
     if (navParam != null && navParam.get("email") != null)
       this.email = navParam.get("email");
+
+    this.loginuser = fb.group({
+            useremail: ['', Validators.compose([Validators.required])],
+            userpassword: ['', Validators.compose([Validators.required])],
+          });
+    this.useremail = this.loginuser.controls['useremail'];
+    this.userpassword = this.loginuser.controls['userpassword']; 
 
   }
 
@@ -69,6 +87,7 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
   }
 
   navToForgotPassword() {
+    console.log("forgot password");
     this.nav.push(ForgotPasswordStep1Component);
   }
 
@@ -113,11 +132,41 @@ export class LogoutComponent implements LoggedInCallback {
 })
 export class RegisterComponent implements CognitoCallback {
   registrationUser:RegistrationUser;
+  
+  // form name  
+  registeruser : any;
+
+  // form controls
+  useremail: AbstractControl;
+  userpassword: AbstractControl;
+  userfirstname: AbstractControl;
+  userlastname: AbstractControl;
+  storeaccountno: AbstractControl;
+  storename : AbstractControl;
 
   constructor(public nav:NavController,
               public userRegistration:UserRegistrationService,
-              public alertCtrl:AlertController) {
+              public alertCtrl:AlertController,
+              private fb: FormBuilder) {
     this.registrationUser = new RegistrationUser();
+
+    this.registeruser = fb.group({
+            useremail: ['', Validators.compose([Validators.required])],
+            userpassword: ['', Validators.compose([Validators.required])],
+            userfirstname: ['', Validators.compose([Validators.required])],
+            userlastname: ['', Validators.compose([Validators.required])],
+            storeaccountno: ['', Validators.compose([Validators.required])],
+            storename: ['', Validators.compose([Validators.required])],
+          });
+    this.useremail = this.registeruser.controls['useremail'];
+    this.userpassword = this.registeruser.controls['userpassword']; 
+    this.userfirstname = this.registeruser.controls['userfirstname'];
+    this.userlastname = this.registeruser.controls['userlastname'];
+    this.storeaccountno = this.registeruser.controls['storeaccountno'];
+    this.storename = this.registeruser.controls['storename'];
+
+    //registrationUser.email
+
   }
 
   ionViewLoaded() {
@@ -125,6 +174,7 @@ export class RegisterComponent implements CognitoCallback {
   }
 
   onRegister() {
+
     this.userRegistration.register(this.registrationUser, this);
   }
 
@@ -238,10 +288,21 @@ export class ConfirmRegistrationComponent {
 })
 export class ResendCodeComponent implements CognitoCallback {
   email:string;
+  // form name  
+  resenduser : any;
+
+  // form controls
+  useremail: AbstractControl;
 
   constructor(public nav:NavController,
               public registrationService:UserRegistrationService,
-              public alertCtrl:AlertController) {
+              public alertCtrl:AlertController,
+              private fb: FormBuilder) {
+
+            this.resenduser = fb.group({
+            useremail: ['', Validators.compose([Validators.required])],
+    });
+    this.useremail = this.resenduser.controls['useremail'];
   }
 
   resendCode() {
@@ -281,10 +342,25 @@ export class ResendCodeComponent implements CognitoCallback {
   templateUrl: 'build/pages/security/forgotPassword.html',
   providers: [UserLoginService]
 })
+
+
+
 export class ForgotPasswordStep1Component implements CognitoCallback {
   email:string;
+  // form name  
+  resetpassword : any;
 
-  constructor(public nav:NavController, public alertCtrl:AlertController, public userService:UserLoginService) {
+  // form controls
+  useremail: AbstractControl;
+
+  constructor(public nav:NavController, 
+              public alertCtrl:AlertController, 
+              public userService:UserLoginService,
+              private fb: FormBuilder) {
+    this.resetpassword = fb.group({
+            useremail: ['', Validators.compose([Validators.required])],
+    });
+    this.useremail = this.resetpassword.controls['useremail'];
   }
 
   onNext() {
