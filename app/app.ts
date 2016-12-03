@@ -79,8 +79,7 @@ class MyApp {
       { title: 'Tools', icon:'hammer', showchild:false , component: ToolsPage,child:null}, 
       { title: 'Finance', icon:'logo-usd', component: DefaultPage, showchild:false , child: null  },
       { title: 'CRM', icon:'person', component: DefaultPage, showchild:false , child: null },
-      { title: 'Settings', icon:'settings', component: DefaultPage, showchild:false , child: null },
-      { title: 'Logout', icon:'log-out', component: LogoutComponent, showchild:false , child: null },
+      { title: 'Settings', icon:'settings', component: DefaultPage, showchild:false , child: null }
     ];
   }
 
@@ -146,6 +145,11 @@ class MyApp {
     this.menu.close();
     // navigate to the new page if it is not the current page
     this.nav.setRoot(page.component);
+  }
+
+  logout(){
+      this.userLoginService.logout();
+      this.nav.setRoot(LoginComponent);
   }
 
   toggleMenuItem(p){

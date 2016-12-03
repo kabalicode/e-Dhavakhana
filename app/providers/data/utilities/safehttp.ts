@@ -2,13 +2,33 @@ import {Http, Request, Response, RequestOptionsArgs} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {AlertController} from 'ionic-angular';
 
+import {CognitoUtil, Callback} from '../../auth/cognito.service';
+
 @Injectable()
-export class SafeHttp {
+export class SafeHttp implements Callback{
 
   public connection: boolean ;
   public connectionType: string;
+  public awsToken: string;
 
-  constructor(private http: Http, private alertCtrl:AlertController) {
+  constructor(private http: Http, private alertCtrl:AlertController,
+                private cognitoUtil: CognitoUtil) {
+        
+  }
+
+  getIdToken(){
+    if(this.cognitoUtil.getCurrentUser != null ){
+          this.cognitoUtil.getIdToken(this);
+        }
+  }
+
+  callback(){
+
+  }
+
+  callbackWithParam(result:any){
+    console.log("result-------" + result);
+    this.awsToken = result;
   }
 
   showNetworkAlert(){

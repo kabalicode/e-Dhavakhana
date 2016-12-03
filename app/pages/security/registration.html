@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title center>
-      Sign-Up for My e-Davakaana
+      Sign-Up for My e-Dhavakhana
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -12,6 +12,7 @@
 <ion-content class="drugshome">
  
 <form [formGroup]="registeruser">
+  <div class="registrationdiv">
   <ion-row>
 
     <ion-col>
@@ -81,26 +82,44 @@
 </ion-row>
 
     <ion-row>
-      <ion-col>
-              <button class="button button-full button-positive" [disabled]="!registeruser.valid" (click)="onRegister()">Register </button>
-      </ion-col>
-           
-    </ion-row>
-
- 
-  <ion-row>
-       <ion-col width-45>
+      <ion-col width-15>
        </ion-col>
 
-        <ion-col width-10>
-          <button class="button button-clear button-positive" (click)="navToResendCode()">
+      <ion-col width-35 center text-center>
+              <button class="button button-full button-positive" [disabled]="!registeruser.valid" (click)="onRegister()">Register </button>
+      </ion-col>
+
+      <ion-col width-35 center text-center>
+              <button class="button button-full button-positive" (click)="navToLogin()">Cancel</button>
+      </ion-col>
+           
+      <ion-col width-15>
+       </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+      <ion-col center text-center>
+        Or
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+       <ion-col width-15>
+       </ion-col>
+
+        <ion-col width-70 center text-center>
+          <button class="button button-full button-danger" (click)="navToResendCode()">
               Resend Code
           </button>
         </ion-col>
 
-        <ion-col width-45>
+        <ion-col width-15>
        </ion-col>
 
-  </ion-row>
+  </ion-row> 
+
+  </div>
+
 </form>
 </ion-content>

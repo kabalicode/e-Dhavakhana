@@ -12,6 +12,8 @@ import {
 import {HomePage} from "../home/home";
 import {EventsService} from "../../providers/auth/events.service";
 
+import {SafeHttp} from "../../providers/data/utilities/safehttp";
+
 @Component({
   templateUrl: 'build/pages/security/login.html',
   providers: [UserLoginService, EventsService]
@@ -34,7 +36,8 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
               public userService:UserLoginService,
               public eventService:EventsService,
               public menuCtrl:MenuController,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              public safehttp: SafeHttp) {
     console.log("LoginComponent constructor");
     //Disable Menu
     this.menuCtrl.enable(false);
@@ -71,6 +74,7 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
     } else { //success
       console.log("Redirect to Home Page");
       this.nav.setRoot(HomePage);
+      this.safehttp.getIdToken();
     }
   }
 
@@ -171,6 +175,10 @@ export class RegisterComponent implements CognitoCallback {
 
   ionViewLoaded() {
 
+  }
+
+  goBack(){
+    this.nav.pop();
   }
 
   onRegister() {

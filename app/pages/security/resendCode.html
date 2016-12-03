@@ -7,11 +7,12 @@
 </ion-header>
 <ion-content class="drugshome">
  <form [formGroup]="resenduser"> 
+   <div class="registrationdiv">
     <ion-list>
       <ion-grid>
           <ion-row>
             <ion-col>
-                <label><h5>My e-Davakaana Username</h5></label>
+                <label><h5>Enter your Username</h5></label>
               <ion-item [class.error]="!useremail.valid && useremail.touched">
                    <ion-input [(ngModel)]="email"  name="email" formControlName="useremail" type="email" placeholder="Username/Email"></ion-input>
             </ion-item>
@@ -28,6 +29,7 @@
 
       </ion-grid>
     </ion-list>
+   </div>
  </form>
 
 </ion-content>

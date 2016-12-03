@@ -1,14 +1,14 @@
 <ion-header>
   <ion-navbar primary>
     <ion-title center>
-      My e-Davakanna
+      My e-Dhavakhana
     </ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content class="drugshome">
 
 <form [formGroup]="loginuser">
- 
+<div class="registrationdiv">
 <ion-list >
   <ion-grid>
     
@@ -22,21 +22,21 @@
 
     <ion-row>
         <ion-col width-100>
-          <label><h5>My e-Davakaana Username</h5></label>
+          <ion-label><h5>Username</h5></ion-label>
           <ion-item [class.error]="!useremail.valid && useremail.touched">
               <ion-input [(ngModel)]="email"  name="email" formControlName="useremail" type="email" placeholder="Username/Email"></ion-input>
           </ion-item>
-           <p *ngIf="useremail.hasError('required') && useremail.touched" danger>*Username cannot be blank, please provide your registered e-Davakaana email id</p>
+           <p *ngIf="useremail.hasError('required') && useremail.touched" danger>*Username cannot be blank, please provide your registered e-Dhavakhana email id</p>
         </ion-col>  
     </ion-row>
 
     <ion-row>
         <ion-col width-100>
-          <label><h5>My e-Davakaana Password</h5></label>
+          <label><h5>Password</h5></label>
           <ion-item [class.error]="!userpassword.valid && userpassword.touched">
               <ion-input [(ngModel)]="password" type="password"  formControlName="userpassword" placeholder="Password"></ion-input>
           </ion-item>
-           <p *ngIf="userpassword.hasError('required') && userpassword.touched" danger>*Password cannot be blank, please provide valid password to signin into your e-Dhavakaana account.</p>
+           <p *ngIf="userpassword.hasError('required') && userpassword.touched" danger>*Password cannot be blank, please provide valid password to signin into your e-Dhavakhana account.</p>
         </ion-col>  
     </ion-row>
 
@@ -48,29 +48,30 @@
 
    <ion-row>
 
-      <ion-col width-40>
+      <ion-col width-10>
 
       </ion-col> 
       
-        <ion-col width-10>
+        <ion-col width-40 center text-center>
           <button class="button button-clear button-positive" (click)="navToForgotPassword()">
-              Forgot ?
+              Forgot Password?
           </button>
         </ion-col>
 
-        <ion-col width-10>
+        <ion-col width-40 center text-center>
           <button class="button button-clear button-positive" (click)="navToRegister()">
-              REGISTER
+              Sign Up
           </button>
         </ion-col>
 
-      <ion-col width-40>
+      <ion-col width-10>
 
       </ion-col> 
     </ion-row>
 
   </ion-grid>
 </ion-list>
+</div>
 </form>
 
 </ion-content>
