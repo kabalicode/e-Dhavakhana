@@ -21,16 +21,20 @@ import { Network } from 'ionic-native';
 import {LocalDrugInventory} from './providers/data/local/inventoryservice';
 import {LocalSupplierMaster} from './providers/data/local/supplierservice';
 import {SafeHttp} from './providers/data/utilities/safehttp';
+import {UserProfile} from './providers/data/utilities/UserProfile';
 import {LocalOrderBookService} from './providers/data/local/orderservice';
 
 import {MyCustomExceptionHandler} from './providers/data/utilities/customexceptionhandler';
 import {AwsUtil} from './providers/auth/aws.service'
 
+
 import {
   CognitoUtil,
   UserLoginService,
   UserParametersService,
-  UserRegistrationService
+  UserRegistrationService,
+  CognitoCallback,LoggedInCallback,
+  Callback
 } from "./providers/auth/cognito.service";
 
 import {
@@ -45,17 +49,17 @@ declare var Connection;
   templateUrl: 'build/app.html',
   //providers: [SafeHttp]
 })
-class MyApp {
+export class MyApp implements Callback {
   @ViewChild(Nav) nav: Nav;
   onDevice: boolean;
-  // make HomePage the root (or first) page
-  //rootPage: any = HomePage;
-  rootPage:any = LoginComponent;
+ 
+
+ 
+  rootPage:any;
   pages: Array<{title: string, icon:string, component: any, showchild:boolean,
     child: Array<{title:string, icon:string, component: any}>}>;
 
   networkstatus: string;  
-
   constructor(
     public platform: Platform,
     public alertCtrl: AlertController,
@@ -63,13 +67,17 @@ class MyApp {
     private safeHttp: SafeHttp,
     private awsUtil: AwsUtil,
     private userLoginService: UserLoginService,
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private UserProfile: UserProfile,
+    public userService:UserLoginService,
+    private userparamutil: UserParametersService
   ) {
     this.initializeApp();
     this.onDevice = this.platform.is('cordova');
 
     // set our app's pages
     this.pages = [
+      { title: 'Home', icon:'home', component: HomePage , showchild:false ,child: null},
       { title: 'Sales', icon:'pricetags', component: DefaultPage, showchild:false , child: null  },
       { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:null },
       { title: 'Inventory', icon:'flask', showchild:false , child: null, component: DrugsPage},
@@ -83,11 +91,31 @@ class MyApp {
     ];
   }
 
-/*
-        child:[
-              { title: 'Order Management', icon:'cart', component: DefaultPage},
-              { title: 'Substitutes', icon:'search', component: SearchAlternativePage}]},
-*/
+  callback(){
+
+  }
+
+  callbackWithParam(result:any){
+    console.log("user param inside app.ts util: results-------");
+    for (var i = 0; i < result.length; i++) {
+    switch (result[i].getName()){
+        case "custom:accountno" :
+            this.UserProfile.setStoreAccountNo(result[i].getValue());
+            break;
+        case "custom:storename" :
+           this.UserProfile.setStoreName(result[i].getValue());
+            break;
+        case "name" :
+            this.UserProfile.setLoggedUserName(result[i].getValue());
+            break;
+        case "email" :
+            this.UserProfile.setUserEmail(result[i].getValue());
+            break;
+    }
+    }
+    this.rootPage = HomePage; // redirect to home page once the user attributes are retrieved !!
+    return ;
+  }
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -95,8 +123,14 @@ class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
 
-   
       this.awsUtil.initAwsService();
+      console.log("logged in user in app.ts:" + this.awsUtil.firstLogin);
+      if (this.awsUtil.firstLogin) {
+          this.userparamutil.getParameters(this)
+      }else
+      {
+        this.rootPage = LoginComponent;
+      }
 
       // check connection and set accordingly
       if (this.isOnline()) 
@@ -166,9 +200,15 @@ class MyApp {
 
 }
 enableProdMode();
-ionicBootstrap(MyApp,[provide(ExceptionHandler, {useClass: MyCustomExceptionHandler}),CognitoUtil,
+ionicBootstrap(MyApp,[provide(ExceptionHandler, {useClass: MyCustomExceptionHandler}),
+    CognitoUtil,
     AwsUtil,
     UserLoginService,
     UserParametersService,
     EventsService,
-UserRegistrationService,SafeHttp,LocalDrugInventory,LocalSupplierMaster,LocalOrderBookService]);
+    UserRegistrationService,
+    SafeHttp,
+    UserProfile,
+    LocalDrugInventory,
+    LocalSupplierMaster,
+    LocalOrderBookService]);

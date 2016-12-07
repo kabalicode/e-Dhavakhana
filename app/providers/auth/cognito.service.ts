@@ -106,6 +106,7 @@ export class CognitoUtil {
 @Injectable()
 export class UserRegistrationService {
   constructor(public cUtil:CognitoUtil) {
+    console.log("user registration service");
   }
 
   register(user:RegistrationUser, callback:CognitoCallback):void {
@@ -189,7 +190,8 @@ export class UserRegistrationService {
 export class UserLoginService {
 
   constructor(public cUtil:CognitoUtil, public eventService:EventsService) {
-    console.log("eventservice1: " + eventService);
+   // console.log("eventservice1: " + eventService);
+   console.log("constructor user login service");
   }
 
   authenticate(username:string, password:string, callback:CognitoCallback) {
@@ -295,7 +297,7 @@ export class UserLoginService {
 export class UserParametersService {
 
   constructor(public cUtil:CognitoUtil) {
-
+    console.log("user parameter service");
   }
 
   getParameters(callback:Callback) {
@@ -324,7 +326,8 @@ export class UserParametersService {
   }
 
   getParameter(name:string, callback:Callback) {
-
+      console.log("inside cognitoservice + getParameters function");
+      console.log(name);
   }
 
 }

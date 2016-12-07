@@ -1,40 +1,47 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <ion-navbar primary>
     <ion-title>
       User Confirmation
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <div class="registrationdiv">
-  <ion-list>
-    <ion-item>
-      <ion-label floating>Confirmation Code</ion-label>
-      <ion-input [(ngModel)]="confirmationCode" type="text"></ion-input>
-    </ion-item>
+<ion-content class="drugshome">
+  <form [formGroup]="confirmuser">
+      <div class="registrationdiv">
+      <ion-grid>
+        <ion-row>
+            <ion-col width-100>
+              <ion-label><h5>Confirmation Code</h5></ion-label>
+              <ion-item [class.error]="!userconfirmationCode.valid && userconfirmationCode.touched ">
+                  <ion-input [(ngModel)]="confirmationCode"  name="confirmationCode" formControlName="userconfirmationCode" type="text" placeholder="Enter Confirmation Code"></ion-input>
+              </ion-item>
+                    <p *ngIf="userconfirmationCode.hasError('required') && userconfirmationCode.touched" danger>*Confirmation cannot be blank, please provide confirmation code that was sent to your registered email id</p>
+            </ion-col>  
+        </ion-row>
 
-    <ion-item>
-      <button ion-button block large outline (click)="onConfirmRegistration()">Confirm</button>
-    </ion-item>
+      
+        <ion-row>
+            <ion-col width-100>
+                <button class="button button-full button-positive" [disabled]="!confirmuser.valid" (click)="onConfirmRegistration()">Confirm</button>
+            </ion-col>
+        </ion-row>  
 
-  </ion-list>
+        <ion-row>
+          <ion-col width-15>
+          </ion-col>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col width-30>
-        <button ion-button clear small (click)="navToResendCode()">Resend Code</button>
-      </ion-col>
-      <ion-col width-30>
-        <button ion-button clear small (click)="navToRegister()">Registration</button>
-      </ion-col>
-      <ion-col width-30>
-        <button ion-button clear small (click)="navToLogin()">Login</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  </div>
+            <ion-col width-70 center text-center>
+              <button class="button button-full button-danger" (click)="navToResendCode()">
+                  Resend Code
+              </button>
+            </ion-col>
+
+            <ion-col width-15>
+          </ion-col>
+
+      </ion-row> 
+      </ion-grid>
+      </div>
+  </form>
 </ion-content>

@@ -191,7 +191,7 @@ export class DrugsPage {
     {
         // go to the drug details page
         // and pass in the drug data
-        console.log("dsdsdsdsds");
+        //console.log("dsdsdsdsds");
         this.nav.push(AddDrugsPage);
         
     } 

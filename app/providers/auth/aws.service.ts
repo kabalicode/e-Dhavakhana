@@ -13,10 +13,10 @@ export class Stuff {
 
 @Injectable()
 export class AwsUtil {
-  public static firstLogin:boolean = false;
-
+  public  firstLogin:boolean = false;
+  
   constructor(public userLogin:UserLoginService, public cUtil:CognitoUtil) {
-
+    console.log("constructur....AWSUtil");
   }
 
   /**
@@ -38,6 +38,7 @@ export class AwsUtil {
     let mythis = this;
     this.userLogin.isAuthenticated({
       isLoggedInCallback(message:string, loggedIn:boolean) {
+        mythis.firstLogin = loggedIn;
         mythis.setupAWS(loggedIn);
       }
     });
@@ -59,11 +60,10 @@ export class AwsUtil {
         callback() {
         },
         callbackWithParam(idToken:any) {
-          console.log("idJWT Token: " + idToken);
+          console.log("idJWT Token retrieved ");
           mythis.addCognitoCredentials(idToken);
         }
       });
-      console.log("Retrieving the id token");
     }
     else {
       console.log("User is not logged in. ");

@@ -6,6 +6,7 @@ import {
   UserRegistrationService,
   CognitoCallback,
   UserLoginService,
+  UserParametersService,
   LoggedInCallback,
   RegistrationUser
 } from "../../providers/auth/cognito.service";
@@ -13,6 +14,7 @@ import {HomePage} from "../home/home";
 import {EventsService} from "../../providers/auth/events.service";
 
 import {SafeHttp} from "../../providers/data/utilities/safehttp";
+import {UserProfile} from "../../providers/data/utilities/UserProfile";
 
 @Component({
   templateUrl: 'build/pages/security/login.html',
@@ -34,10 +36,13 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
               public navParam:NavParams,
               public alertCtrl:AlertController,
               public userService:UserLoginService,
+              private userparamutil: UserParametersService,
               public eventService:EventsService,
               public menuCtrl:MenuController,
+              private UserProfile: UserProfile,
               private fb: FormBuilder,
-              public safehttp: SafeHttp) {
+              public safehttp: SafeHttp,
+              private loggeduserprofile: UserProfile) {
     console.log("LoginComponent constructor");
     //Disable Menu
     this.menuCtrl.enable(false);
@@ -72,9 +77,9 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
       this.doAlert("Error", message);
       console.log("result: " + message);
     } else { //success
-      console.log("Redirect to Home Page");
-      this.nav.setRoot(HomePage);
       this.safehttp.getIdToken();
+      this.userparamutil.getParameters(this)
+      console.log("calling logged user profile..")
     }
   }
 
@@ -82,9 +87,39 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
     console.log("The user is logged in: " + isLoggedIn);
     if (isLoggedIn) {
       this.eventService.sendLoggedInEvent();
-      this.nav.setRoot(HomePage);
+      this.userparamutil.getParameters(this);
+      this.safehttp.getIdToken();
     }
   }
+
+  callback(){
+
+  }
+
+  callbackWithParam(result:any){
+    console.log("user param inside app.ts util: results-------" );
+    for (var i = 0; i < result.length; i++) {
+    switch (result[i].getName()){
+        case "custom:accountno" :
+            this.UserProfile.setStoreAccountNo(result[i].getValue());
+            break;
+        case "custom:storename" :
+           this.UserProfile.setStoreName(result[i].getValue());
+            break;
+        case "name" :
+            this.UserProfile.setLoggedUserName(result[i].getValue());
+            break;
+        case "email" :
+            this.UserProfile.setUserEmail(result[i].getValue());
+            break;
+    }
+  }
+    console.log("Redirect to Home Page");
+    this.nav.setRoot(HomePage);
+    return ;
+  }
+
+
 
   navToRegister() {
     this.nav.push(RegisterComponent);
@@ -93,6 +128,10 @@ export class LoginComponent implements CognitoCallback, LoggedInCallback {
   navToForgotPassword() {
     console.log("forgot password");
     this.nav.push(ForgotPasswordStep1Component);
+  }
+
+  sendtoconfirmreg(){
+    this.nav.push(ConfirmRegistrationComponent);
   }
 
   doAlert(title:string, message:string) {
@@ -122,6 +161,7 @@ export class LogoutComponent implements LoggedInCallback {
       this.userService.logout();
     }
     this.navCtrl.setRoot(LoginComponent)
+    //this.navCtrl.push(LoginComponent);
   }
 }
 
@@ -231,14 +271,33 @@ export class RegisterComponent implements CognitoCallback {
 export class ConfirmRegistrationComponent {
   confirmationCode:string;
 
-  constructor(public nav:NavController, public userRegistration:UserRegistrationService, public navParam:NavParams, public alertCtrl:AlertController) {
+   // form name  
+  confirmuser : any;
+
+  // form controls
+  userconfirmationCode: AbstractControl;
+
+  constructor(public nav:NavController, 
+              public userRegistration:UserRegistrationService, 
+              public navParam:NavParams, 
+              public alertCtrl:AlertController,
+              private fb: FormBuilder) {
     console.log("Entered ConfirmRegistrationComponent");
     console.log("nav param email: " + this.navParam.get("email"))
+
+    this.confirmuser = fb.group({
+            userconfirmationCode: ['', Validators.compose([Validators.required])],
+          });
+    this.userconfirmationCode = this.confirmuser.controls['userconfirmationCode'];
+
+
+
+
   }
 
   ionViewLoaded() {
     console.log("Entered ionViewDidEnter");
-    console.log("email: " + this.navParam.get("email"));
+    //console.log("email: " + this.navParam.get("email"));
   }
 
   onConfirmRegistration() {
