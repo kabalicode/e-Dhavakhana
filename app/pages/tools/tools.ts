@@ -7,6 +7,7 @@ import {OrderWantingsPage} from '../tools/orderwanting/wanting';
 import {LocalOrderBookService} from '../../providers/data/local/orderservice';
 import {ErrorDetailsPage} from '../tools/errors/details';
 import {MyCustomExceptionHandler} from  '../../providers/data/utilities/customexceptionhandler';
+import { SyncDataPage } from '../tools/syncdata/syncdata';
 
 @Component({
   templateUrl: 'build/pages/tools/tools.html',
@@ -47,6 +48,10 @@ gotoSystemErrors(){
     // go to the system errors page
      this.objerrorslist = this.localerrors.globalerrors
      this.navCtrl.push(ErrorDetailsPage, this.objerrorslist)
+}
+
+gotoSyncdData(){
+    this.navCtrl.push(SyncDataPage);
 }
 
 }

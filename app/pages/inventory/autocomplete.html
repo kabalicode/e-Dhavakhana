@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar dark>
     <ion-title>
-      Search Drug
+      Search Drugs on Internet
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -10,7 +10,21 @@
     </ion-buttons>
   
   </ion-toolbar>
-    <ion-searchbar primary [(ngModel)]="autocomplete.drugquery" [debounce]="750" placeholder = "Please enter min 4 characters" [showCancelButton]="true" (ionInput)="updateSearch()" (ionCancel)="dismiss()"></ion-searchbar>
+
+  <form [formGroup]="formdrugsearch">
+
+		<ion-row>
+			<ion-col width-80 align="center">
+            <ion-searchbar align="center" primary [(ngModel)]="autocomplete.drugquery" formControlName="drugname" required placeholder = "Enter min 3 characters" [showCancelButton]="true" (ionInput)="updateSearch()"  (ionCancel)="dismiss()">
+            </ion-searchbar>
+			</ion-col>
+			<ion-col width-20 align="center">
+            <button align="center" type="submit" center text-center [disabled]="!formdrugsearch.valid" (click) = "drugSearch()">Search</button>
+			</ion-col>
+		</ion-row>
+
+  </form>
+ 
 </ion-header>
 
 

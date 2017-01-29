@@ -1,0 +1,97 @@
+<ion-header>
+    <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title center>Search Bills</ion-title>
+  
+    <ion-buttons end>
+      <button ion-button (click)="addNewInvoice()">
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content class="invoicehome">
+
+
+  <div *ngIf="segment=='invt'">
+
+  <ion-searchbar primary [(ngModel)]="queryText" [debounce]="500" (ionInput)="updatesuppliersearch()" placeholder="Search Customer">
+  </ion-searchbar>
+
+  <div *ngIf="suppliersearchcount == 0">
+    <ion-item>
+      No supplier(s) found with this supplier name : <strong> {{queryText}} </strong> . Please check your search
+      criteria and try with a different supplier name.
+    </ion-item>
+  </div>
+
+  <!--<div *ngIf="searching" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>-->
+
+  <ion-list *ngIf="vwsuppliers" no-lines>
+
+    <ion-item-sliding *ngFor="let supplier of vwsuppliers">
+
+      <button ion-item (click)="getSupplierInvoices(supplier.supplierid, supplier.suppliername)">
+              <ion-avatar item-left>
+                 <img src= "img/supplierpharmacy.png" />
+              </ion-avatar>
+              <h2><strong> {{supplier.suppliername}}</strong></h2>
+              <h4>Supplier Town:<strong>{{supplier.suppliercity}}</strong></h4>
+      </button>
+
+
+      <ion-item-options>
+        <button favorite (click)="addFavorite(supplier)">
+            Favorite
+          </button>
+       </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+
+  </div>
+
+  <div *ngIf="segment == 'favorites'">
+
+    <div *ngIf="!favlist || favlist.length == 0">
+      <ion-item>
+        No Favorites found
+      </ion-item>
+    </div>
+
+  <div *ngIf="favlist">
+
+  <ion-list *ngIf="favlist" no-lines>  
+
+    <ion-item-sliding *ngFor="let fav of favlist">
+
+      <ion-item (click)="getSupplierInvoices(fav.id, fav.name)">
+              <ion-avatar item-left>
+                 <img src= "img/supplierpharmacy.png" />
+              </ion-avatar>
+              <h2><strong> {{fav.name}}</strong></h2>
+              <h4>Supplier Town:<strong>{{fav.city}}</strong></h4>
+      </ion-item>
+
+
+      <ion-item-options>
+        <button danger (click)="removeFavorite(slidingItem, fav)">
+            Remove
+          </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+  </div>
+
+  </div>
+</ion-content>

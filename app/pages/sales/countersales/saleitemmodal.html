@@ -1,0 +1,127 @@
+<ion-header>
+  <ion-toolbar dark>
+    <ion-title>
+      Sale Item 
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-close" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding  style="overflow-scroll:true">
+
+
+<div class="autocomplete" *ngIf="selecteddrugid == undefined" > <!-- This class is key for representing the autosuggest results -->
+    <ion-searchbar [(ngModel)]="queryText" [debounce]="500" placeholder="Select Drug" (ionInput)="lookupDrug()"></ion-searchbar>
+    <ion-list *ngIf="drugs && drugs.length > 0 && showlist">
+        <ion-item *ngFor="let drug of drugs | drugsfilter:queryText" (click)="select(drug)">
+            {{drug.drugname}}
+        </ion-item>
+    </ion-list>
+</div>
+
+<div *ngIf="showlist && drugs.length==0"> <p class="errorText" >No Drug found with given name.</p></div>
+
+<ion-row *ngIf="selecteddrugid != undefined">
+<ion-col> 
+<ion-item>
+    <ion-label floating>Drug Name</ion-label>
+    <ion-input type="text" [(ngModel)]="selecteddrugname" disabled="true"></ion-input>
+</ion-item>
+</ion-col>
+<ion-col> 
+<ion-item>
+    <ion-label floating>Mfg</ion-label>
+    <ion-input type="text" [(ngModel)]="selecteddrugmfgcode" disabled="true"></ion-input>
+</ion-item>
+</ion-col>
+<ion-col>
+  <ion-item>
+      <button *ngIf="!edit" ion-button outline item-right icon-right (click)="clearDrug()">
+        <ion-icon name="close-circle"></ion-icon>
+        Clear
+      </button>
+      <ion-label floating>Drug Type</ion-label>
+      <ion-input type="text" [(ngModel)]="selecteddrugtype" disabled="true"></ion-input>
+  </ion-item>
+</ion-col>
+</ion-row>
+
+<div class="autocomplete" *ngIf="selectedbatchno == undefined" > <!-- This class is key for representing the autosuggest results -->
+<ion-searchbar [(ngModel)]="queryBatchNo" [debounce]="500" placeholder="Select Batch" (ionInput)="lookupBatch()"></ion-searchbar>
+
+<ion-list *ngIf="batches && batches.length > 0 && showbatchlist">
+    <ion-item *ngFor="let batch of batches" (click)="selectbatch(batch)">
+        {{batch.batchno}}
+    </ion-item>
+</ion-list> 
+</div>
+
+<ion-row *ngIf="selectedbatchno != undefined">
+<ion-col> 
+  
+<ion-item>
+    <ion-label floating>Batch No</ion-label>
+    <ion-input type="text" [(ngModel)]="selectedbatchno" disabled="true"></ion-input>
+</ion-item>
+</ion-col>
+<ion-col> 
+<ion-item>
+    <ion-label floating>Expiry Date:</ion-label>
+    <ion-input type="text" [(ngModel)]="selectedexpirydate" disabled="true"></ion-input>
+</ion-item>
+</ion-col>
+<ion-col>
+    <ion-item>
+        <button *ngIf="!edit" ion-button outline item-right icon-right (click)="clearBatch()">
+            <ion-icon name="close-circle"></ion-icon>
+            Clear
+        </button>
+
+        <ion-label floating>MRP:</ion-label>
+        <ion-input type="text" [(ngModel)]="selectedunitprice" disabled="true"></ion-input>
+    </ion-item>
+</ion-col>
+</ion-row>
+
+<form [formGroup]="saleItem" (ngSubmit)="addSaleItem()">
+
+<ion-row>
+  <ion-col>
+    <ion-item>
+        <ion-label floating>Quantity Sold</ion-label>
+        <ion-input type="number" formControlName="saleqty" [(ngModel)]="qtysold" name="qtysold"></ion-input>
+    </ion-item>
+    <div class="errorText" *ngIf="saleItem.controls['saleqty'].hasError('required') && saleItem.controls['saleqty'].touched">*Please provide the Quantity</div>
+    <div class="errorText" *ngIf="saleItem.controls['saleqty'].hasError('pattern') && saleItem.controls['saleqty'].touched">*Please enter valid Quantity</div>
+    <div class="errorText" *ngIf="qtysold > selectedbatchqty">
+        *Available batch qty is : {{selectedbatchqty}}. Please adjust sale qty.
+    </div>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+        <ion-label floating>Sale Price</ion-label>
+        <ion-input type="number" formControlName="saleprice" [(ngModel)]="soldprice" name="soldprice"></ion-input>
+    </ion-item>
+    <div class="errorText" *ngIf="saleItem.controls['saleprice'].hasError('required') && saleItem.controls['saleprice'].touched">*Please provide saleprice</div>
+    <div class="errorText" *ngIf="saleItem.controls['saleprice'].hasError('pattern') && saleItem.controls['saleprice'].touched">*Please enter valid saleprice</div>
+  </ion-col>
+</ion-row>
+
+<ion-row>
+    <ion-col>
+        <ion-item  *ngIf="soldprice >0 && qtysold >0 ">
+            <ion-label>Total Cost :    {{soldprice * qtysold}}</ion-label>
+        </ion-item>
+    </ion-col>
+</ion-row>
+    
+<button *ngIf="!edit" type="submit"  name="AddSaleItemBtn"  [disabled]="!saleItem.valid || qtysold > selectedbatchqty" >Add Sale Item</button>
+<button *ngIf="edit" type="submit"  name="EditSaleItemBtn"  [disabled]="!saleItem.valid || qtysold > selectedbatchqty" >Edit Sale Item</button>   
+
+
+</form>
+
+</ion-content>

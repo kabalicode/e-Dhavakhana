@@ -1,21 +1,25 @@
 import {Component, ViewChild, ExceptionHandler, provide} from '@angular/core';
 import {ionicBootstrap, Platform, MenuController, Nav, AlertController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
+import { Network } from 'ionic-native';
+import {enableProdMode} from '@angular/core';
+import {MyCustomExceptionHandler} from './providers/data/utilities/customexceptionhandler';
+import {AwsUtil} from './providers/auth/aws.service'
+
+// Pages
 import {HomePage} from './pages/home/home';
 import {LoginComponent,LogoutComponent} from './pages/security/auth';
 import {ToolsPage} from './pages/tools/tools';
 import {DrugsPage} from './pages/inventory/search';
-
 import {MasterPage} from './pages/master/master';
-//import {AddDrugsPage} from './pages/inventory/add';
 import {InvoicePage} from './pages/invoice/invoice';
 import {InvoiceAddPage} from './pages/invoice/invoice-add/invoice-add';
 import {SearchAlternativePage} from './pages/tools/search-alternative/search-alternative';
 import {MymessagesPage} from './pages/mymessages/mymessages';
 import {SupplierSearchPage} from './pages/master/supplier/search';
-import {enableProdMode} from '@angular/core';
 import {DefaultPage} from './pages/default/default';
-import { Network } from 'ionic-native';
+import {SalesPage} from './pages/sales/sales';
+
 
 //import providers
 import {LocalDrugInventory} from './providers/data/local/inventoryservice';
@@ -23,9 +27,8 @@ import {LocalSupplierMaster} from './providers/data/local/supplierservice';
 import {SafeHttp} from './providers/data/utilities/safehttp';
 import {UserProfile} from './providers/data/utilities/UserProfile';
 import {LocalOrderBookService} from './providers/data/local/orderservice';
-
-import {MyCustomExceptionHandler} from './providers/data/utilities/customexceptionhandler';
-import {AwsUtil} from './providers/auth/aws.service'
+import {InventoryService} from './providers/data/inventory/inventoryservice';
+import {SupplierAPIService} from './providers/data/supplier/supplierservice';
 
 
 import {
@@ -70,7 +73,8 @@ export class MyApp implements Callback {
     private eventsService: EventsService,
     private UserProfile: UserProfile,
     public userService:UserLoginService,
-    private userparamutil: UserParametersService
+    private userparamutil: UserParametersService,
+    private invtservice:InventoryService
   ) {
     this.initializeApp();
     this.onDevice = this.platform.is('cordova');
@@ -78,7 +82,7 @@ export class MyApp implements Callback {
     // set our app's pages
     this.pages = [
       { title: 'Home', icon:'home', component: HomePage , showchild:false ,child: null},
-      { title: 'Sales', icon:'pricetags', component: DefaultPage, showchild:false , child: null  },
+      { title: 'Sales', icon:'pricetags', component: SalesPage, showchild:false , child: null  },
       { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:null },
       { title: 'Inventory', icon:'flask', showchild:false , child: null, component: DrugsPage},
       { title: 'Master', icon:'build', component: MasterPage, showchild:false , child:null},
@@ -123,14 +127,17 @@ export class MyApp implements Callback {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
 
-      this.awsUtil.initAwsService();
+      this.rootPage = HomePage;
+
+      // commenting code for development
+      /*this.awsUtil.initAwsService();
       console.log("logged in user in app.ts:" + this.awsUtil.firstLogin);
       if (this.awsUtil.firstLogin) {
           this.userparamutil.getParameters(this)
       }else
       {
         this.rootPage = LoginComponent;
-      }
+      }*/
 
       // check connection and set accordingly
       if (this.isOnline()) 
@@ -211,4 +218,6 @@ ionicBootstrap(MyApp,[provide(ExceptionHandler, {useClass: MyCustomExceptionHand
     UserProfile,
     LocalDrugInventory,
     LocalSupplierMaster,
+    InventoryService,
+    SupplierAPIService,
     LocalOrderBookService]);

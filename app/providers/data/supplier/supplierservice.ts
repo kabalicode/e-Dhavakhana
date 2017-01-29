@@ -100,5 +100,37 @@ this.data = null;
    
  }
 
+ getAllSuppliers(){
+
+    if (this.data) {
+      return Promise.resolve(this.data);
+    }
+    
+ // API CALL START
+
+this.data = null;
+ return new Promise(resolve => {
+    var url = "";
+   
+    url = `https://bouqovu4i9.execute-api.us-west-2.amazonaws.com/MasterData/supplier`;
+    
+    
+  // console.log(url);
+    this.http.get(url)
+    
+        .map(res => res.json())
+        .subscribe(data => {
+          
+          this.data =data;
+          resolve(this.data);
+        },
+         err=>{
+          console.log("Error occurred while retrieving suppliers:" + err);
+          resolve(new Error(err || " - Service Error"));
+        });
+    });    //  API CALL END 
+   
+ }
+
 
 }

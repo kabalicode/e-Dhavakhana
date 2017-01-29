@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>Add New Counter Sale </ion-title>
+  
+    </ion-navbar>
+</ion-header>
+<ion-content padding class="invoice-add" style="overflow-scroll:true">
+    
+    <form [formGroup]="sale" (ngSubmit)="addSales()">
+
+      <ion-item>
+        <button type="button" ion-button outline item-right icon-right (click)="openDatePicker()">
+          <ion-icon name="calendar"></ion-icon>
+        </button>
+        <ion-label floating>Sale Date</ion-label>
+        <ion-input type="text" formControlName="date"></ion-input>
+      </ion-item>
+      <div class="errorText" *ngIf="sale.controls['date'].hasError('required') && sale.controls['date'].touched">*Please provide Sale Date</div>
+      <div class="errorText" *ngIf="sale.controls['date'].hasError('pattern') && sale.controls['date'].touched">*Please enter valid Sale Date</div>
+
+      <ion-item>  
+          <button type="button" ion-button outline item-right icon-right (click)="createSaleItem()">
+            <ion-icon name="add-circle"></ion-icon>
+            Add Sale Item
+          </button>
+      </ion-item>   
+      <ion-item>
+      <ion-grid>
+        <ion-row class='grid-header'> 
+          <ion-col width-10>&nbsp;</ion-col>  
+          <ion-col width-10>Sl.No</ion-col>
+          <ion-col width-45>Drug Name</ion-col>
+          <ion-col width-10>Drug Type</ion-col>
+          <ion-col>Batch No.</ion-col>
+          <ion-col>Qty</ion-col>
+          <ion-col>Sale Value</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let item of saleItems;let i = index;" class="grid-item">  
+          <ion-col width-10>
+            <button type="button" ion-button clear icon-left (click)="editSaleItem(i)">
+              <ion-icon name="create"></ion-icon>
+            </button>
+            <button type="button" ion-button clear icon-left (click)="deleteInvoiceItem(item)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col width-10>{{item.sno}}</ion-col>
+          <ion-col width-45>{{item.drugname}}</ion-col>
+          <ion-col width-10>{{item.drugtype}}</ion-col>
+          <ion-col>{{item.batchno}}</ion-col>
+          <ion-col>{{item.saleqty}}</ion-col>
+          <ion-col>{{item.salevalue}}</ion-col>
+        </ion-row>
+      </ion-grid>
+      </ion-item>
+
+      <button type="submit" [disabled]="!sale.valid">Add Sale</button>
+    </form>
+
+</ion-content>

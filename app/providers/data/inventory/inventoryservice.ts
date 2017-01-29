@@ -98,23 +98,62 @@ export class InventoryService {
 // the api that's invoked is store drug inventory (get by drugid)
 getDrugDetails(drugid: number){
 
+this.drugdetailsdata = {
+  "packagetype": "30 CAPSULE",
+  "minqty": 90,
+  "scheduledrug": "NO",
+  "availabledrugqty": 12,
+  "drugname": "ANTOXID",
+  "drugtype": "CAPSULE",
+  "mfgcode": "DR REDDY LABORATORIES LTD",
+  "rackposition": "A2",
+  "drugid": 1482114465170,
+  "composition": "ZINC SULPHATE-27.45 MG;SELENIUM-70 MCG;MANGANESE-2 MG;BETA CAROTENE-10 MG;COPPER-1 MG;",
+  "suppliers": [
+    {
+      "name": "MEDPLUS HITECH CITY",
+      "batches": [
+        {
+          "total_price": 96,
+          "mrp": 8,
+          "discount": 0,
+          "vat": 1,
+          "supplierid": "SUP1480999398069",
+          "batchno": "B102",
+          "drugid": 1482114465170,
+          "expirydate": "2020-08-01",
+          "invoiceno": 1482204383391,
+          "suppliername": "MEDPLUS HITECH CITY",
+          "availablebatchqty": 200,
+          "drugname": "ANTOXID",
+          "drugtype": "CAPSULE",
+          "unitprice": 4
+        }
+      ]
+    }
+  ]
+}
+
     if (this.drugdetailsdata) {
      console.log("inside if");
       return Promise.resolve(this.drugdetailsdata);
     }
+
+/*
+
  // API CALL START
-console.log("drugdetails");
+//console.log("drugdetails");
 this.drugdetailsdata = null;
  return new Promise(resolve => {
     var url = "";
     url = `https://63hc0yw0n6.execute-api.us-west-2.amazonaws.com/Inventory/drugs/${drugid}`;
-    console.log(url);
+   // console.log(url);
     this.http.get(url)
     
         .map(res => res.json())
         .subscribe(drugdetailsdata => {
           this.drugdetailsdata = drugdetailsdata;
-          console.log(this.drugdetailsdata);
+       //   console.log(this.drugdetailsdata);
           resolve(this.drugdetailsdata);
         },
           err=>{   
@@ -122,7 +161,7 @@ this.drugdetailsdata = null;
             resolve(new Error(err || " - Service Error"));  
         });
     });    //  API CALL END 
- 
+ */
   }
 
   

@@ -141,7 +141,7 @@ export class LocalDrugInventory {
 
                 }
                 console.log("globaldrugslist");
-                console.log(this.globaldrugslist);
+                //console.log(this.globaldrugslist);
             }
 
             }, (error) => {
