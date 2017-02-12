@@ -98,7 +98,7 @@ export class InventoryService {
 // the api that's invoked is store drug inventory (get by drugid)
 getDrugDetails(drugid: number){
 
-this.drugdetailsdata = {
+/*this.drugdetailsdata = {
   "packagetype": "30 CAPSULE",
   "minqty": 90,
   "scheduledrug": "NO",
@@ -132,14 +132,14 @@ this.drugdetailsdata = {
       ]
     }
   ]
-}
+}*/
 
     if (this.drugdetailsdata) {
      console.log("inside if");
       return Promise.resolve(this.drugdetailsdata);
     }
 
-/*
+
 
  // API CALL START
 //console.log("drugdetails");
@@ -161,7 +161,7 @@ this.drugdetailsdata = null;
             resolve(new Error(err || " - Service Error"));  
         });
     });    //  API CALL END 
- */
+ 
   }
 
   

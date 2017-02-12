@@ -242,7 +242,11 @@ export class CounterSaleAddPage {
                     let sjsonresponse = responseobject._body;
                     responseobject = JSON.parse(sjsonresponse);
 
-                    if (responseobject.response == "SUCESS")
+                    console.log("resssss..");
+                    console.log(responseobject.errorMessage);
+                    if (typeof responseobject.errorMessage!== 'undefined' && responseobject.errorMessage!== null)
+                      this.showToast("Error occurred while synchronzing the sale transaction to cloud:" + responseobject.errorMessage, "middle");
+                    else if (responseobject.response == "SUCESS")
                     {
                       let alert = this.alertCtrl.create({
                       title: "Success",
