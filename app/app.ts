@@ -19,6 +19,7 @@ import {MymessagesPage} from './pages/mymessages/mymessages';
 import {SupplierSearchPage} from './pages/master/supplier/search';
 import {DefaultPage} from './pages/default/default';
 import {SalesPage} from './pages/sales/sales';
+import {OrderPage} from './pages/order/order';
 
 
 //import providers
@@ -85,6 +86,7 @@ export class MyApp implements Callback {
       { title: 'Sales', icon:'pricetags', component: SalesPage, showchild:false , child: null  },
       { title: 'Invoice', icon:'clipboard', component: InvoicePage, showchild:false , child:null },
       { title: 'Inventory', icon:'flask', showchild:false , child: null, component: DrugsPage},
+      { title: 'Order', icon:'paper', component: OrderPage, showchild:false , child: null  },
       { title: 'Master', icon:'build', component: MasterPage, showchild:false , child:null},
       { title: 'Reports', icon:'stats', component: DefaultPage, showchild:false , child: null },
       { title: 'Notifications', icon:'notifications', component: MymessagesPage, showchild:false , child: null },

@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-navbar primary>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Order Management</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="drugshome">
+
+  <ion-card>
+    <ion-card-header class="bar"> Manage Orders
+    </ion-card-header>
+
+    <ion-card-content>
+     <ion-grid>
+        <ion-row responsive-sm>
+            
+            <ion-col width-20 style="text-align:left">
+         
+              
+                <button ion-item (click)="gotoCounterSales()">
+                        <ion-avatar item-left>
+                           <img src= "img/order.png" alt="Poster" class="customized-image">
+                        </ion-avatar>
+                </button> 
+            </ion-col> 
+            
+            <ion-col width-60 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap" (click)="gotoCounterSales()">
+                  <p><strong>Store Orders</strong></p><br>
+                  <p><i> Based on the store sales/invoices, this module will provide recommendations which will assist retailer to place order with supplier. In addition, retailer can also record day to day (ad-hoc) orders.</i></p>
+              </ion-item>
+            </ion-col>
+
+
+          <ion-col width-20 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap">
+
+              </ion-item>
+            </ion-col>
+ 
+        </ion-row>
+
+     
+        <ion-row>
+          <ion-col>
+          <hr>
+          </ion-col>
+        </ion-row>
+        
+
+        <ion-row responsive-sm>
+            
+            <ion-col width-20 style="text-align:left">
+                <button ion-item (click)="gotoOrderWantingPage()">
+                        <ion-avatar item-left>
+                           <img src= "img/orderwanting.png" alt="Poster" class="customized-image">
+                        </ion-avatar>
+                </button> 
+            </ion-col> 
+            
+            <ion-col width-60 style="text-align:left">
+              <ion-item class="item-thumbnail-left item-text-wrap" (click)="gotoBillingPage()">
+                  <p><strong>Order Wanting Diary</strong></p><br>
+                  <p><i> Using this module, retailer can record day to day (ad-hoc) orders in the diary.</i></p>
+              </ion-item>
+            </ion-col>
+
+
+              <ion-col width-20 style="text-align:left">
+                 <ion-item class="item-thumbnail-left item-text-wrap">
+
+              </ion-item>
+            </ion-col>
+ 
+        </ion-row>
+
+                
+         <ion-row>
+          <ion-col>
+          <hr>
+          </ion-col>
+        </ion-row>
+        
+
+     
+
+
+     </ion-grid>  
+
+
+
+  </ion-card-content>
+
+</ion-card>
+ 
+</ion-content>

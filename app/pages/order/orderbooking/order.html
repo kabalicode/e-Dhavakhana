@@ -1,0 +1,56 @@
+<ion-header>
+    <ion-navbar primary>
+
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>Order Book</ion-title>
+
+     <ion-buttons end>
+        <button ion-button (click)="gotoAddDrugs()">
+          <ion-icon name="add-circle"></ion-icon>
+        </button>
+
+      </ion-buttons>
+
+      
+    </ion-navbar>
+  
+</ion-header>
+
+<ion-content class="drugshome">
+
+
+
+  <div *ngIf="lordercount == -1">
+    <ion-item>
+      No order(s) found , based on the sales/invoice data. 
+    </ion-item>
+  </div>
+
+
+  <ion-list no-lines>
+
+    <ion-item-sliding *ngFor="let order of vworders" [hidden]="order.hide">
+
+      <button ion-item (click)="gotoDrugDetails(order.drugid)">
+              <ion-avatar item-left>
+                <img src= "img/{{order.drugtype}}.png" />
+              </ion-avatar>
+              <h2><strong> {{order.drugname}}</strong></h2>
+              <h4>{{order.mfgcode}}</h4>
+      </button>
+
+
+      <ion-item-options>
+        <button favorite (click)="addFavorite(drug)">
+            Favorite
+          </button>
+       </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+
+
+ 
+</ion-content>

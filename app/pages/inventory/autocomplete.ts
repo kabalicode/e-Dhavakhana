@@ -49,8 +49,11 @@ export class AutocompletePage {
   }
 
   chooseItem(item: any) {
-    //console.log("choosen item" + item);
-    //console.log(typeof(item));
+    console.log("choosen item" + item);
+    console.log(typeof(item));
+    console.log(item.name);
+    console.log(item.form);
+    
     this.viewCtrl.dismiss(item);
   }
   
@@ -122,12 +125,14 @@ export class AutocompletePage {
                             this.autocompleteItems = [];
                             this.bdrugapiinvoked = true;
                             me.result="";
-                            this.vwdrugs = this.vwdrugs.response;
-                            this.vwdrugs = this.vwdrugs.suggestions;
+                            //this.vwdrugs = this.vwdrugs.response;
+                            //this.vwdrugs = this.vwdrugs.suggestions;
+                            console.log("inside autocomplete");
+                            console.log(this.vwdrugs);
                             if ((this.vwdrugs.length >0))
                             {
                                     this.vwdrugs.forEach(function (prediction) {
-                                    me.autocompleteItems.push(prediction.suggestion);                 
+                                    me.autocompleteItems.push(prediction);                 
                                 //   this.autocompleteItems.push(prediction.DrugName);
                                 });
                             }else

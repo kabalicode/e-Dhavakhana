@@ -116,11 +116,24 @@
 				</ion-item>
 			</ion-col>
 		</ion-row>
+		
+		<ion-row>
+			<!-- packagform -->
+			<!-- <br>  -->
+			<ion-col>
+				<ion-item>
+					<ion-label floating>Packageform (Eg:strip)</ion-label>
+					<ion-input type="text" value="" formControlName="packform" [(ngModel)]="packageform" name="packageform"></ion-input>
+				</ion-item>
+			</ion-col>
+		</ion-row>
+		
 		<ion-row>
 			<ion-col>
 				<button type="submit" [disabled]="!adddrug.valid">Submit</button>
 			</ion-col>
 		</ion-row>
+
 	</form>
 
 

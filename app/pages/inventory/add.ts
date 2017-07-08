@@ -27,6 +27,7 @@ export class AddDrugsPage {
   minqty:AbstractControl;
   packtype:AbstractControl;
   composition:AbstractControl;
+  packform:AbstractControl;
 
   // form name  
   adddrug : any;
@@ -43,6 +44,7 @@ export class AddDrugsPage {
   medicineposition:any;
   vwmedicinedetails:any;
   ldrugdetails = 0;
+  packageform:any;
     
   // busy variables
  // searching: any = false;
@@ -66,11 +68,12 @@ export class AddDrugsPage {
             drugname: ['', Validators.compose([Validators.required])],
             drugtype: ['',Validators.compose([Validators.required])],
             mfgcode: ['',Validators.compose([Validators.required,])],
-            scheduledrug: ['',Validators.compose([Validators.required,Validators.pattern('[a-zA-Z0-9 ]*'),Validators.maxLength(2)])],
+            scheduledrug: ['',Validators.compose([Validators.required])],
             rackposition: [''],
             minqty: ['',Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
             packtype: [''],
-            composition: ['']
+            composition: [''],
+            packform:['']
           });
 
         this.drugname = this.adddrug.controls['drugname']; 
@@ -81,6 +84,7 @@ export class AddDrugsPage {
         this.minqty = this.adddrug.controls['minqty'];
         this.packtype = this.adddrug.controls['packtype'];
         this.composition = this.adddrug.controls['composition'];
+        this.packform = this.adddrug.controls['packform'];
 
 
 
@@ -333,6 +337,7 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                                   this.reorderqty ="";
                                   this.packagetype="";
                                   this.comp="";
+                                  this.packageform="";
                                 }
                               }
                             ]
@@ -357,9 +362,18 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
       let me = this;
       
       modal.onDidDismiss(data => {
-
+      
+      let druginfoobject: any;
+      
       //this.address.place = data;
-      this.medicinename = data;
+      console.log("dismiss");
+      console.log(data);
+      
+     
+
+      druginfoobject = data;
+      console.log(druginfoobject);
+
       //this.medicinename = this.medicinename.toUpperCase();
 
       this.ldrugdetails = 0;
@@ -367,16 +381,64 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
       this.medicinetype ="";
       this.reorderqty="";
       this.packagetype ="";
+      this.packageform="";
       this.comp="";
       this.vwmedicinedetails = null;
+      let sdrugtype ="";
 
-      if ((this.medicinename.indexOf("|!|DISMISS")>0) || (this.medicinename=="|!|DISMISS"))
+      if (typeof druginfoobject === 'object')
+      {
+        this.medicinename = druginfoobject.name;
+        sdrugtype = druginfoobject.form;
+        
+        console.log("sss" + sdrugtype);
+        sdrugtype = sdrugtype.toUpperCase();
+        
+        this.medicinetype = druginfoobject.form;
+        this.medicinetype = this.medicinetype.toUpperCase();
+        
+        this.manufacturer = druginfoobject.manufacturer;
+        this.manufacturer = this.manufacturer.toUpperCase();
+
+        this.packagetype = druginfoobject.size;
+        this.packagetype =  this.packagetype.toUpperCase();
+        
+        this.schedulemedicine = druginfoobject.schedule.category;
+        this.schedulemedicine = this.schedulemedicine.toUpperCase();
+
+        this.packageform = druginfoobject.packageForm;
+        this.packageform = this.packageform.toUpperCase();
+
+        if (typeof druginfoobject.constituents !== 'undefined' && druginfoobject.constituents!==null)
+        {
+          var mixture="";
+          for (var index=0 ; index < druginfoobject.constituents.length; index++)
+          {
+            mixture = mixture + druginfoobject.constituents[index].name + "-" + druginfoobject.constituents[index].strength + ";" ;
+            mixture = mixture.replace("\r","");
+          }
+          this.comp = mixture.toUpperCase();
+        }  
+      }else if (typeof druginfoobject === 'string')
+      {
+          if ((druginfoobject.indexOf("|!|DISMISS")>0) || (druginfoobject=="|!|DISMISS"))
+          druginfoobject = druginfoobject.replace("|!|DISMISS","")
+          this.medicinename = druginfoobject;
+      }
+
+
+   /*   if ((this.medicinename.indexOf("|!|DISMISS")>0) || (this.medicinename=="|!|DISMISS"))
         {
           this.medicinename = this.medicinename.replace("|!|DISMISS","")
         }else  
         {
+           
+           this.drugname = this.medicinename.name;
+           this.drugtype = this.medicinename.form;
+           this.manufacturer = this.medicinename.manufacturer;
+
             // get detailed drug information.
-    
+            
             this.utildrugservice.getDrugDetails(this.medicinename).then((data) => {
 
 
@@ -442,8 +504,8 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                    }   
                 }
 
-            }); 
-        }   
+           });   
+      }   */
     });
    
     modal.present();
