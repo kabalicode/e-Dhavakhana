@@ -39,22 +39,21 @@
 
         <ion-card>
             <ion-card-header>
-                  {{vwmedicinedetails.brand}} : {{vwmedicinedetails.category}}
+                  {{vwmedicinedetails.name}} : {{vwmedicinedetails.form}}
             </ion-card-header>
           <ion-card-content>
           <ion-grid>
               <ion-row>
                   
                  <ion-col width-20 style="text-align:left">
-                    <img src= "img/{{category}}.png" alt="Poster" class="customized-image">
+                    <img src= "img/{{drugtype}}.png" alt="Poster" class="customized-image">
                   </ion-col> 
                   
                   <ion-col width-80 style="text-align:left">
-                      <p><i>Manufacturer: &nbsp; {{vwmedicinedetails.manufacturer}}</i></p><br>&nbsp;
-                      <p><i>Composition: &nbsp; {{composition}}</i></p><br>&nbsp;
-                      <p><i>Package Type: &nbsp;{{packagetype}}</i></p><br>&nbsp;
-                      <p><i>Unit Type: &nbsp;{{vwmedicinedetails.unit_type}}</i></p><br>&nbsp;
-                      <p><i>Package Price: &nbsp;{{vwmedicinedetails.package_price}} RS</i></p><br>
+                      <p><i>Manufacturer: &nbsp; {{vwmedicinedetails.manufacturer}}</i></p><p><i>Composition: &nbsp; {{composition}}</i></p><p><i>Package Type: &nbsp;{{vwmedicinedetails.package_form}}</i></p><p><i>Unit Type: &nbsp;{{vwmedicinedetails.size}}</i></p><p><i>Schedule Drug: &nbsp;{{schedule}}</i></p> <p><i>Package Price: &nbsp;{{vwmedicinedetails.price}} RS</i></p><br>&nbsp;
+                      <p><i>Instructions: &nbsp;{{instructions}}</i></p><br>&nbsp;
+                      <p><i>Used For: &nbsp;{{usedfor}}</i></p><br>&nbsp;
+                      <p><i>How It Works: &nbsp;{{howitworks}}</i></p><br>&nbsp;
                   </ion-col>
                   
               </ion-row>

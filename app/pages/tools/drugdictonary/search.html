@@ -30,8 +30,8 @@
 
     <ion-item-sliding *ngFor="let drug of vwsearchresults" [hidden]="drug.hide">
 
-      <button ion-item (click)="gotoAlternativeDrugDetails(drug.suggestion)">
-              <h2><strong> {{drug.suggestion}}</strong></h2>
+      <button ion-item (click)="gotoAlternativeDrugDetails(drug)">
+              <h2><strong> {{drug.name}}</strong></h2>
       </button>
 
     </ion-item-sliding>

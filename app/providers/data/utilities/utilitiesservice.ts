@@ -73,13 +73,13 @@ getAlternativeDrugs(searchParam: string){
  return new Promise(resolve => {
     var url = "";
   
-    url = `http://oaayush-aayush.rhcloud.com/api/medicine_alternatives?limit=20&key=57029cfb1f59ea00d8294c7367a0d5&id=${searchParam}`;
+    url = `https://nnuggsvyzb.execute-api.us-west-2.amazonaws.com/Utilities/drugs/alternative?medicineid=${searchParam}`;
     //console.log(url);
     this.http.get(url)
         .map(res => res.json())
         .subscribe(data => {
           this.alternativedrugs = data;
-          //console.log(this.alternativedrugs);
+          console.log(this.alternativedrugs);
           resolve(this.alternativedrugs);
         },
           err=>{
@@ -93,7 +93,7 @@ getAlternativeDrugs(searchParam: string){
 
 // api that retrieve detailed drug information for a given drun name
 // this method connects to trueMD API
-getDrugDetails(drugname: string){
+getDrugDetails(drugid: string){
  
    this.drugdetails = null;
     if (this.drugdetails) {
@@ -103,10 +103,11 @@ getDrugDetails(drugname: string){
  return new Promise(resolve => {
     var url = "";
     
-    url = `http://oaayush-aayush.rhcloud.com/api/medicine_details?key=57029cfb1f59ea00d8294c7367a0d5&id=${drugname}`;
+    //url = `http://oaayush-aayush.rhcloud.com/api/medicine_details?key=57029cfb1f59ea00d8294c7367a0d5&id=${drugname}`;
+   url = `https://nnuggsvyzb.execute-api.us-west-2.amazonaws.com/Utilities/drugs/details?medicineid=${drugid}`;
    
 
-    //console.log(url);
+    console.log(url);
 
     //console.log(url);
     this.http.get(url)
@@ -114,7 +115,7 @@ getDrugDetails(drugname: string){
         .subscribe(data => {
           this.drugdetails = data;
           
-          //console.log(this.drugdetails);
+          console.log(this.drugdetails);
           
           resolve(this.drugdetails);
         },

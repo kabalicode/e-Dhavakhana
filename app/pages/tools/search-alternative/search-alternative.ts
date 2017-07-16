@@ -68,8 +68,8 @@ updatedrugsearch(){
 
                 loading.onDidDismiss(() => {
                         this.modelsearchresults = data;
-                        this.modelsearchresults = this.modelsearchresults.response;
-                        this.modelsearchresults = this.modelsearchresults.suggestions;
+                        //this.modelsearchresults = this.modelsearchresults.response;
+                        //this.modelsearchresults = this.modelsearchresults.suggestions;
 
                         this.vwsearchresults = this.modelsearchresults;
                         this.bapiinvoked = true;
@@ -115,13 +115,13 @@ updatedrugsearch(){
           }        
       }
 
-  gotoAlternativeDrugDetails(drugname)
+  gotoAlternativeDrugDetails(drugobj)
     {
         // go to the drug details page
         // and pass in the drug data
         //this.navCtrl.push(ResultsAlternativePage, drugname);
 
-        this.navCtrl.push(SubstitueDrugsModal, drugname);
+        this.navCtrl.push(SubstitueDrugsModal, drugobj);
         
     } 
 
@@ -148,6 +148,7 @@ updatedrugsearch(){
 export class SubstitueDrugsModal {
 
     drugparams: any;
+    drugid: any;
     drugname: any;
     //searching: any = false;
     vwalternativedrugdetails : any
@@ -167,7 +168,14 @@ export class SubstitueDrugsModal {
            // console.log(navParams.data);
             //this.drugname = navParams.data.drugname;
             
-            this.drugname = navParams.data;
+
+            this.drugparams= navParams.data;
+            console.log("this.drugparams");
+            console.log(this.drugparams);
+            this.drugid = this.drugparams.medicine_id;
+            this.drugname = this.drugparams.name;
+
+            console.log(this.drugid);
             //this.searching=true;
 
             let loading = this.loadingCtrl.create({
@@ -183,7 +191,7 @@ export class SubstitueDrugsModal {
             //console.log("ss");
             //console.log(this.drugname);
             //get alternative drug information
-            this.utilitydrugsService.getAlternativeDrugs(this.drugname).then((data) => {
+            this.utilitydrugsService.getAlternativeDrugs(this.drugid).then((data) => {
 
                 if(data!=null && data.name == "Error"){
                         console.log("Error:" + data.message);
@@ -199,18 +207,21 @@ export class SubstitueDrugsModal {
                 loading.onDidDismiss(() => {
 
                     this.vwalternativedrugdetails = data;
-                    this.vwalternativedrugdetails = this.vwalternativedrugdetails.response;
-                    this.vwalternativedrugdetails = this.vwalternativedrugdetails.medicine_alternatives;
+                    //this.vwalternativedrugdetails = this.vwalternativedrugdetails.response;
+                    //this.vwalternativedrugdetails = this.vwalternativedrugdetails.medicine_alternatives;
                     
                     this.lresultcount = this.vwalternativedrugdetails.length;
 
                     this.vwalternativedrugdetails.forEach(function(adg) 
                     {
 
-                        var sdrugtype = adg.category;
-                        sdrugtype = sdrugtype.toUpperCase();
+                        var sdrugtype = adg.form;
+                       // console.log("drugtype:" + sdrugtype);
+                        if(sdrugtype.includes("syrup")) sdrugtype = "SYRUP";
+                        if(sdrugtype.includes("suspension")) sdrugtype = "SUSPENSION";
+                        if(sdrugtype.includes("drop")) sdrugtype = "DROP";
                         adg.category = sdrugtype;
-                    // console.log(adg.category);
+                     //console.log(adg.category);
                     })
                     //console.log("this.vwalternativedrugdetail:" + this.vwalternativedrugdetails);
                     //console.log("batch count:");
@@ -223,11 +234,10 @@ export class SubstitueDrugsModal {
         }); // get alternativedrugs loop
 
 
-
+/*
              // get detailed drug information.
-           
             this.ldrugdetails = 0;
-            this.utilitydrugsService.getDrugDetails(this.drugname).then((data) => {
+            this.utilitydrugsService.getDrugDetails(this.drugid).then((data) => {
 
                 if(data!=null && data.name == "Error"){
                     console.log("Error:" + data.message);
@@ -285,7 +295,7 @@ export class SubstitueDrugsModal {
                 loading.dismiss();
 
             }); // getDrugDetails loop
-
+*/
     
            
             //this.searching=false;
