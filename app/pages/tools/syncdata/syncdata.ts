@@ -71,7 +71,7 @@ syncAWSData(){
                               {
                                   let alert = this.alertCtrl.create({
                                       title: 'Download internet data',
-                                      subTitle: 'All data associated with your store has been sucessfully synnchronized to your device !',
+                                      subTitle: 'All data associated with your store has been sucessfully synchronized to your device !. Please close the app and reopen to reflect changes',
                                       buttons: ['OK']
                                       });
                                       alert.present();

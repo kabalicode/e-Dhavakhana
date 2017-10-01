@@ -372,11 +372,11 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
 
        if (typeof data!== 'undefined' && data!== null)
         {
-          this.vendoraddress = data.Address;
-          this.vendorcity = data.City;
-          this.vendorstate= data.State;
-          this.vendorcountry =data.Country;
-          this.vendorpin = data.Pincode;
+          this.vendoraddress = data.office_name;
+          this.vendorcity = data.taluk;
+          this.vendorstate= data.state_name;
+          this.vendorcountry ="INDIA";
+          this.vendorpin = data.pincode;
         }
     });
    

@@ -13,7 +13,8 @@ import {SupplierAPIService} from '../../../providers/data/supplier/supplierservi
 export class SynchAWSDataToLocal {
   data: any;
   storage: Storage;
-  str = "ABC";
+  //str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  str = "ABCDEFG";
  
 constructor(private http: SafeHttp,private invtservice:InventoryService, private supplierservice: SupplierAPIService ) {
     this.data = null;

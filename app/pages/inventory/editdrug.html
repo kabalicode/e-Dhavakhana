@@ -83,6 +83,7 @@
 
 				<p *ngIf="rackposition.hasError('required') && rackposition.touched" danger>*Please specify the rack poistion where drug will be placed in store.</p>
 			</ion-col>
+		
 		</ion-row>
 
 		<ion-row>
@@ -103,11 +104,54 @@
 				</ion-item>
 			</ion-col>
 		</ion-row>
+
+
+		<ion-row>
+
+			<ion-col>
+				<!-- MRP -->
+				<!-- <br>  -->
+				<ion-item>
+					<ion-label floating>MRP (Eg: RS 45.60)</ion-label>
+					<ion-input type="text" formControlName="packmrp" [(ngModel)]="packagemrp" name="packagemrp"></ion-input>
+				</ion-item>
+			</ion-col>
+		
+			<!-- PTR -->
+			<!-- <br>  -->
+			<ion-col>
+				<ion-item [class.error]="!packptr.valid && packptr.touched">
+					<ion-label floating>PTR(Eg: RS 33.60)</ion-label>
+					<ion-input type="text" formControlName="packptr" [(ngModel)]="packageptr" name="packageptr"></ion-input>
+				</ion-item>
+
+				<p *ngIf="packptr.hasError('required') && packptr.touched" danger>*Please enter price to retailer for each standard unit.</p>
+				<p *ngIf="packptr.hasError('pattern') && packptr.touched" danger>*Please enter price to retailer for each standard unit.</p>
+				<!-- <br>  -->
+
+			</ion-col>
+		</ion-row>
+
+		<ion-row>
+
+			<ion-col>
+				<!-- standard unit -->
+				<ion-item [class.error]="!unitqty.valid && unitqty.touched">
+					<ion-label floating>Standard Units</ion-label>
+					<ion-input type="number"  formControlName="unitqty" [(ngModel)]="stdunit" name="stdunit"></ion-input>
+				</ion-item>
+
+				<p *ngIf="unitqty.hasError('required') && unitqty.touched" danger>*Please specify the standard unit of the drug.</p>
+			</ion-col>
+
+		</ion-row>
+
 		<ion-row>
 			<ion-col>
 				<button type="submit" [disabled]="!editdrug.valid">Submit</button>
 			</ion-col>
 		</ion-row>
+
 	</form>
 
 

@@ -28,6 +28,9 @@ export class AddDrugsPage {
   packtype:AbstractControl;
   composition:AbstractControl;
   packform:AbstractControl;
+  packmrp:AbstractControl;
+  packptr:AbstractControl;
+  unitqty: AbstractControl;
 
   // form name  
   adddrug : any;
@@ -45,6 +48,9 @@ export class AddDrugsPage {
   vwmedicinedetails:any;
   ldrugdetails = 0;
   packageform:any;
+  packagemrp:any;
+  packageptr:any;
+  stdunit: any;
     
   // busy variables
  // searching: any = false;
@@ -73,7 +79,10 @@ export class AddDrugsPage {
             minqty: ['',Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
             packtype: [''],
             composition: [''],
-            packform:['']
+            packform:[''],
+            unitqty:['',Validators.compose([Validators.required,Validators.pattern('[.0-9]*')])],
+            packptr:['',Validators.compose([Validators.required,Validators.pattern('[.0-9]*')])],
+            packmrp:['',Validators.compose([Validators.required,Validators.pattern('[.0-9]*')])]
           });
 
         this.drugname = this.adddrug.controls['drugname']; 
@@ -85,7 +94,9 @@ export class AddDrugsPage {
         this.packtype = this.adddrug.controls['packtype'];
         this.composition = this.adddrug.controls['composition'];
         this.packform = this.adddrug.controls['packform'];
-
+        this.unitqty = this.adddrug.controls['unitqty'];
+        this.packmrp = this.adddrug.controls['packmrp'];
+        this.packptr = this.adddrug.controls['packptr'];
 
 
     }    
@@ -104,6 +115,9 @@ export class AddDrugsPage {
             rackposition: this.medicineposition.toUpperCase(),
             minqty : this.reorderqty,
             packagetype: this.packagetype.toUpperCase(),
+            unitqty:this.stdunit,
+            packagemrp: this.packagemrp,
+            packageptr: this.packageptr,
             composition: this.comp.toUpperCase()
         };
 
@@ -237,6 +251,9 @@ updatedrugdata(item:any,soperation:string)
                         JSONPayload = JSONPayload + '"rackposition":"' + item.rackposition + '",'
                         JSONPayload = JSONPayload + '"minqty":' + item.minqty + ','
                         JSONPayload = JSONPayload + '"packagetype" :"' + item.packagetype + '",'
+                        JSONPayload = JSONPayload + '"unitqty" :"' + item.unitqty + '",'
+                        JSONPayload = JSONPayload + '"packagemrp" :"' + item.packagemrp + '",'
+                        JSONPayload = JSONPayload + '"packageptr" :"' + item.packageptr + '",'
                         JSONPayload = JSONPayload + '"composition":"' + item.composition + '"}'
                         console.log(JSONPayload);
                         this.syncdrugdata_AWS_local(JSONPayload,item);
@@ -246,7 +263,7 @@ updatedrugdata(item:any,soperation:string)
 
             }else
             {
-                       
+                      
                         JSONPayload = JSONPayload+ '{"drugname":"' + item.drugname + '",'
                         JSONPayload = JSONPayload + '"drugtype":"' + item.drugtype + '",'
                         JSONPayload = JSONPayload + '"mfgcode":"' + item.mfgcode + '",'
@@ -254,6 +271,9 @@ updatedrugdata(item:any,soperation:string)
                         JSONPayload = JSONPayload + '"rackposition":"' + item.rackposition + '",'
                         JSONPayload = JSONPayload + '"minqty":' + item.minqty + ','
                         JSONPayload = JSONPayload + '"packagetype" :"' + item.packagetype + '",'
+                        JSONPayload = JSONPayload + '"unitqty" :"' + item.unitqty + '",'
+                        JSONPayload = JSONPayload + '"packagemrp" :"' + item.packagemrp + '",'
+                        JSONPayload = JSONPayload + '"packageptr" :"' + item.packageptr + '",'
                         JSONPayload = JSONPayload + '"composition":"' + item.composition + '"}'
                        
                         this.syncdrugdata_AWS_local(JSONPayload,item);
@@ -338,6 +358,10 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
                                   this.packagetype="";
                                   this.comp="";
                                   this.packageform="";
+                                  this.stdunit="";
+                                  this.packagemrp="";
+                                  this.packageptr="";
+
                                 }
                               }
                             ]
@@ -380,6 +404,7 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
       this.manufacturer = "";
       this.medicinetype ="";
       this.reorderqty="";
+      this.stdunit=0;
       this.packagetype ="";
       this.packageform="";
       this.comp="";
@@ -396,6 +421,11 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
         
         this.medicinetype = druginfoobject.form;
         this.medicinetype = this.medicinetype.toUpperCase();
+        console.log(this.medicinetype);
+        
+        if (sdrugtype === "ML OF SUSPENSION") this.medicinetype = "SUSPENSION";
+        if (sdrugtype === "ML OF INJECTION") this.medicinetype = "INJECTION";
+        console.log(this.medicinetype);
         
         this.manufacturer = druginfoobject.manufacturer;
         this.manufacturer = this.manufacturer.toUpperCase();
@@ -408,6 +438,9 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
 
         this.packageform = druginfoobject.packageForm;
         this.packageform = this.packageform.toUpperCase();
+
+        this.packageptr = druginfoobject.price;
+        this.stdunit = druginfoobject.standardUnits;
 
         if (typeof druginfoobject.constituents !== 'undefined' && druginfoobject.constituents!==null)
         {
@@ -426,86 +459,6 @@ syncdrugdata_AWS_local(JSONPayload: string, item: any){
           this.medicinename = druginfoobject;
       }
 
-
-   /*   if ((this.medicinename.indexOf("|!|DISMISS")>0) || (this.medicinename=="|!|DISMISS"))
-        {
-          this.medicinename = this.medicinename.replace("|!|DISMISS","")
-        }else  
-        {
-           
-           this.drugname = this.medicinename.name;
-           this.drugtype = this.medicinename.form;
-           this.manufacturer = this.medicinename.manufacturer;
-
-            // get detailed drug information.
-            
-            this.utildrugservice.getDrugDetails(this.medicinename).then((data) => {
-
-
-                if(data!=null && data.name == "Error")
-                {
-                  console.log("Error:" + data.message);
-                  this.showToast("Error occurred while retriving drug details:" + data.message, "middle");
-                  return;
-                } // Error handling loop
-
-                this.vwmedicinedetails = data;
-                 
-                if (typeof this.vwmedicinedetails!== 'undefined' && this.vwmedicinedetails!== null)
-                {
-                   this.ldrugdetails = 1;
-                   this.vwmedicinedetails = this.vwmedicinedetails.response;
-                   
-                   if(this.vwmedicinedetails) 
-                   {
-                        if (typeof this.vwmedicinedetails.constituents !== 'undefined' && this.vwmedicinedetails.constituents!==null)
-                        {
-                          var mixture="";
-                          for (var index=0 ; index < this.vwmedicinedetails.constituents.length; index++)
-                          {
-                            mixture = mixture + this.vwmedicinedetails.constituents[index].name + "-" + this.vwmedicinedetails.constituents[index].strength + ";" ;
-                            mixture = mixture.replace("\r","");
-                          }
-                          this.comp = mixture.toUpperCase();
-                        }  
-                        
-                       this.vwmedicinedetails = this.vwmedicinedetails.medicine;
-                       if(this.vwmedicinedetails) 
-                        {  
-                            if (typeof this.vwmedicinedetails.manufacturer !== 'undefined' && this.vwmedicinedetails.manufacturer !==null)
-                            {   
-                                this.manufacturer = this.vwmedicinedetails.manufacturer;
-                                this.manufacturer = this.manufacturer.toUpperCase();
-                            }
-                                console.log("MFG" + this.vwmedicinedetails.manufacturer);
-
-                            if (typeof this.vwmedicinedetails.category !== 'undefined' && this.vwmedicinedetails.category !==null)
-                            {
-                                this.medicinetype = this.vwmedicinedetails.category;
-                                this.medicinetype = this.medicinetype.toUpperCase();
-                            }   
-                
-                            
-                            if ( (typeof this.vwmedicinedetails.package_type !== 'undefined' && this.vwmedicinedetails.package_type!==null)  &&
-                                (typeof this.vwmedicinedetails.package_qty !== 'undefined' && this.vwmedicinedetails.package_qty!==null) )
-                            {     
-                              let packageqty = this.vwmedicinedetails.package_qty ;
-                              packageqty = parseInt(packageqty, 10)
-
-                              console.log("packageqty:" + packageqty);
-
-                              this.packagetype = packageqty + " " + this.vwmedicinedetails.package_type;
-                              this.packagetype = this.packagetype.toUpperCase();
-
-                            }
-                        }
-                     
-
-                   }   
-                }
-
-           });   
-      }   */
     });
    
     modal.present();

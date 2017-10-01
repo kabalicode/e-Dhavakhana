@@ -138,8 +138,9 @@ findAddress(pinno: string){
 
  return new Promise(resolve => {
     var url = "";
-    url=`https://www.whizapi.com/api/v2/util/ui/in/indian-city-by-postal-code?project-app-key=jtw4hxuywp9kl64yultf8ejj&pin=${pinno}`
-
+    //url=`https://www.whizapi.com/api/v2/util/ui/in/indian-city-by-postal-code?project-app-key=jtw4hxuywp9kl64yultf8ejj&pin=${pinno}`
+    url=`https://pincode.saratchandra.in/api/pincode/${pinno}`
+    console.log(url);
     this.http.get(url)
         .map(res => res.json())
         .subscribe(data => {

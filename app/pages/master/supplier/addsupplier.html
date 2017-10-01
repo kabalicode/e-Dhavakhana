@@ -30,12 +30,13 @@
 
           <!-- Supplier Address -->
           <ion-item>
-              <ion-label floating>Street Name (Click Here)</ion-label>
-              <ion-input type="text" (click)="showSuggestedAddressModal()" (touchstart) ="showSuggestedAddressModal()" value="" formControlName="address" [(ngModel)]="vendoraddress" name="vendoraddress"></ion-input>         
+              <ion-label floating>PIN Code </ion-label>
+              <ion-input type="text" value="" formControlName="pin" placeholder="PIN" [(ngModel)]="vendorpin" name="vendorpin" (click)="showSuggestedAddressModal()" (touchstart) ="showSuggestedAddressModal()" value=""></ion-input> 
+              <ion-input type="text" value="" formControlName="address" placeholder="Street Name" [(ngModel)]="vendoraddress" name="vendoraddress"></ion-input>         
               <ion-input type="text" value="" formControlName="city" placeholder="City" [(ngModel)]="vendorcity" name="vendorcity"></ion-input>
               <ion-input type="text" value="" formControlName="state" placeholder="State" [(ngModel)]="vendorstate" name="vendorstate"></ion-input>
               <ion-input type="text" value="" formControlName="country" placeholder="Country" [(ngModel)]="vendorcountry" name="vendorcountry"></ion-input>
-              <ion-input type="text" value="" formControlName="pin" placeholder="PIN" [(ngModel)]="vendorpin" name="vendorpin"></ion-input> 
+
           </ion-item>
 
         

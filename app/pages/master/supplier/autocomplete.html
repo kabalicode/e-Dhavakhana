@@ -30,9 +30,9 @@
     <ion-item-sliding *ngFor="let address of vwaddress" [hidden]="address.hide">
 
       <button ion-item (click)="chooseItem(address)">
-              <h2><strong> {{address.Address}}</strong></h2>
-              <h4>{{address.City}}</h4>
-              <p>{{address.State}} - {{address.Country}}</p>
+              <h2><strong> {{address.office_name}}</strong></h2>
+              <h4>{{address.taluk}}</h4>
+              <p>{{address.region_name}} - {{address.state_name}}</p>
       </button>
 
     </ion-item-sliding>

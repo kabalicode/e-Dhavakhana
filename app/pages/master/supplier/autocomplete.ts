@@ -76,7 +76,7 @@ export class AutocompleteAddressPage {
                         me.result="";
                         
                         
-                        this.vwaddress = this.vwaddress.Data;
+                        this.vwaddress = this.vwaddress.data;
                         console.log(this.vwaddress);
                         if ((this.vwaddress.length <=0))
                         {

@@ -27,6 +27,9 @@ export class EditDrugsPage {
   minqty:AbstractControl;
   packtype:AbstractControl;
   composition:AbstractControl;
+  packmrp:AbstractControl;
+  packptr:AbstractControl;
+  unitqty: AbstractControl;
 
   // form name  
   editdrug : any;
@@ -44,6 +47,9 @@ export class EditDrugsPage {
   vwmedicinedetails:any;
   ldrugdetails = 0;
   drugid:number;
+  packagemrp:any;
+  packageptr:any;
+  stdunit: any;
 
   // busy variables
  // searching: any = false;
@@ -68,7 +74,10 @@ export class EditDrugsPage {
             rackposition: [''],
             minqty: ['',Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
             packtype: [''],
-            composition: ['']
+            composition: [''],
+            unitqty:['',Validators.compose([Validators.required,Validators.pattern('[.0-9]*')])],
+            packptr:['',Validators.compose([Validators.required,Validators.pattern('[.0-9]*')])],
+            packmrp:[''],
           });
 
         console.log(navParams.data);
@@ -78,6 +87,11 @@ export class EditDrugsPage {
         this.minqty = this.editdrug.controls['minqty'];
         this.packtype = this.editdrug.controls['packtype'];
         this.composition = this.editdrug.controls['composition'];
+        this.unitqty = this.editdrug.controls['unitqty'];
+        this.packmrp = this.editdrug.controls['packmrp'];
+        this.packptr = this.editdrug.controls['packptr'];
+
+        console.log(navParams.data);
 
         this.medicinename = navParams.data.drugname;
         this.medicinetype = navParams.data.drugtype;
@@ -88,6 +102,17 @@ export class EditDrugsPage {
         this.packagetype = navParams.data.packagetype;
         this.comp = navParams.data.composition;
         this.drugid = navParams.data.drugid;
+
+        console.log(navParams.data.mrp);
+        
+        this.packagemrp = navParams.data.mrp;
+        //this.packagemrp="40";
+        //this.reorderqty = navParams.data.mrp;
+
+        this.packageptr = navParams.data.ptr;
+        this.stdunit = navParams.data.unitqty;
+
+
     }    
 
  updateDrugItem(): void {
@@ -103,6 +128,9 @@ export class EditDrugsPage {
         rackposition: this.medicineposition.toUpperCase(),
         minqty : this.reorderqty,
         packagetype: this.packagetype.toUpperCase(),
+        unitqty:this.stdunit,
+        packagemrp: this.packagemrp,
+        packageptr: this.packageptr,
         composition: this.comp.toUpperCase()
     };
 
@@ -115,7 +143,11 @@ export class EditDrugsPage {
     JSONPayload = JSONPayload + '"rackposition":"' + drugitem.rackposition + '",'
     JSONPayload = JSONPayload + '"minqty":' + drugitem.minqty + ','
     JSONPayload = JSONPayload + '"packagetype" :"' + drugitem.packagetype + '",'
+    JSONPayload = JSONPayload + '"unitqty" :"' + drugitem.unitqty + '",'
+    JSONPayload = JSONPayload + '"packagemrp" :"' + drugitem.packagemrp + '",'
+    JSONPayload = JSONPayload + '"packageptr" :"' + drugitem.packageptr + '",'
     JSONPayload = JSONPayload + '"composition":"' + drugitem.composition + '"}'
+    
     console.log(JSONPayload);
     
     this.syncdrugdata_AWS_local(JSONPayload,drugitem);
